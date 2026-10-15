@@ -6,6 +6,7 @@
   "description": "Lahore Fried Chicken (LFC) - zero-build static restaurant website (GitHub Pages ready).",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
+    "build": "vite build",
     "preview": "vite preview",
     "serve": "python3 -m http.server 8080",
     "lint": "tsc --noEmit"
