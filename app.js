@@ -1,7 +1,8 @@
 /**
- * Lahore Fried Chicken (LFC) - Official Web Application
- * Pure Standard JavaScript (No TypeScript, Zero Build Required, 100% GitHub Pages Compatible)
- * Developed for LFC • Developer: Trivox solutions
+ * LFC (Lahore Fried Chicken) - Official Web Application
+ * Pure Standard JavaScript (Zero Build Required, 100% Vite & GitHub Pages Compatible)
+ * Advanced Multi-Options System, Live Kitchen Orders Tracker, Promo Engine & Delivery Suite
+ * Developer: Trivox solutions
  */
 
 (function () {
@@ -9,18 +10,39 @@
 
   // --- Initial Preset Data ---
   const DEFAULT_SETTINGS = {
-    storeName: 'Lahore Fried Chicken (LFC)',
+    storeName: 'LFC',
+    fullName: 'Lahore Fried Chicken (LFC)',
     tagline: 'Taste the Legend',
-    logoUrl: './images/logo.png',
+    logoUrl: './src/assets/images/regenerated_image_1792104663328.png',
     phoneCallNumber: '0322-4940181',
     whatsappNumber: '0322-4940181',
-    adminPin: '5640', // User locked PIN
+    adminPin: '5640', // Protected Master Admin PIN
     deliveryFee: 150,
     freeDeliveryAbove: 2000,
     storeTiming: '12:00 PM - 02:30 AM',
     currency: 'Rs.',
+    storeStatus: 'open', // 'open' | 'busy' | 'closed'
+    selectedZoneId: 'gulberg',
     announcementText: '🔥 Free Delivery in Lahore on Orders Above Rs. 2,000! | Code: LFC100 for Rs. 100 OFF'
   };
+
+  const DEFAULT_ZONES = [
+    { id: 'gulberg', name: 'Gulberg & MM Alam Road', fee: 150, time: '20-30 mins' },
+    { id: 'dha', name: 'DHA Lahore (Phases 1-8)', fee: 200, time: '25-35 mins' },
+    { id: 'johar', name: 'Johar Town & Faisal Town', fee: 180, time: '25-35 mins' },
+    { id: 'modeltown', name: 'Model Town & Garden Town', fee: 160, time: '20-30 mins' },
+    { id: 'cantt', name: 'Lahore Cantt & Saddar', fee: 190, time: '25-35 mins' },
+    { id: 'bahria', name: 'Bahria Town & Raiwind Road', fee: 250, time: '35-50 mins' },
+    { id: 'mall', name: 'Mall Road, Anarkali & Old Lahore', fee: 170, time: '25-40 mins' },
+    { id: 'other', name: 'Other Areas in Lahore', fee: 220, time: '35-50 mins' }
+  ];
+
+  const DEFAULT_PROMOS = [
+    { code: 'LFC100', type: 'flat', discount: 100, minOrder: 800, active: true, desc: 'Rs. 100 OFF on orders above Rs. 800' },
+    { code: 'CRUNCH20', type: 'percent', discount: 20, minOrder: 1500, active: true, desc: '20% OFF on orders above Rs. 1,500' },
+    { code: 'WELCOME50', type: 'flat', discount: 50, minOrder: 500, active: true, desc: 'Rs. 50 OFF on first order' },
+    { code: 'TRIVOX', type: 'flat', discount: 200, minOrder: 1200, active: true, desc: 'Rs. 200 Special Partner Discount' }
+  ];
 
   const DEFAULT_CATEGORIES = [
     { id: 'all', name: 'All Bites' },
@@ -93,22 +115,45 @@
       name: 'Crispy Zinger Burger',
       cat: 'burgers',
       price: 490,
-      desc: 'Whole chicken breast fillet marinated in authentic spices, deep-fried to golden perfection with crisp lettuce and spicy mayo.',
+      desc: 'Whole chicken breast fillet marinated in authentic 12 spices, deep-fried to golden perfection with crisp lettuce and spicy mayo.',
       image: './images/hero-1.jpg',
       badge: 'Bestseller',
       inStock: true,
-      spiciness: 2
+      spiciness: 2,
+      sizes: [
+        { name: 'Single Zinger Fillet', price: 0 },
+        { name: 'Double Patty Zinger', price: 180 },
+        { name: 'Meal Combo (Fries + Drink)', price: 250 }
+      ],
+      spiceLevels: ['Mild Crunchy', 'Hot Spicy Lahori', 'Extra Ghost Pepper 🔥'],
+      addons: [
+        { name: 'Extra Garlic Mayo Dip', price: 60 },
+        { name: 'Melted Cheddar Slice', price: 80 },
+        { name: 'Peri Peri Masala Fries', price: 120 },
+        { name: 'Chilled Soft Drink Can', price: 90 }
+      ]
     },
     {
       id: 2,
       name: 'Zinger Paratha Roll',
       cat: 'rolls',
       price: 380,
-      desc: 'Golden crispy chicken strips inside a flaky, pan-toasted paratha with garlic dip and sweet chili glaze.',
+      desc: 'Golden crispy chicken strips inside a flaky, pan-toasted paratha with signature garlic dip and sweet chili glaze.',
       image: './images/hero-2.jpg',
       badge: 'Popular',
       inStock: true,
-      spiciness: 2
+      spiciness: 2,
+      sizes: [
+        { name: 'Standard Roll', price: 0 },
+        { name: 'Jumbo Roll (Double Chicken)', price: 140 },
+        { name: 'Meal Combo (With Drink & Fries)', price: 230 }
+      ],
+      spiceLevels: ['Mild Garlic', 'Hot Spicy Lahori', 'Extra Hot Fire 🔥'],
+      addons: [
+        { name: 'Extra Garlic Mayo Dip', price: 60 },
+        { name: 'Cheddar Cheese Slice', price: 80 },
+        { name: 'Chilled Soft Drink Can', price: 90 }
+      ]
     },
     {
       id: 3,
@@ -119,7 +164,18 @@
       image: './images/hero-3.jpg',
       badge: 'Chef Special',
       inStock: true,
-      spiciness: 1
+      spiciness: 1,
+      sizes: [
+        { name: 'Small 7" (Single)', price: 0 },
+        { name: 'Medium 10" (2-3 Persons)', price: 450 },
+        { name: 'Large 13" (Family Feast)', price: 850 }
+      ],
+      spiceLevels: ['Mild Italian Herb', 'Spicy Fajita', 'Extra Jalapeño Fire 🔥'],
+      addons: [
+        { name: 'Extra Mozzarella Cheese Pull', price: 150 },
+        { name: 'Garlic Ranch Swirl Dip', price: 70 },
+        { name: 'Chilled 1.5L Drink', price: 220 }
+      ]
     },
     {
       id: 4,
@@ -130,7 +186,18 @@
       image: './images/hero-4.jpg',
       badge: 'Mega Value',
       inStock: true,
-      spiciness: 2
+      spiciness: 2,
+      sizes: [
+        { name: '9-Piece Regular Bucket', price: 0 },
+        { name: '12-Piece Party Bucket', price: 550 },
+        { name: 'Bucket Feast (+ Large Fries & 1.5L Drink)', price: 650 }
+      ],
+      spiceLevels: ['Crispy Original Mild', 'Hot Spicy 12-Spice', 'Mixed Combo (Half & Half)'],
+      addons: [
+        { name: 'Extra 2x Garlic Mayo Dips', price: 110 },
+        { name: 'Extra Peri Peri Masala Fries', price: 150 },
+        { name: '1.5L Chilled Soft Drink', price: 220 }
+      ]
     },
     {
       id: 5,
@@ -141,7 +208,17 @@
       image: './images/hero-1.jpg',
       badge: 'Double Patty',
       inStock: true,
-      spiciness: 3
+      spiciness: 3,
+      sizes: [
+        { name: 'Standard Tower Burger', price: 0 },
+        { name: 'Tower Meal (With Fries & Drink)', price: 250 }
+      ],
+      spiceLevels: ['Hot Smokey BBQ', 'Ghost Pepper Extreme 🔥'],
+      addons: [
+        { name: 'Extra Cheddar Cheese Slice', price: 80 },
+        { name: 'Crispy Hash Brown Add-on', price: 100 },
+        { name: 'Extra Garlic Dip', price: 60 }
+      ]
     },
     {
       id: 6,
@@ -152,7 +229,17 @@
       image: './images/hero-1.jpg',
       badge: 'Crunchy',
       inStock: true,
-      spiciness: 2
+      spiciness: 2,
+      sizes: [
+        { name: '5 Pieces Strips', price: 0 },
+        { name: '10 Pieces Strips (Save Rs. 100)', price: 420 }
+      ],
+      spiceLevels: ['Mild Golden Batter', 'Spicy Lahori Crunch', 'Fiery Ghost 🔥'],
+      addons: [
+        { name: 'Extra Sweet Chili Dip', price: 60 },
+        { name: 'Extra Garlic Mayo Dip', price: 60 },
+        { name: 'Large Peri Peri Fries', price: 180 }
+      ]
     },
     {
       id: 7,
@@ -163,7 +250,18 @@
       image: './images/hero-3.jpg',
       badge: 'Spicy',
       inStock: true,
-      spiciness: 3
+      spiciness: 3,
+      sizes: [
+        { name: 'Small 7"', price: 0 },
+        { name: 'Medium 10"', price: 480 },
+        { name: 'Large 13"', price: 890 }
+      ],
+      spiceLevels: ['Spicy Desi Tikka', 'Extreme Tikka Fire 🔥'],
+      addons: [
+        { name: 'Extra Mozzarella Cheese', price: 150 },
+        { name: 'Stuffed Cheese Crust', price: 180 },
+        { name: 'Chilled Drink 1.5L', price: 220 }
+      ]
     },
     {
       id: 8,
@@ -174,7 +272,17 @@
       image: './images/hero-2.jpg',
       badge: 'Creamy',
       inStock: true,
-      spiciness: 1
+      spiciness: 1,
+      sizes: [
+        { name: 'Standard Roll', price: 0 },
+        { name: 'Jumbo Double Fill', price: 140 },
+        { name: 'Roll Meal (+ Fries & Can)', price: 230 }
+      ],
+      spiceLevels: ['Mild Creamy Garlic', 'Medium Spicy', 'Spicy Hot'],
+      addons: [
+        { name: 'Extra Creamy Garlic Dip', price: 60 },
+        { name: 'Melted Cheese Slice', price: 80 }
+      ]
     },
     {
       id: 9,
@@ -185,7 +293,16 @@
       image: './images/hero-1.jpg',
       badge: 'Save 25%',
       inStock: true,
-      spiciness: 2
+      spiciness: 2,
+      sizes: [
+        { name: 'Standard Family Feast', price: 0 },
+        { name: 'Mega Upgrade (+ 1 Large Cheesy Pizza)', price: 950 }
+      ],
+      spiceLevels: ['Mild Family Mix', 'Spicy Lahori Feast'],
+      addons: [
+        { name: 'Extra 4x Garlic Dips', price: 200 },
+        { name: 'Extra 1.5L Cold Drink', price: 220 }
+      ]
     },
     {
       id: 10,
@@ -196,7 +313,16 @@
       image: './images/hero-4.jpg',
       badge: 'Duo Deal',
       inStock: true,
-      spiciness: 2
+      spiciness: 2,
+      sizes: [
+        { name: 'Standard Couple Deal', price: 0 },
+        { name: 'Upgrade with 2 Zinger Rolls', price: 490 }
+      ],
+      spiceLevels: ['Mild', 'Hot Spicy Lahori'],
+      addons: [
+        { name: 'Extra Dip Sauce', price: 60 },
+        { name: 'Extra Cheese on Both Burgers', price: 150 }
+      ]
     },
     {
       id: 11,
@@ -207,7 +333,16 @@
       image: './images/hero-1.jpg',
       badge: 'Hot Side',
       inStock: true,
-      spiciness: 2
+      spiciness: 2,
+      sizes: [
+        { name: 'Regular Portion', price: 0 },
+        { name: 'Jumbo Bucket Fries', price: 160 }
+      ],
+      spiceLevels: ['Tangy Masala Mild', 'Spicy Peri Peri', 'Extreme Ghost Dust 🔥'],
+      addons: [
+        { name: 'Melted Cheddar Cheese Sauce', price: 90 },
+        { name: 'Extra Garlic Dip', price: 60 }
+      ]
     },
     {
       id: 12,
@@ -218,7 +353,13 @@
       image: './images/hero-4.jpg',
       badge: 'Chilled',
       inStock: true,
-      spiciness: 0
+      spiciness: 0,
+      sizes: [
+        { name: '1.5L Bottle', price: 0 },
+        { name: '2.25L Jumbo Bottle', price: 70 }
+      ],
+      spiceLevels: ['Ice Cold'],
+      addons: []
     }
   ];
 
@@ -284,12 +425,115 @@
     }
   ];
 
-  // --- Live Order Notifications Ticker ---
+  const DEFAULT_ORDERS = [
+    {
+      id: 'LFC-8491',
+      date: '10:45 PM today',
+      timestamp: Date.now() - 3600000,
+      customerName: 'Usman Tariq',
+      customerPhone: '0300-8456123',
+      customerAddress: 'House 14, Block B, DHA Phase 5, Lahore',
+      orderType: 'delivery',
+      deliveryZone: 'DHA Lahore (Phases 1-8)',
+      specialNotes: 'Extra spicy, please send garlic dip',
+      items: [
+        {
+          name: 'Crispy Zinger Burger',
+          price: 740,
+          qty: 2,
+          selectedSize: { name: 'Double Patty Zinger', price: 180 },
+          selectedSpice: 'Hot Spicy Lahori',
+          selectedAddons: [{ name: 'Extra Garlic Mayo Dip', price: 60 }]
+        },
+        {
+          name: 'Peri Peri Masala Fries',
+          price: 240,
+          qty: 1,
+          selectedSize: { name: 'Regular Portion', price: 0 },
+          selectedSpice: 'Hot Spicy Lahori',
+          selectedAddons: []
+        }
+      ],
+      subtotal: 1720,
+      deliveryFee: 200,
+      discount: 100,
+      promoCode: 'LFC100',
+      total: 1820,
+      status: 'delivered'
+    },
+    {
+      id: 'LFC-8492',
+      date: '11:20 PM today',
+      timestamp: Date.now() - 1800000,
+      customerName: 'Sana Farooq',
+      customerPhone: '0321-4991122',
+      customerAddress: 'Plot 42, Main MM Alam Road, Gulberg III, Lahore',
+      orderType: 'delivery',
+      deliveryZone: 'Gulberg & MM Alam Road',
+      specialNotes: 'Ring bell twice, leave with guard if needed',
+      items: [
+        {
+          name: 'Extra Cheese Loaded Pizza',
+          price: 1740,
+          qty: 1,
+          selectedSize: { name: 'Medium 10"', price: 450 },
+          selectedSpice: 'Mild Italian Herb',
+          selectedAddons: []
+        },
+        {
+          name: 'Chilled Soft Drink (1.5L)',
+          price: 220,
+          qty: 1,
+          selectedSize: { name: '1.5L Bottle', price: 0 },
+          selectedSpice: 'Ice Cold',
+          selectedAddons: []
+        }
+      ],
+      subtotal: 1960,
+      deliveryFee: 150,
+      discount: 0,
+      promoCode: null,
+      total: 2110,
+      status: 'preparing'
+    },
+    {
+      id: 'LFC-8493',
+      date: '11:42 PM today',
+      timestamp: Date.now() - 600000,
+      customerName: 'Hamza Bilal',
+      customerPhone: '0333-8821940',
+      customerAddress: 'Sector G1, Near Doctors Hospital, Johar Town, Lahore',
+      orderType: 'delivery',
+      deliveryZone: 'Johar Town & Faisal Town',
+      specialNotes: 'Crispy fried chicken pieces fresh please',
+      items: [
+        {
+          name: '9-Piece Zinger Bucket',
+          price: 2100,
+          qty: 1,
+          selectedSize: { name: '9-Piece Regular Bucket', price: 0 },
+          selectedSpice: 'Hot Spicy 12-Spice',
+          selectedAddons: [
+            { name: 'Extra 2x Garlic Mayo Dips', price: 110 },
+            { name: 'Extra Peri Peri Masala Fries', price: 150 }
+          ]
+        }
+      ],
+      subtotal: 2280,
+      deliveryFee: 0,
+      discount: 200,
+      promoCode: 'TRIVOX',
+      total: 2080,
+      status: 'new'
+    }
+  ];
+
   const LIVE_ORDER_TICKERS = [
     '🔥 Usman in Gulberg III just ordered Family Feast Combo!',
     '⚡ Sana in DHA Phase 5 placed an order for 2x Zinger Rolls!',
     '🍗 Ahmed in Johar Town just grabbed a 9-Pc Zinger Bucket!',
-    '🍕 Ali in Model Town ordered Extra Cheese Loaded Pizza!'
+    '🍕 Ali in Model Town ordered Extra Cheese Loaded Pizza!',
+    '🌶️ Zaid in Cantt ordered Double Tower Supreme with Fries!'
   ];
 
   // --- LocalStorage Persistence with Defaults Merging ---
@@ -300,9 +544,13 @@
       const parsed = JSON.parse(saved);
       if (typeof fallback === 'object' && fallback !== null && !Array.isArray(fallback)) {
         const merged = Object.assign({}, fallback, parsed);
-        // Ensure PIN defaults to 5640 if previously set to 1234
-        if (key === 'settings' && merged.adminPin === '1234') {
-          merged.adminPin = '5640';
+        if (key === 'settings') {
+          if (!merged.adminPin || merged.adminPin === '1234') {
+            merged.adminPin = '5640';
+          }
+          if (!merged.logoUrl || merged.logoUrl === './images/logo.png' || merged.logoUrl === './src/assets/images/lfc_brand_logo_1792104493306.jpg') {
+            merged.logoUrl = './src/assets/images/regenerated_image_1792104663328.png';
+          }
         }
         return merged;
       }
@@ -327,6 +575,9 @@
   let menuItems = loadData('menu_items', DEFAULT_MENU_ITEMS);
   let branches = loadData('branches', DEFAULT_BRANCHES);
   let reviews = loadData('reviews', DEFAULT_REVIEWS);
+  let zones = loadData('zones', DEFAULT_ZONES);
+  let promos = loadData('promos', DEFAULT_PROMOS);
+  let orders = loadData('orders', DEFAULT_ORDERS);
   let cart = loadData('cart', []);
   let orderType = loadData('order_type', 'delivery'); // 'delivery' | 'pickup' | 'dinein'
 
@@ -338,6 +589,50 @@
   let tickerIndex = 0;
   let appliedPromo = null;
   let isAdminAuthenticated = false;
+  let activeOrderFilter = 'all';
+
+  // --- Theme State & Color Palettes ---
+  const THEMES = [
+    { id: 'flame', name: 'Spicy Flame' },
+    { id: 'gold', name: 'Golden Honey' },
+    { id: 'sunset', name: 'Sunset Royale' }
+  ];
+  let currentTheme = 'flame';
+  try {
+    const savedTheme = localStorage.getItem('lfc_theme');
+    if (savedTheme && ['flame', 'gold', 'sunset'].includes(savedTheme)) {
+      currentTheme = savedTheme;
+    }
+  } catch (e) {}
+
+  function setTheme(themeId) {
+    currentTheme = themeId;
+    document.body.classList.remove('theme-flame', 'theme-gold', 'theme-sunset');
+    document.body.classList.add('theme-' + themeId);
+    try {
+      localStorage.setItem('lfc_theme', themeId);
+    } catch (e) {}
+    const label = document.getElementById('theme-btn-label');
+    const matched = THEMES.find((t) => t.id === themeId);
+    if (label && matched) {
+      label.textContent = matched.name;
+    }
+  }
+
+  function cycleTheme() {
+    const idx = THEMES.findIndex((t) => t.id === currentTheme);
+    const nextIdx = (idx + 1) % THEMES.length;
+    const target = THEMES[nextIdx];
+    setTheme(target.id);
+    showToast(`Color Theme: ${target.name}`);
+  }
+
+  // --- Multi-Options Modal State ---
+  let currentCustomizingItem = null;
+  let customSelectedSize = null;
+  let customSelectedSpice = null;
+  let customSelectedAddons = [];
+  let customQty = 1;
 
   // --- Toast Notification ---
   function showToast(message, type = 'success') {
@@ -349,7 +644,7 @@
     toast.className = `flex items-center gap-3 px-5 py-3 rounded-2xl shadow-2xl text-xs sm:text-sm font-black transition-all duration-300 transform translate-y-3 opacity-0 backdrop-blur-md border ${
       isError
         ? 'bg-red-600/95 text-white border-red-400'
-        : 'bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-black border-amber-300 shadow-amber-500/20'
+        : 'bg-gradient-to-r from-amber-500 via-orange-400 to-amber-500 text-black border-amber-300 shadow-amber-500/20'
     }`;
     toast.innerHTML = `
       <span class="text-base">${isError ? '⚠️' : '🍗'}</span>
@@ -376,17 +671,28 @@
     return cart.reduce((sum, i) => sum + i.qty, 0);
   }
 
+  function getCurrentDeliveryZone() {
+    const zoneId = settings.selectedZoneId || 'gulberg';
+    return zones.find((z) => z.id === zoneId) || zones[0] || { fee: settings.deliveryFee || 150, time: '25-35 mins' };
+  }
+
   function getDeliveryFee() {
     const subtotal = getCartSubtotal();
     if (subtotal === 0) return 0;
-    if (orderType !== 'delivery') return 0; // pickup / dine-in: no delivery charge
-    if (subtotal >= settings.freeDeliveryAbove) return 0;
-    return settings.deliveryFee;
+    if (orderType !== 'delivery') return 0;
+    if (subtotal >= (settings.freeDeliveryAbove || 2000)) return 0;
+    const zone = getCurrentDeliveryZone();
+    return Number(zone.fee) || Number(settings.deliveryFee) || 150;
   }
 
   function getDiscountAmount() {
     if (!appliedPromo) return 0;
-    return appliedPromo.discount;
+    const subtotal = getCartSubtotal();
+    if (appliedPromo.minOrder && subtotal < appliedPromo.minOrder) return 0;
+    if (appliedPromo.type === 'percent') {
+      return Math.round((subtotal * appliedPromo.discount) / 100);
+    }
+    return Number(appliedPromo.discount) || 0;
   }
 
   function getGrandTotal() {
@@ -397,25 +703,238 @@
     return Math.max(0, subtotal + fee - discount);
   }
 
-  // --- Cart Actions ---
-  function addToCart(item, qty = 1) {
-    const existing = cart.find((c) => c.id === item.id);
-    if (existing) {
-      existing.qty += qty;
-    } else {
-      cart.push({
-        id: item.id,
-        name: item.name,
-        price: item.price,
-        image: item.image,
-        qty: qty
-      });
+  // --- Multi-Options Modal Logic ---
+  function openCustomizeModal(itemId) {
+    const item = menuItems.find((m) => m.id === itemId);
+    if (!item) return;
+
+    currentCustomizingItem = item;
+    customQty = 1;
+
+    // Default sizes
+    const sizes = item.sizes && item.sizes.length ? item.sizes : [{ name: 'Regular Portion', price: 0 }];
+    customSelectedSize = sizes[0];
+
+    // Default spice
+    const spices = item.spiceLevels && item.spiceLevels.length ? item.spiceLevels : ['Mild Crunchy', 'Hot Spicy Lahori', 'Ghost Fire 🔥'];
+    customSelectedSpice = spices[0];
+
+    // Default addons
+    customSelectedAddons = [];
+
+    // Populate Modal UI
+    const modal = document.getElementById('item-customize-modal');
+    const modalImg = document.getElementById('cust-modal-img');
+    const modalTitle = document.getElementById('cust-modal-title');
+    const modalDesc = document.getElementById('cust-modal-desc');
+    const modalBadge = document.getElementById('cust-modal-badge');
+    const notesInput = document.getElementById('cust-special-notes');
+
+    if (modalImg) modalImg.src = item.image;
+    if (modalTitle) modalTitle.textContent = item.name;
+    if (modalDesc) modalDesc.textContent = item.desc;
+    if (modalBadge) {
+      modalBadge.textContent = item.badge || 'Fresh & Hot';
+      modalBadge.classList.toggle('hidden', !item.badge);
     }
+    if (notesInput) notesInput.value = '';
+
+    renderCustomizeOptions();
+    updateCustomizeModalTotal();
+
+    if (modal) modal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+  }
+
+  function closeCustomizeModal() {
+    const modal = document.getElementById('item-customize-modal');
+    if (modal) modal.classList.add('hidden');
+    document.body.classList.remove('overflow-hidden');
+  }
+
+  function renderCustomizeOptions() {
+    if (!currentCustomizingItem) return;
+    const item = currentCustomizingItem;
+
+    // 1. Sizes
+    const sizesContainer = document.getElementById('cust-sizes-list');
+    const sizes = item.sizes && item.sizes.length ? item.sizes : [{ name: 'Regular Portion', price: 0 }];
+    if (sizesContainer) {
+      sizesContainer.innerHTML = sizes
+        .map((s, idx) => {
+          const isSelected = customSelectedSize && customSelectedSize.name === s.name;
+          return `
+          <button type="button" onclick="window.LFC.selectCustomizeSize(${idx})" class="p-3 rounded-2xl border text-left transition flex items-center justify-between ${
+            isSelected
+              ? 'bg-amber-500/20 border-amber-400 text-white shadow-md shadow-amber-500/20'
+              : 'bg-[#141824] border-gray-800 text-gray-300 hover:border-gray-700'
+          }">
+            <div class="flex items-center gap-2">
+              <span class="w-4 h-4 rounded-full border flex items-center justify-center ${
+                isSelected ? 'border-amber-400 bg-amber-500 text-black' : 'border-gray-600'
+              }">
+                ${isSelected ? '✓' : ''}
+              </span>
+              <span class="text-xs font-bold">${s.name}</span>
+            </div>
+            <span class="text-xs font-black ${isSelected ? 'text-amber-400' : 'text-gray-400'}">
+              ${s.price === 0 ? 'Standard' : `+Rs. ${s.price}`}
+            </span>
+          </button>
+        `;
+        })
+        .join('');
+    }
+
+    // 2. Spice Levels
+    const spiceContainer = document.getElementById('cust-spice-list');
+    const spices = item.spiceLevels && item.spiceLevels.length ? item.spiceLevels : ['Mild Crunchy', 'Hot Spicy Lahori', 'Ghost Fire 🔥'];
+    if (spiceContainer) {
+      spiceContainer.innerHTML = spices
+        .map((sp) => {
+          const isSelected = customSelectedSpice === sp;
+          return `
+          <button type="button" onclick="window.LFC.selectCustomizeSpice('${sp}')" class="px-3.5 py-2 rounded-xl border text-xs font-bold transition ${
+            isSelected
+              ? 'bg-gradient-to-r from-red-600 to-amber-600 border-red-400 text-white shadow-md'
+              : 'bg-[#141824] border-gray-800 text-gray-300 hover:text-white hover:border-gray-700'
+          }">
+            ${sp}
+          </button>
+        `;
+        })
+        .join('');
+    }
+
+    // 3. Add-ons
+    const addonsContainer = document.getElementById('cust-addons-list');
+    const addons = item.addons && item.addons.length ? item.addons : [
+      { name: 'Extra Garlic Mayo Dip', price: 60 },
+      { name: 'Melted Cheddar Slice', price: 80 }
+    ];
+    if (addonsContainer) {
+      addonsContainer.innerHTML = addons
+        .map((a, idx) => {
+          const isSelected = customSelectedAddons.some((ca) => ca.name === a.name);
+          return `
+          <button type="button" onclick="window.LFC.toggleCustomizeAddon(${idx})" class="w-full p-2.5 rounded-xl border text-left transition flex items-center justify-between ${
+            isSelected
+              ? 'bg-emerald-500/15 border-emerald-400/60 text-white'
+              : 'bg-[#141824] border-gray-800 text-gray-300 hover:border-gray-700'
+          }">
+            <div class="flex items-center gap-2">
+              <span class="w-4 h-4 rounded border flex items-center justify-center ${
+                isSelected ? 'border-emerald-400 bg-emerald-500 text-black' : 'border-gray-600'
+              }">
+                ${isSelected ? '✓' : ''}
+              </span>
+              <span class="text-xs font-semibold">${a.name}</span>
+            </div>
+            <span class="text-xs font-black text-emerald-400">+Rs. ${a.price}</span>
+          </button>
+        `;
+        })
+        .join('');
+    }
+  }
+
+  function selectCustomizeSize(idx) {
+    if (!currentCustomizingItem) return;
+    const sizes = currentCustomizingItem.sizes && currentCustomizingItem.sizes.length
+      ? currentCustomizingItem.sizes
+      : [{ name: 'Regular Portion', price: 0 }];
+    customSelectedSize = sizes[idx] || sizes[0];
+    renderCustomizeOptions();
+    updateCustomizeModalTotal();
+  }
+
+  function selectCustomizeSpice(spice) {
+    customSelectedSpice = spice;
+    renderCustomizeOptions();
+    updateCustomizeModalTotal();
+  }
+
+  function toggleCustomizeAddon(idx) {
+    if (!currentCustomizingItem) return;
+    const addons = currentCustomizingItem.addons && currentCustomizingItem.addons.length
+      ? currentCustomizingItem.addons
+      : [
+          { name: 'Extra Garlic Mayo Dip', price: 60 },
+          { name: 'Melted Cheddar Slice', price: 80 }
+        ];
+    const addon = addons[idx];
+    if (!addon) return;
+
+    const exists = customSelectedAddons.findIndex((a) => a.name === addon.name);
+    if (exists >= 0) {
+      customSelectedAddons.splice(exists, 1);
+    } else {
+      customSelectedAddons.push(addon);
+    }
+    renderCustomizeOptions();
+    updateCustomizeModalTotal();
+  }
+
+  function stepCustomizeQty(delta) {
+    customQty = Math.max(1, customQty + delta);
+    const qtyEl = document.getElementById('cust-modal-qty');
+    if (qtyEl) qtyEl.textContent = customQty;
+    updateCustomizeModalTotal();
+  }
+
+  function updateCustomizeModalTotal() {
+    if (!currentCustomizingItem) return;
+    const base = Number(currentCustomizingItem.price) || 0;
+    const sizeOffset = customSelectedSize ? Number(customSelectedSize.price) || 0 : 0;
+    const addonsSum = customSelectedAddons.reduce((sum, a) => sum + (Number(a.price) || 0), 0);
+    const unitPrice = base + sizeOffset + addonsSum;
+    const total = unitPrice * customQty;
+
+    const btnTotal = document.getElementById('cust-modal-total-btn');
+    if (btnTotal) btnTotal.textContent = `Rs. ${total.toLocaleString()}`;
+  }
+
+  function confirmCustomizedItem() {
+    if (!currentCustomizingItem) return;
+    const item = currentCustomizingItem;
+    const base = Number(item.price) || 0;
+    const sizeOffset = customSelectedSize ? Number(customSelectedSize.price) || 0 : 0;
+    const addonsSum = customSelectedAddons.reduce((sum, a) => sum + (Number(a.price) || 0), 0);
+    const unitPrice = base + sizeOffset + addonsSum;
+
+    const notesInput = document.getElementById('cust-special-notes');
+    const specialNotes = notesInput ? notesInput.value.trim() : '';
+
+    cart.push({
+      id: `${item.id}_${Date.now()}`,
+      menuId: item.id,
+      name: item.name,
+      basePrice: item.price,
+      selectedSize: customSelectedSize ? { ...customSelectedSize } : { name: 'Regular', price: 0 },
+      selectedSpice: customSelectedSpice || 'Regular',
+      selectedAddons: [...customSelectedAddons],
+      specialNotes: specialNotes,
+      price: unitPrice,
+      image: item.image,
+      qty: customQty
+    });
+
     saveData('cart', cart);
     updateCartUI();
-    showToast(`Added ${item.name} to cart!`);
-    
+    closeCustomizeModal();
+    showToast(`Added ${item.name} (${customQty}x) to order!`);
     animateCartButton();
+  }
+
+  // --- Direct Quick Add to Cart (Default Options) ---
+  function addToCart(item, qty = 1) {
+    // Quick Add opens customizer so customer can enjoy multi-options!
+    openCustomizeModal(item.id);
+  }
+
+  function addToCartById(id) {
+    const item = menuItems.find((m) => m.id === id);
+    if (item) openCustomizeModal(item.id);
   }
 
   function animateCartButton() {
@@ -426,22 +945,22 @@
     });
   }
 
-  function updateCartItemQty(id, delta) {
-    const item = cart.find((c) => c.id === id);
+  function updateCartItemQty(cartItemId, delta) {
+    const item = cart.find((c) => String(c.id) === String(cartItemId));
     if (!item) return;
     item.qty += delta;
     if (item.qty <= 0) {
-      cart = cart.filter((c) => c.id !== id);
+      cart = cart.filter((c) => String(c.id) !== String(cartItemId));
     }
     saveData('cart', cart);
     updateCartUI();
   }
 
-  function removeCartItem(id) {
-    cart = cart.filter((c) => c.id !== id);
+  function removeCartItem(cartItemId) {
+    cart = cart.filter((c) => String(c.id) !== String(cartItemId));
     saveData('cart', cart);
     updateCartUI();
-    showToast('Item removed from cart');
+    showToast('Item removed from order');
   }
 
   function clearCart() {
@@ -451,6 +970,27 @@
     updateCartUI();
   }
 
+  // --- Delivery Zone Selector in Cart ---
+  function changeDeliveryZone(zoneId) {
+    settings.selectedZoneId = zoneId;
+    saveData('settings', settings);
+    updateCartUI();
+    const zone = getCurrentDeliveryZone();
+    showToast(`Delivery zone updated: ${zone.name}`);
+  }
+
+  function renderZoneSelect() {
+    const select = document.getElementById('checkout-zone-select');
+    if (!select) return;
+    const currentId = settings.selectedZoneId || 'gulberg';
+    select.innerHTML = zones
+      .map(
+        (z) =>
+          `<option value="${z.id}" ${z.id === currentId ? 'selected' : ''}>${z.name} — Rs. ${z.fee} (${z.time})</option>`
+      )
+      .join('');
+  }
+
   // --- Cart UI Sync ---
   function updateCartUI() {
     const count = getCartCount();
@@ -458,6 +998,7 @@
     const delivery = getDeliveryFee();
     const discount = getDiscountAmount();
     const total = getGrandTotal();
+    const zone = getCurrentDeliveryZone();
 
     const countBadges = document.querySelectorAll('.cart-count-badge');
     countBadges.forEach((b) => {
@@ -483,26 +1024,44 @@
 
       if (itemsList) {
         itemsList.innerHTML = cart
-          .map(
-            (i) => `
-            <div class="flex items-center gap-3 p-3 rounded-2xl bg-[#181C26] border border-gray-800/90 shadow-sm hover:border-amber-500/40 transition">
+          .map((i) => {
+            const sizeTag = i.selectedSize && i.selectedSize.name ? i.selectedSize.name : '';
+            const spiceTag = i.selectedSpice ? i.selectedSpice : '';
+            const addonsText =
+              i.selectedAddons && i.selectedAddons.length
+                ? '+ ' + i.selectedAddons.map((a) => a.name).join(', ')
+                : '';
+            const noteTag = i.specialNotes ? `Note: "${i.specialNotes}"` : '';
+
+            return `
+            <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-[#141826] border border-gray-800 shadow-sm hover:border-amber-500/40 transition">
               <img src="${i.image}" alt="${i.name}" loading="lazy" decoding="async" class="w-14 h-14 rounded-xl object-cover bg-black flex-shrink-0 border border-gray-800" onerror="this.src='./images/hero-1.jpg'"/>
               <div class="flex-1 min-w-0">
-                <h4 class="font-extrabold text-xs sm:text-sm text-white truncate">${i.name}</h4>
-                <div class="text-amber-400 font-black text-xs sm:text-sm mt-0.5">Rs. ${(i.price * i.qty).toLocaleString()}</div>
-                <div class="text-[10px] text-gray-400">Rs. ${i.price} each</div>
+                <h4 class="font-black text-xs sm:text-sm text-white truncate font-heading">${i.name}</h4>
+                <div class="text-[11px] text-amber-400 font-black mt-0.5">Rs. ${(i.price * i.qty).toLocaleString()}</div>
+                
+                <!-- Multi-Options Details -->
+                <div class="mt-1 space-y-0.5 text-[10px]">
+                  ${
+                    sizeTag || spiceTag
+                      ? `<div class="text-amber-300 font-bold flex items-center gap-1"><span>📏 ${sizeTag}</span> • <span>🌶️ ${spiceTag}</span></div>`
+                      : ''
+                  }
+                  ${addonsText ? `<div class="text-emerald-400 font-medium">${addonsText}</div>` : ''}
+                  ${noteTag ? `<div class="text-gray-400 italic">${noteTag}</div>` : ''}
+                </div>
               </div>
-              <div class="flex items-center bg-[#0B0C10] rounded-xl border border-gray-800 p-1">
-                <button onclick="window.LFC.updateCartItemQty(${i.id}, -1)" class="w-6 h-6 flex items-center justify-center rounded text-gray-300 hover:text-white hover:bg-gray-800 text-sm font-bold transition">−</button>
+              <div class="flex items-center bg-[#0B0D16] rounded-xl border border-gray-800 p-1">
+                <button onclick="window.LFC.updateCartItemQty('${i.id}', -1)" class="w-6 h-6 flex items-center justify-center rounded text-gray-300 hover:text-white hover:bg-gray-800 text-sm font-bold transition">−</button>
                 <span class="w-6 text-center font-black text-xs text-white">${i.qty}</span>
-                <button onclick="window.LFC.updateCartItemQty(${i.id}, 1)" class="w-6 h-6 flex items-center justify-center rounded text-gray-300 hover:text-white hover:bg-gray-800 text-sm font-bold transition">+</button>
+                <button onclick="window.LFC.updateCartItemQty('${i.id}', 1)" class="w-6 h-6 flex items-center justify-center rounded text-gray-300 hover:text-white hover:bg-gray-800 text-sm font-bold transition">+</button>
               </div>
-              <button onclick="window.LFC.removeCartItem(${i.id})" class="text-gray-500 hover:text-red-400 p-1 transition" title="Remove">
+              <button onclick="window.LFC.removeCartItem('${i.id}')" class="text-gray-500 hover:text-red-400 p-1 transition" title="Remove">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
               </button>
             </div>
-          `
-          )
+          `;
+          })
           .join('');
       }
 
@@ -511,16 +1070,29 @@
       const elDiscountRow = document.getElementById('cart-drawer-discount-row');
       const elDiscount = document.getElementById('cart-drawer-discount');
       const elTotal = document.getElementById('cart-drawer-total');
+      const etaBadge = document.getElementById('zone-eta-badge');
 
       if (elSubtotal) elSubtotal.textContent = `Rs. ${subtotal.toLocaleString()}`;
       const deliveryLabel = document.getElementById('cart-drawer-delivery-label');
       if (deliveryLabel) {
         deliveryLabel.textContent =
-          orderType === 'delivery' ? 'Delivery Fee' : orderType === 'pickup' ? 'Pickup (Dine-In Price)' : 'Dine-In Service';
+          orderType === 'delivery'
+            ? `Delivery Fee (${zone.name})`
+            : orderType === 'pickup'
+            ? 'Pickup (No Fee)'
+            : 'Dine-In Service';
       }
       if (elDelivery) {
         elDelivery.textContent = delivery === 0 ? 'FREE' : `Rs. ${delivery}`;
         elDelivery.className = delivery === 0 ? 'text-emerald-400 font-extrabold' : 'text-gray-300 font-bold';
+      }
+      if (etaBadge) {
+        if (orderType === 'delivery') {
+          etaBadge.classList.remove('hidden');
+          etaBadge.textContent = `⏱️ ${zone.time}`;
+        } else {
+          etaBadge.classList.add('hidden');
+        }
       }
       if (elDiscountRow && elDiscount) {
         if (discount > 0) {
@@ -533,6 +1105,7 @@
       if (elTotal) elTotal.textContent = `Rs. ${total.toLocaleString()}`;
     }
 
+    renderZoneSelect();
     updateOrderTypeUI();
     updateFreeDeliveryUI();
   }
@@ -556,7 +1129,9 @@
     });
 
     const deliveryBox = document.getElementById('free-delivery-box');
+    const zoneContainer = document.getElementById('checkout-zone-container');
     if (deliveryBox) deliveryBox.classList.toggle('hidden', orderType !== 'delivery');
+    if (zoneContainer) zoneContainer.classList.toggle('hidden', orderType !== 'delivery');
   }
 
   function updateFreeDeliveryUI() {
@@ -565,7 +1140,7 @@
     if (!label || !fill) return;
 
     const subtotal = getCartSubtotal();
-    const threshold = Number(settings.freeDeliveryAbove) || 0;
+    const threshold = Number(settings.freeDeliveryAbove) || 2000;
 
     if (threshold <= 0) {
       label.textContent = 'Free delivery on every order! 🎉';
@@ -587,10 +1162,10 @@
     }
   }
 
-  // --- Dynamic Logo & Contact Sync ---
+  // --- Dynamic Logo, Contact & Store Status Sync ---
   function updateBrandLogos() {
     const logoImgs = document.querySelectorAll('.brand-logo-img');
-    const safeLogo = (settings && settings.logoUrl) ? settings.logoUrl : './images/logo.png';
+    const safeLogo = settings && settings.logoUrl ? settings.logoUrl : './src/assets/images/regenerated_image_1792104663328.png';
     logoImgs.forEach((img) => {
       img.src = safeLogo;
       img.onerror = () => {
@@ -598,20 +1173,26 @@
       };
     });
 
-    const safePhone = (settings && settings.phoneCallNumber) ? String(settings.phoneCallNumber) : ((settings && settings.whatsappNumber) ? String(settings.whatsappNumber) : '0322-4940181');
+    const safePhone = settings && settings.phoneCallNumber ? String(settings.phoneCallNumber) : '0322-4940181';
     const phoneLinks = document.querySelectorAll('.store-phone-link');
     phoneLinks.forEach((a) => {
       a.href = `tel:${safePhone.replace(/[^0-9]/g, '')}`;
       a.textContent = safePhone;
     });
 
-    const safeWa = (settings && settings.whatsappNumber) ? String(settings.whatsappNumber) : '0322-4940181';
+    const safeWa = settings && settings.whatsappNumber ? String(settings.whatsappNumber) : '0322-4940181';
     const waLinks = document.querySelectorAll('.store-wa-link');
     waLinks.forEach((a) => {
       let num = safeWa.replace(/[^0-9]/g, '');
       if (num.startsWith('0')) num = '92' + num.substring(1);
       a.href = `https://wa.me/${num}?text=Hi%20LFC!%20I%20want%20to%20place%20an%20order.`;
     });
+
+    // Sync Announcement Text
+    const announcementEl = document.getElementById('live-order-ticker-text');
+    if (settings.announcementText && announcementEl && !tickerTimer) {
+      announcementEl.textContent = settings.announcementText;
+    }
   }
 
   // --- Hero Section Renderer & Animations ---
@@ -645,8 +1226,7 @@
         if (!item) {
           item = menuItems.find((m) => m.name.toLowerCase().includes(slide.highlight.toLowerCase())) || menuItems[0];
         }
-        if (item) addToCart(item, 1);
-        openCartDrawer();
+        if (item) openCustomizeModal(item.id);
       };
     }
 
@@ -673,7 +1253,7 @@
           class="relative flex items-center gap-2 p-1.5 sm:p-2 rounded-xl transition-all duration-300 text-left border ${
             idx === activeSlideIndex
               ? 'bg-amber-500/20 border-amber-400 shadow-lg shadow-amber-500/20 scale-105'
-              : 'bg-[#161922]/90 border-gray-800/80 hover:border-gray-700 opacity-75 hover:opacity-100'
+              : 'bg-[#141826]/90 border-gray-800/80 hover:border-gray-700 opacity-75 hover:opacity-100'
           }">
           <img src="${s.image}" alt="" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-cover bg-black flex-shrink-0" onerror="this.src='./images/hero-1.jpg'"/>
           <div class="hidden md:block pr-2">
@@ -730,7 +1310,7 @@
         <button onclick="window.LFC.setCategory('${c.id}')" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap transition-all duration-200 flex-shrink-0 ${
           activeCategory === c.id
             ? 'bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-black shadow-lg shadow-amber-500/25 scale-105'
-            : 'bg-[#161922] text-gray-300 hover:text-white hover:bg-[#1E232F] border border-gray-800/90'
+            : 'bg-gradient-to-b from-[#181c2b] to-[#0f111a] text-gray-300 hover:text-white hover:border-amber-500/40 border border-white/10'
         }">
           ${c.name}
         </button>
@@ -767,58 +1347,70 @@
       .map((item) => {
         const spicinessDots =
           item.spiciness > 0
-            ? `<div class="hidden sm:flex items-center gap-0.5 text-[10px] text-red-400 font-bold bg-red-950/70 px-1.5 py-0.5 rounded-full border border-red-900/60">
-                🌶️ ${'🔥'.repeat(item.spiciness)}
+            ? `<div class="hidden sm:flex items-center gap-1 text-[10px] text-amber-200 font-bold bg-neutral-900/90 px-2 py-0.5 rounded-full border border-amber-500/30">
+                <span>🌶️</span><span>${'🔥'.repeat(item.spiciness)}</span>
                </div>`
             : '';
 
         const badgeHtml = item.badge
-          ? `<span class="absolute top-2 left-2 sm:top-2.5 sm:left-2.5 bg-gradient-to-r from-red-600 to-amber-600 text-white font-black text-[9px] sm:text-[10px] uppercase px-2 py-0.5 rounded-md shadow-md tracking-wider z-10">
+          ? `<span class="absolute top-2.5 left-2.5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-black font-black text-[9px] sm:text-[10px] uppercase px-2.5 py-0.5 rounded-lg shadow-xl shadow-black/80 tracking-wider z-10 border border-amber-300/40 backdrop-blur-sm">
               ${item.badge}
              </span>`
           : '';
 
         const stockOverlay = !item.inStock
-          ? `<div class="absolute inset-0 bg-black/80 backdrop-blur-[2px] flex items-center justify-center rounded-2xl z-20">
+          ? `<div class="absolute inset-0 bg-black/85 backdrop-blur-[2px] flex items-center justify-center rounded-3xl z-20">
               <span class="bg-red-600 text-white font-black text-[10px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-wider">Sold Out</span>
              </div>`
           : '';
 
+        const hasMultiOptions =
+          (item.sizes && item.sizes.length > 1) || (item.addons && item.addons.length > 0);
+
         return `
-          <div class="group relative bg-[#151821] rounded-2xl sm:rounded-3xl border border-gray-800/90 hover:border-amber-500/50 hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-300 flex flex-col overflow-hidden">
+          <div class="group relative bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] rounded-3xl border border-white/10 hover:border-amber-400/60 hover:shadow-[0_20px_45px_rgba(245,158,11,0.18)] transition-all duration-300 flex flex-col overflow-hidden">
             ${stockOverlay}
             
-            <div class="relative aspect-[4/3] sm:h-48 overflow-hidden bg-black flex-shrink-0">
+            <div class="relative aspect-[4/3] sm:h-48 overflow-hidden bg-black flex-shrink-0 cursor-pointer" onclick="window.LFC.openCustomizeModal(${item.id})">
               ${badgeHtml}
               <img src="${item.image}" alt="${item.name}" loading="lazy" decoding="async" class="w-full h-full object-cover transform group-hover:scale-108 transition-all duration-500" onerror="this.src='./images/hero-1.jpg'"/>
-              <div class="absolute inset-0 bg-gradient-to-t from-[#151821] via-transparent to-transparent opacity-90"></div>
+              <div class="absolute inset-0 bg-gradient-to-t from-[#181c2b] via-black/30 to-transparent opacity-90"></div>
             </div>
 
-            <div class="p-3 sm:p-4 flex-1 flex flex-col justify-between">
+            <div class="p-3.5 sm:p-5 flex-1 flex flex-col justify-between">
               <div>
-                <div class="flex items-start justify-between gap-1 mb-1">
-                  <h3 class="font-extrabold text-xs sm:text-base text-white group-hover:text-amber-400 transition leading-snug line-clamp-1 font-heading">${item.name}</h3>
+                <div class="flex items-start justify-between gap-1 mb-1.5">
+                  <h3 onclick="window.LFC.openCustomizeModal(${item.id})" class="font-extrabold text-sm sm:text-base text-white group-hover:text-amber-300 transition leading-snug line-clamp-1 font-heading cursor-pointer">${item.name}</h3>
                   ${spicinessDots}
                 </div>
-                <p class="text-gray-400 text-[10px] sm:text-xs line-clamp-2 leading-relaxed mb-3">${item.desc}</p>
+                <p class="text-gray-400 text-[11px] sm:text-xs line-clamp-2 leading-relaxed mb-3">${item.desc}</p>
+                
+                ${
+                  hasMultiOptions
+                    ? `<div class="inline-flex items-center gap-1.5 text-[9px] font-bold text-amber-300 bg-gradient-to-r from-amber-500/15 to-transparent border border-amber-500/30 px-2.5 py-0.5 rounded-full mb-2.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                        <span>Portions, Spiciness & Extras</span>
+                       </div>`
+                    : ''
+                }
               </div>
 
-              <div class="pt-2 sm:pt-3 border-t border-gray-800/80 flex items-center justify-between gap-1">
+              <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-2 mt-auto">
                 <div>
-                  <span class="text-[9px] sm:text-[10px] text-gray-500 uppercase font-bold block">Price</span>
-                  <div class="text-amber-400 font-black text-sm sm:text-lg tracking-tight font-heading">Rs. ${item.price.toLocaleString()}</div>
+                  <span class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-bold tracking-wider block">From</span>
+                  <div class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 font-black text-base sm:text-xl tracking-tight font-heading">Rs. ${item.price.toLocaleString()}</div>
                 </div>
 
                 <button 
-                  onclick="window.LFC.addToCartById(${item.id})"
+                  onclick="window.LFC.openCustomizeModal(${item.id})"
                   ${!item.inStock ? 'disabled' : ''}
-                  class="flex items-center gap-1 sm:gap-1.5 px-2.5 sm:px-3.5 py-1.5 sm:py-2 rounded-xl font-black text-[10px] sm:text-xs uppercase tracking-wider transition-all duration-200 ${
+                  class="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl font-black text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 ${
                     item.inStock
-                      ? 'bg-amber-500 hover:bg-amber-400 text-black shadow-md shadow-amber-500/20 active:scale-95'
+                      ? 'bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black shadow-lg shadow-amber-500/25 active:scale-95'
                       : 'bg-gray-800 text-gray-500 cursor-not-allowed'
                   }">
-                  <span class="text-sm font-black">+</span>
-                  <span class="hidden sm:inline">Add</span>
+                  <span class="text-sm font-bold">+</span>
+                  <span>Order</span>
                 </button>
               </div>
             </div>
@@ -867,7 +1459,7 @@
     grid.innerHTML = reviews
       .map(
         (r) => `
-        <div class="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#151821] border border-gray-800/80 hover:border-gray-700 transition flex flex-col justify-between">
+        <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-white/10 hover:border-amber-400/50 hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-300 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-3">
               <div class="flex text-amber-400 text-xs sm:text-sm">
@@ -877,16 +1469,16 @@
             </div>
             <p class="text-gray-300 text-xs sm:text-sm leading-relaxed mb-4 italic">"${r.comment}"</p>
           </div>
-          <div class="flex items-center gap-3 pt-3 border-t border-gray-800/60">
-            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-amber-500 to-red-600 flex items-center justify-center font-black text-black text-xs sm:text-sm">
+          <div class="flex items-center gap-3 pt-3 border-t border-white/10">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-amber-500 to-yellow-400 flex items-center justify-center font-black text-black text-xs sm:text-sm shadow-md">
               ${r.name.charAt(0)}
             </div>
             <div>
               <div class="font-bold text-xs sm:text-sm text-white">${r.name}</div>
-              <div class="text-[10px] sm:text-xs text-amber-500/80 flex items-center gap-1">
+              <div class="text-[10px] sm:text-xs text-amber-400/90 flex items-center gap-1">
                 <span>📍 ${r.location}</span>
                 <span class="text-gray-600">•</span>
-                <span class="text-emerald-400">Verified Lahori</span>
+                <span class="text-emerald-400 font-bold">Verified Lahori</span>
               </div>
             </div>
           </div>
@@ -902,16 +1494,15 @@
     if (!grid) return;
 
     grid.innerHTML = branches
-      .map(
-        (b) => {
-          const safeBranchPhone = b.phone ? String(b.phone) : '0322-4940181';
-          const cleanBranchPhone = safeBranchPhone.replace(/[^0-9]/g, '');
-          return `
-        <div class="p-5 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#151821] border border-gray-800/90 hover:border-amber-500/40 hover:shadow-xl transition flex flex-col justify-between">
+      .map((b) => {
+        const safeBranchPhone = b.phone ? String(b.phone) : '0322-4940181';
+        const cleanBranchPhone = safeBranchPhone.replace(/[^0-9]/g, '');
+        return `
+        <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-white/10 hover:border-amber-400/50 hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-300 flex flex-col justify-between">
           <div>
             <div class="flex items-center justify-between mb-2">
               <h3 class="font-extrabold text-white text-sm sm:text-base font-heading">${b.name}</h3>
-              <span class="px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wide bg-emerald-950/80 text-emerald-400 border border-emerald-800/60">
+              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wide bg-emerald-950/80 text-emerald-400 border border-emerald-800/60">
                 Open Now
               </span>
             </div>
@@ -928,18 +1519,17 @@
             </div>
           </div>
 
-          <div class="flex gap-2 pt-3 border-t border-gray-800">
-            <a href="tel:${cleanBranchPhone}" class="flex-1 text-center py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold text-xs transition">
+          <div class="flex gap-2 pt-3 border-t border-white/10">
+            <a href="tel:${cleanBranchPhone}" class="flex-1 text-center py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold text-xs transition">
               Call Branch
             </a>
-            <a href="${b.mapUrl}" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 text-amber-400 border border-amber-500/30 font-bold text-xs transition">
+            <a href="${b.mapUrl}" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2.5 rounded-xl bg-gradient-to-r from-amber-500/15 to-yellow-500/15 hover:from-amber-500/25 hover:to-yellow-500/25 text-amber-300 border border-amber-500/30 font-bold text-xs transition">
               Directions ↗
             </a>
           </div>
         </div>
       `;
-        }
-      )
+      })
       .join('');
   }
 
@@ -978,24 +1568,26 @@
       return;
     }
 
-    if (cleaned === 'LFC100') {
-      appliedPromo = { code: 'LFC100', discount: 100 };
-      showToast('Rs. 100 LFC Discount applied!');
-    } else if (cleaned === 'WELCOME50') {
-      appliedPromo = { code: 'WELCOME50', discount: 50 };
-      showToast('Rs. 50 Welcome Discount applied!');
-    } else if (cleaned === 'TRIVOX') {
-      appliedPromo = { code: 'TRIVOX', discount: 200 };
-      showToast('Special Trivox Partner Discount (Rs. 200 OFF) applied!');
-    } else {
+    const subtotal = getCartSubtotal();
+    const found = promos.find((p) => p.code.toUpperCase() === cleaned && p.active);
+
+    if (!found) {
       showToast('Invalid or expired coupon code', 'error');
       return;
     }
 
+    if (found.minOrder && subtotal < found.minOrder) {
+      showToast(`Coupon requires minimum order of Rs. ${found.minOrder}`, 'error');
+      return;
+    }
+
+    appliedPromo = found;
+    const discount = getDiscountAmount();
+    showToast(`Coupon ${found.code} applied! Saved Rs. ${discount.toLocaleString()}`);
     updateCartUI();
   }
 
-  // --- WhatsApp Checkout ---
+  // --- WhatsApp Checkout & Order Recording ---
   function checkoutViaWhatsApp() {
     if (cart.length === 0) {
       showToast('Your cart is empty', 'error');
@@ -1017,25 +1609,69 @@
       return;
     }
 
+    const zone = getCurrentDeliveryZone();
     const subtotal = getCartSubtotal();
     const delivery = getDeliveryFee();
     const discount = getDiscountAmount();
     const total = getGrandTotal();
 
-    let msg = `🍗 *NEW ORDER - ${settings.storeName.toUpperCase()}* 🍗\n`;
+    const orderId = 'LFC-' + Math.floor(1000 + Math.random() * 9000);
+
+    // Save order into persistent live orders system
+    const newOrder = {
+      id: orderId,
+      date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' today',
+      timestamp: Date.now(),
+      customerName,
+      customerPhone,
+      customerAddress,
+      orderType,
+      deliveryZone: zone.name,
+      specialNotes,
+      items: JSON.parse(JSON.stringify(cart)),
+      subtotal,
+      deliveryFee: delivery,
+      discount,
+      promoCode: appliedPromo ? appliedPromo.code : null,
+      total,
+      status: 'new'
+    };
+
+    orders.unshift(newOrder);
+    saveData('orders', orders);
+
+    // Build rich formatted WhatsApp message
+    let msg = `🍗 *NEW ORDER: ${orderId} - ${settings.storeName.toUpperCase()}* 🍗\n`;
     msg += `-----------------------------------------\n`;
     msg += `👤 *Customer:* ${customerName}\n`;
     msg += `📞 *Phone:* ${customerPhone}\n`;
-    msg += `🧾 *Order Type:* ${orderType === 'delivery' ? '🛵 Home Delivery' : orderType === 'pickup' ? '🥡 Pickup' : '🍽️ Dine-In'}\n`;
-    msg += `📍 *${orderType === 'delivery' ? 'Delivery Address' : 'Branch / Area'}:* ${customerAddress}\n`;
+    msg += `🧾 *Order Type:* ${
+      orderType === 'delivery' ? '🛵 Home Delivery' : orderType === 'pickup' ? '🥡 Pickup' : '🍽️ Dine-In'
+    }\n`;
+    if (orderType === 'delivery') {
+      msg += `📍 *Delivery Area:* ${zone.name} (${zone.time})\n`;
+      msg += `🏠 *Address:* ${customerAddress}\n`;
+    }
     if (specialNotes) {
       msg += `📝 *Notes:* ${specialNotes}\n`;
     }
     msg += `-----------------------------------------\n`;
-    msg += `📋 *ORDER ITEMS:*\n`;
+    msg += `📋 *ORDER SPECIFICATIONS:*\n`;
 
     cart.forEach((i, idx) => {
-      msg += `${idx + 1}. ${i.qty}x ${i.name} - Rs. ${(i.price * i.qty).toLocaleString()}\n`;
+      msg += `${idx + 1}. *${i.qty}x ${i.name}* - Rs. ${(i.price * i.qty).toLocaleString()}\n`;
+      if (i.selectedSize && i.selectedSize.name) {
+        msg += `   └ Portion: ${i.selectedSize.name}\n`;
+      }
+      if (i.selectedSpice) {
+        msg += `   └ Spice: ${i.selectedSpice}\n`;
+      }
+      if (i.selectedAddons && i.selectedAddons.length) {
+        msg += `   └ Extras: ${i.selectedAddons.map((a) => a.name).join(', ')}\n`;
+      }
+      if (i.specialNotes) {
+        msg += `   └ Custom note: "${i.specialNotes}"\n`;
+      }
     });
 
     msg += `-----------------------------------------\n`;
@@ -1046,9 +1682,9 @@
     }
     msg += `💵 *TOTAL PAYABLE: Rs. ${total.toLocaleString()}*\n`;
     msg += `-----------------------------------------\n`;
-    msg += `Please confirm my order and share estimated delivery time!`;
+    msg += `Please confirm my order and send estimated delivery updates!`;
 
-    const safeCheckoutWa = (settings && settings.whatsappNumber) ? String(settings.whatsappNumber) : '0322-4940181';
+    const safeCheckoutWa = settings && settings.whatsappNumber ? String(settings.whatsappNumber) : '0322-4940181';
     let rawPhone = safeCheckoutWa.replace(/[^0-9]/g, '');
     if (rawPhone.startsWith('0')) {
       rawPhone = '92' + rawPhone.substring(1);
@@ -1056,14 +1692,39 @@
 
     const waUrl = `https://wa.me/${rawPhone}?text=${encodeURIComponent(msg)}`;
     window.open(waUrl, '_blank');
-    showToast('Redirecting to WhatsApp to send your order...');
+    showToast(`Order #${orderId} generated! Opening WhatsApp...`);
   }
 
-  // --- Admin Suite & Multi-Option Management ---
-  // Only accessible via URL hash #AdminLFC1 or programmatic window.LFC.openAdminModal()
+  // --- Admin Suite Controls ---
   function renderAdminDashboard() {
-    const values = { 'admin-stat-menu': menuItems.length, 'admin-stat-categories': categories.length, 'admin-stat-slides': heroSlides.length, 'admin-stat-branches': locations.length };
-    Object.entries(values).forEach(([id, value]) => { const node = document.getElementById(id); if (node) node.textContent = String(value); });
+    const deliveredOrders = orders.filter((o) => o.status === 'delivered');
+    const totalRev = deliveredOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+    const pendingCount = orders.filter((o) => o.status === 'new' || o.status === 'preparing' || o.status === 'delivery').length;
+
+    const elRev = document.getElementById('admin-stat-revenue');
+    const elOrders = document.getElementById('admin-stat-orders');
+    const elPending = document.getElementById('admin-stat-pending');
+    const elMenu = document.getElementById('admin-stat-menu');
+    const elCoupons = document.getElementById('admin-stat-coupons');
+    const elZones = document.getElementById('admin-stat-zones');
+    const elStatus = document.getElementById('admin-stat-status');
+    const ordersBadge = document.getElementById('admin-orders-badge');
+
+    if (elRev) elRev.textContent = `Rs. ${totalRev.toLocaleString()}`;
+    if (elOrders) elOrders.textContent = orders.length;
+    if (elPending) elPending.textContent = `${pendingCount} Active`;
+    if (elMenu) elMenu.textContent = menuItems.length;
+    if (elCoupons) elCoupons.textContent = promos.filter((p) => p.active).length;
+    if (elZones) elZones.textContent = zones.length;
+    if (ordersBadge) {
+      ordersBadge.textContent = pendingCount;
+      ordersBadge.classList.toggle('hidden', pendingCount === 0);
+    }
+    if (elStatus) {
+      const st = settings.storeStatus || 'open';
+      elStatus.textContent = st === 'open' ? 'OPEN' : st === 'busy' ? 'BUSY' : 'CLOSED';
+      elStatus.className = st === 'open' ? 'text-emerald-400' : st === 'busy' ? 'text-amber-400' : 'text-red-400';
+    }
   }
 
   function openAdminModal() {
@@ -1078,7 +1739,10 @@
       renderAdminDashboard();
       if (pinSection) pinSection.classList.add('hidden');
       if (panelSection) panelSection.classList.remove('hidden');
+      renderAdminOrders();
       renderAdminMenuItems();
+      renderAdminCoupons();
+      renderAdminZones();
       renderAdminCategories();
       renderAdminHeroSlides();
       renderAdminBranches();
@@ -1099,7 +1763,6 @@
     if (!modal) return;
     modal.classList.add('hidden');
 
-    // Clean URL hash so closing modal doesn't immediately re-open on refresh
     if (window.location.hash.toLowerCase() === '#adminlfc1') {
       try {
         history.replaceState(null, null, window.location.pathname + window.location.search);
@@ -1114,7 +1777,7 @@
     if (!pinInput) return;
 
     const entered = pinInput.value.trim();
-    const targetPin = (settings && settings.adminPin) ? String(settings.adminPin) : '5640';
+    const targetPin = settings && settings.adminPin ? String(settings.adminPin) : '5640';
 
     if (entered === targetPin || entered === '5640') {
       isAdminAuthenticated = true;
@@ -1134,7 +1797,7 @@
     const newPin = newPinEl ? newPinEl.value.trim() : '';
     const confirmPin = confirmPinEl ? confirmPinEl.value.trim() : '';
 
-    const actualPin = (settings && settings.adminPin) ? String(settings.adminPin) : '5640';
+    const actualPin = settings && settings.adminPin ? String(settings.adminPin) : '5640';
     if (currentEntered !== actualPin && currentEntered !== '5640') {
       showToast('Current PIN is incorrect', 'error');
       return;
@@ -1161,21 +1824,310 @@
   }
 
   function switchAdminTab(tabName) {
-    const tabs = ['dashboard', 'menu', 'categories', 'hero', 'branches', 'branding', 'settings'];
+    const tabs = ['dashboard', 'orders', 'pos', 'analytics', 'menu', 'coupons', 'zones', 'categories', 'hero', 'branches', 'branding', 'settings'];
     renderAdminDashboard();
     tabs.forEach((t) => {
       const btn = document.getElementById(`tab-btn-${t}`);
       const panel = document.getElementById(`tab-panel-${t}`);
       if (btn && panel) {
         if (t === tabName) {
-          btn.className = 'px-3 sm:px-4 py-2 rounded-xl font-black text-xs uppercase tracking-wider bg-amber-500 text-black shadow-md flex-shrink-0';
+          btn.className =
+            'px-3 sm:px-4 py-2 rounded-xl font-black text-xs uppercase tracking-wider bg-amber-500 text-black shadow-md flex-shrink-0 flex items-center gap-1.5';
           panel.classList.remove('hidden');
         } else {
-          btn.className = 'px-3 sm:px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800 transition flex-shrink-0';
+          btn.className =
+            'px-3 sm:px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800 transition flex-shrink-0 flex items-center gap-1.5';
           panel.classList.add('hidden');
         }
       }
     });
+
+    if (tabName === 'orders') renderAdminOrders();
+    if (tabName === 'pos') initPosTerminal();
+    if (tabName === 'analytics') renderAdminAnalytics();
+    if (tabName === 'menu') renderAdminMenuItems();
+    if (tabName === 'coupons') renderAdminCoupons();
+    if (tabName === 'zones') renderAdminZones();
+  }
+
+  // --- POS Quick Order Terminal Functions ---
+  let posSelectedItem = null;
+  let posSelectedSize = null;
+  let posSelectedSpice = null;
+  let posSelectedAddons = [];
+
+  function initPosTerminal() {
+    const select = document.getElementById('pos-item-select');
+    if (!select) return;
+    select.innerHTML = menuItems
+      .filter((m) => m.inStock)
+      .map((m) => `<option value="${m.id}">${m.name} (Base Rs. ${m.price.toLocaleString()})</option>`)
+      .join('');
+    if (menuItems.length > 0) {
+      onPosDishSelect(menuItems[0].id);
+    }
+  }
+
+  function onPosDishSelect(dishId) {
+    const item = menuItems.find((m) => m.id === Number(dishId));
+    if (!item) return;
+    posSelectedItem = item;
+
+    const sizes = item.sizes && item.sizes.length ? item.sizes : [{ name: 'Regular Portion', price: 0 }];
+    posSelectedSize = sizes[0];
+
+    const spices = item.spiceLevels && item.spiceLevels.length ? item.spiceLevels : ['Mild Crunchy', 'Hot Spicy Lahori', 'Ghost Fire 🔥'];
+    posSelectedSpice = spices[0];
+
+    posSelectedAddons = [];
+
+    const baseBadge = document.getElementById('pos-base-price-badge');
+    if (baseBadge) baseBadge.textContent = `Base: Rs. ${item.price.toLocaleString()}`;
+
+    // Render sizes list
+    const sizesList = document.getElementById('pos-sizes-list');
+    if (sizesList) {
+      sizesList.innerHTML = sizes
+        .map(
+          (s, idx) => `
+          <label class="flex items-center justify-between p-1.5 rounded bg-[#090c18] border border-gray-800 text-[11px] cursor-pointer">
+            <span class="flex items-center gap-1.5 text-gray-200">
+              <input type="radio" name="pos-size-choice" value="${idx}" ${idx === 0 ? 'checked' : ''} onchange="window.LFC.selectPosSize(${idx})"/>
+              <span>${s.name}</span>
+            </span>
+            <span class="text-amber-400 font-bold">+Rs. ${s.price}</span>
+          </label>
+        `
+        )
+        .join('');
+    }
+
+    // Render spice list
+    const spiceList = document.getElementById('pos-spice-list');
+    if (spiceList) {
+      spiceList.innerHTML = spices
+        .map(
+          (sp, idx) => `
+          <label class="flex items-center gap-1.5 p-1.5 rounded bg-[#090c18] border border-gray-800 text-[11px] cursor-pointer text-gray-200">
+            <input type="radio" name="pos-spice-choice" value="${idx}" ${idx === 0 ? 'checked' : ''} onchange="window.LFC.selectPosSpice('${sp}')"/>
+            <span>${sp}</span>
+          </label>
+        `
+        )
+        .join('');
+    }
+
+    // Render addons list
+    const addonsList = document.getElementById('pos-addons-list');
+    const addons = item.addons || [];
+    if (addonsList) {
+      addonsList.innerHTML = addons.length
+        ? addons
+            .map(
+              (a, idx) => `
+            <label class="flex items-center justify-between p-1.5 rounded bg-[#090c18] border border-gray-800 text-[11px] cursor-pointer">
+              <span class="flex items-center gap-1.5 text-gray-200">
+                <input type="checkbox" onchange="window.LFC.togglePosAddon(${idx}, this.checked)"/>
+                <span>${a.name}</span>
+              </span>
+              <span class="text-emerald-400 font-bold">+Rs. ${a.price}</span>
+            </label>
+          `
+            )
+            .join('')
+        : '<div class="text-[10px] text-gray-500">No extras for this dish</div>';
+    }
+
+    calcPosTotal();
+  }
+
+  function selectPosSize(idx) {
+    if (posSelectedItem && posSelectedItem.sizes && posSelectedItem.sizes[idx]) {
+      posSelectedSize = posSelectedItem.sizes[idx];
+      calcPosTotal();
+    }
+  }
+
+  function selectPosSpice(spice) {
+    posSelectedSpice = spice;
+  }
+
+  function togglePosAddon(idx, isChecked) {
+    if (!posSelectedItem || !posSelectedItem.addons || !posSelectedItem.addons[idx]) return;
+    const addon = posSelectedItem.addons[idx];
+    if (isChecked) {
+      if (!posSelectedAddons.some((a) => a.name === addon.name)) {
+        posSelectedAddons.push(addon);
+      }
+    } else {
+      posSelectedAddons = posSelectedAddons.filter((a) => a.name !== addon.name);
+    }
+    calcPosTotal();
+  }
+
+  function calcPosTotal() {
+    if (!posSelectedItem) return { unitPrice: 0, qty: 1, deliveryFee: 0, total: 0 };
+    const qtyInput = document.getElementById('pos-item-qty');
+    const qty = Math.max(1, parseInt(qtyInput ? qtyInput.value : 1, 10) || 1);
+
+    const basePrice = posSelectedItem.price;
+    const sizePrice = posSelectedSize ? Number(posSelectedSize.price) || 0 : 0;
+    const addonsPrice = posSelectedAddons.reduce((sum, a) => sum + (Number(a.price) || 0), 0);
+    const unitPrice = basePrice + sizePrice + addonsPrice;
+
+    const orderTypeEl = document.getElementById('pos-order-type');
+    const mode = orderTypeEl ? orderTypeEl.value : 'dinein';
+    const deliveryFee = mode === 'delivery' ? (settings.deliveryFee || 150) : 0;
+
+    const total = unitPrice * qty + deliveryFee;
+
+    const totalDisplay = document.getElementById('pos-total-display');
+    if (totalDisplay) totalDisplay.textContent = `Rs. ${total.toLocaleString()}`;
+
+    return { unitPrice, qty, deliveryFee, total };
+  }
+
+  function createPosOrder(shouldPrint) {
+    if (!posSelectedItem) {
+      showToast('Please select a dish first', 'error');
+      return;
+    }
+
+    const nameEl = document.getElementById('pos-customer-name');
+    const phoneEl = document.getElementById('pos-customer-phone');
+    const addressEl = document.getElementById('pos-customer-address');
+    const notesEl = document.getElementById('pos-special-notes');
+    const typeEl = document.getElementById('pos-order-type');
+
+    const customerName = nameEl && nameEl.value.trim() ? nameEl.value.trim() : 'Walk-in Customer';
+    const customerPhone = phoneEl && phoneEl.value.trim() ? phoneEl.value.trim() : '0300-0000000';
+    const customerAddress = addressEl && addressEl.value.trim() ? addressEl.value.trim() : 'Counter Order';
+    const specialNotes = notesEl ? notesEl.value.trim() : '';
+    const mode = typeEl ? typeEl.value : 'dinein';
+
+    const { unitPrice, qty, deliveryFee, total } = calcPosTotal();
+    const orderId = 'POS-' + Math.floor(1000 + Math.random() * 9000);
+
+    const newOrder = {
+      id: orderId,
+      date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) + ' today',
+      timestamp: Date.now(),
+      customerName,
+      customerPhone,
+      customerAddress,
+      orderType: mode,
+      deliveryZone: mode === 'delivery' ? 'Lahore Counter Delivery' : 'In-Store Counter',
+      specialNotes: specialNotes ? `[POS] ${specialNotes}` : '[POS Counter Order]',
+      items: [
+        {
+          id: posSelectedItem.id,
+          name: posSelectedItem.name,
+          price: unitPrice,
+          qty,
+          selectedSize: posSelectedSize,
+          selectedSpice: posSelectedSpice,
+          selectedAddons: [...posSelectedAddons],
+          specialNotes
+        }
+      ],
+      subtotal: unitPrice * qty,
+      deliveryFee,
+      discount: 0,
+      promoCode: null,
+      total,
+      status: 'preparing'
+    };
+
+    orders.unshift(newOrder);
+    saveData('orders', orders);
+
+    renderAdminOrders();
+    renderAdminDashboard();
+    renderAdminAnalytics();
+
+    showToast(`Order #${orderId} created successfully!`);
+
+    if (shouldPrint) {
+      openReceiptModal(orderId);
+    }
+
+    if (notesEl) notesEl.value = '';
+  }
+
+  // --- Sales & Revenue Analytics ---
+  function renderAdminAnalytics() {
+    const deliveredOrders = orders.filter((o) => o.status === 'delivered');
+    const totalRev = deliveredOrders.reduce((sum, o) => sum + (o.total || 0), 0);
+    const completedCount = deliveredOrders.length;
+    const aov = completedCount > 0 ? Math.round(totalRev / completedCount) : 0;
+    const pendingCount = orders.filter((o) => o.status === 'new' || o.status === 'preparing' || o.status === 'delivery').length;
+
+    const elRev = document.getElementById('analytics-total-rev');
+    const elOrders = document.getElementById('analytics-total-orders');
+    const elPending = document.getElementById('analytics-pending-orders');
+    const elAov = document.getElementById('analytics-aov');
+    const elZones = document.getElementById('analytics-zones-count');
+
+    if (elRev) elRev.textContent = `Rs. ${totalRev.toLocaleString()}`;
+    if (elOrders) elOrders.textContent = orders.length;
+    if (elPending) elPending.textContent = `${pendingCount} active / in progress`;
+    if (elAov) elAov.textContent = `Rs. ${aov.toLocaleString()}`;
+    if (elZones) elZones.textContent = `${zones.length} Zones`;
+
+    const counts = {};
+    orders.forEach((o) => {
+      (o.items || []).forEach((item) => {
+        counts[item.name] = (counts[item.name] || 0) + (item.qty || 1);
+      });
+    });
+
+    const sortedDishes = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+    const maxQty = sortedDishes.length > 0 ? sortedDishes[0][1] : 1;
+
+    const topListEl = document.getElementById('analytics-top-dishes');
+    if (topListEl) {
+      if (sortedDishes.length === 0) {
+        topListEl.innerHTML = '<div class="text-xs text-gray-400 py-4 text-center">No order records yet. Process orders to view top sellers!</div>';
+      } else {
+        topListEl.innerHTML = sortedDishes
+          .slice(0, 5)
+          .map(([name, qty], idx) => {
+            const pct = Math.round((qty / maxQty) * 100);
+            return `
+            <div class="space-y-1">
+              <div class="flex justify-between text-xs">
+                <span class="font-bold text-white flex items-center gap-1.5">
+                  <span class="w-4 h-4 rounded-full bg-amber-500/20 text-amber-400 font-mono text-[10px] flex items-center justify-center font-bold">#${idx + 1}</span>
+                  <span>${name}</span>
+                </span>
+                <span class="text-amber-400 font-black">${qty} sold</span>
+              </div>
+              <div class="h-2 rounded-full bg-[#0a0d18] border border-gray-800 overflow-hidden">
+                <div class="h-full bg-gradient-to-r from-amber-500 via-orange-500 to-red-500 rounded-full" style="width: ${pct}%"></div>
+              </div>
+            </div>
+          `;
+          })
+          .join('');
+      }
+    }
+  }
+
+  // --- Customer Quick Contact Helpers ---
+  function whatsappCustomer(orderId) {
+    const ord = orders.find((o) => o.id === orderId);
+    if (!ord || !ord.customerPhone) return;
+    let raw = ord.customerPhone.replace(/[^0-9]/g, '');
+    if (raw.startsWith('0')) raw = '92' + raw.substring(1);
+    const text = `Hi ${ord.customerName}! This is LFC Lahore updating you regarding your order #${ord.id}. Current Status: ${ord.status.toUpperCase()}. Total: Rs. ${(ord.total || 0).toLocaleString()}. Thank you for choosing LFC!`;
+    window.open(`https://wa.me/${raw}?text=${encodeURIComponent(text)}`, '_blank');
+  }
+
+  function callCustomer(orderId) {
+    const ord = orders.find((o) => o.id === orderId);
+    if (!ord || !ord.customerPhone) return;
+    const raw = ord.customerPhone.replace(/[^0-9]/g, '');
+    window.location.href = `tel:${raw}`;
   }
 
   // --- Photo Upload Helper ---
@@ -1185,10 +2137,12 @@
     const reader = new FileReader();
     reader.onload = (e) => {
       const base64 = e.target.result;
-      const preview = document.getElementById(targetPreviewId);
-      if (preview) {
-        preview.src = base64;
-        preview.classList.remove('hidden');
+      if (targetPreviewId) {
+        const preview = document.getElementById(targetPreviewId);
+        if (preview) {
+          preview.src = base64;
+          preview.classList.remove('hidden');
+        }
       }
       callback(base64);
       showToast('Photo uploaded successfully!');
@@ -1196,37 +2150,448 @@
     reader.readAsDataURL(file);
   }
 
-  // --- Admin Menu Items ---
+  // --- Live Orders Management ---
+  let adminOrdersSearchQuery = '';
+
+  function searchAdminOrders(query) {
+    adminOrdersSearchQuery = (query || '').toLowerCase().trim();
+    renderAdminOrders();
+  }
+
+  function playOrderChime() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(587.33, ctx.currentTime);
+      osc.frequency.setValueAtTime(880, ctx.currentTime + 0.1);
+      gain.gain.setValueAtTime(0.2, ctx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.4);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.45);
+    } catch (e) {}
+  }
+
+  function generateTestOrder() {
+    const lahoreNames = ['Ali Raza', 'Fatima Zahra', 'Hamza Butt', 'Ayesha Malik', 'Bilal Tariq', 'Zainab Qureshi'];
+    const lahoreZones = zones.length ? zones : DEFAULT_ZONES;
+    const randomZone = lahoreZones[Math.floor(Math.random() * lahoreZones.length)];
+    const randomName = lahoreNames[Math.floor(Math.random() * lahoreNames.length)];
+    const randomPhone = `032${Math.floor(1000000 + Math.random() * 8999999)}`;
+    const randomItem1 = menuItems[Math.floor(Math.random() * menuItems.length)] || menuItems[0];
+    const randomItem2 = menuItems[Math.floor(Math.random() * menuItems.length)];
+
+    const items = [
+      {
+        id: randomItem1.id,
+        name: randomItem1.name,
+        price: randomItem1.price,
+        qty: 1 + Math.floor(Math.random() * 2),
+        selectedSize: randomItem1.sizes && randomItem1.sizes[0] ? randomItem1.sizes[0] : null,
+        selectedSpice: 'Hot Spicy Lahori',
+        selectedAddons: []
+      }
+    ];
+
+    if (randomItem2 && randomItem2.id !== randomItem1.id) {
+      items.push({
+        id: randomItem2.id,
+        name: randomItem2.name,
+        price: randomItem2.price,
+        qty: 1,
+        selectedSize: null,
+        selectedSpice: 'Mild Crunchy',
+        selectedAddons: []
+      });
+    }
+
+    const subtotal = items.reduce((sum, i) => sum + i.price * i.qty, 0);
+    const deliveryFee = subtotal >= (settings.freeDeliveryAbove || 2000) ? 0 : (randomZone.fee || 150);
+    const total = subtotal + deliveryFee;
+
+    const newOrder = {
+      id: `LFC-${Math.floor(1000 + Math.random() * 9000)}`,
+      date: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      customerName: randomName,
+      customerPhone: randomPhone,
+      customerAddress: `House #${Math.floor(10 + Math.random() * 90)}, Block ${String.fromCharCode(65 + Math.floor(Math.random() * 6))}, ${randomZone.name}`,
+      deliveryZone: randomZone.name,
+      orderType: 'delivery',
+      items: items,
+      subtotal: subtotal,
+      deliveryFee: deliveryFee,
+      discount: 0,
+      total: total,
+      status: 'new',
+      specialNotes: 'Extra spicy please, keep dips fresh!'
+    };
+
+    orders.unshift(newOrder);
+    saveData('orders', orders);
+    playOrderChime();
+    renderAdminOrders();
+    renderAdminDashboard();
+    showToast(`🔔 New Sample Order ${newOrder.id} generated!`);
+  }
+
+  function renderAdminOrders() {
+    const list = document.getElementById('admin-orders-list');
+    if (!list) return;
+
+    // Update filter count badges
+    const countAll = document.getElementById('count-filter-all');
+    const countNew = document.getElementById('count-filter-new');
+    const countPrep = document.getElementById('count-filter-preparing');
+    const countDeliv = document.getElementById('count-filter-delivery');
+    const countDelivered = document.getElementById('count-filter-delivered');
+
+    if (countAll) countAll.textContent = orders.length;
+    if (countNew) countNew.textContent = orders.filter((o) => o.status === 'new').length;
+    if (countPrep) countPrep.textContent = orders.filter((o) => o.status === 'preparing').length;
+    if (countDeliv) countDeliv.textContent = orders.filter((o) => o.status === 'delivery').length;
+    if (countDelivered) countDelivered.textContent = orders.filter((o) => o.status === 'delivered').length;
+
+    let filtered = orders;
+    if (activeOrderFilter !== 'all') {
+      filtered = orders.filter((o) => o.status === activeOrderFilter);
+    }
+
+    if (adminOrdersSearchQuery) {
+      filtered = filtered.filter(
+        (o) =>
+          o.id.toLowerCase().includes(adminOrdersSearchQuery) ||
+          (o.customerName && o.customerName.toLowerCase().includes(adminOrdersSearchQuery)) ||
+          (o.customerPhone && o.customerPhone.includes(adminOrdersSearchQuery)) ||
+          (o.customerAddress && o.customerAddress.toLowerCase().includes(adminOrdersSearchQuery))
+      );
+    }
+
+    if (filtered.length === 0) {
+      list.innerHTML = `
+        <div class="text-center py-12 p-6 rounded-3xl bg-gradient-to-b from-[#181c2b] to-[#0a0c14] border border-white/10">
+          <div class="text-3xl mb-2">🧾</div>
+          <div class="text-sm font-bold text-white">No matching orders found</div>
+          <div class="text-xs text-gray-400 mt-1">Try another filter or click "+Test Order" to simulate a new live kitchen order!</div>
+        </div>
+      `;
+      return;
+    }
+
+    const statusBadge = (st) => {
+      const map = {
+        new: 'bg-amber-500/20 text-amber-300 border-amber-500/40',
+        preparing: 'bg-blue-500/20 text-blue-300 border-blue-500/40',
+        delivery: 'bg-purple-500/20 text-purple-300 border-purple-500/40',
+        delivered: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40',
+        cancelled: 'bg-red-500/20 text-red-300 border-red-500/40'
+      };
+      return map[st] || 'bg-gray-800 text-gray-300';
+    };
+
+    list.innerHTML = filtered
+      .map((ord) => {
+        const itemsSummary = (ord.items || [])
+          .map((i) => {
+            const sizeStr = i.selectedSize && i.selectedSize.name ? ` (${i.selectedSize.name})` : '';
+            const spiceStr = i.selectedSpice ? ` [${i.selectedSpice}]` : '';
+            const extrasStr =
+              i.selectedAddons && i.selectedAddons.length
+                ? ` +${i.selectedAddons.map((a) => a.name).join(', ')}`
+                : '';
+            return `<div class="text-xs text-gray-300">• <b>${i.qty}x</b> ${i.name}${sizeStr}${spiceStr} <span class="text-emerald-400 font-medium">${extrasStr}</span></div>`;
+          })
+          .join('');
+
+        const rawPhone = (ord.customerPhone || '').replace(/[^0-9]/g, '');
+        const waPhone = rawPhone.startsWith('0') ? '92' + rawPhone.slice(1) : rawPhone;
+        const waMsg = `Hi ${ord.customerName}! Your LFC order #${ord.id} status is now: ${ord.status.toUpperCase()}. Total: Rs. ${ord.total}. Thank you for choosing Lahore Fried Chicken!`;
+        const waLink = `https://wa.me/${waPhone}?text=${encodeURIComponent(waMsg)}`;
+
+        return `
+        <div class="p-4 sm:p-5 rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-white/10 space-y-3 shadow-xl hover:border-amber-400/40 transition">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-white/10 pb-3">
+            <div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="font-black text-white text-sm font-heading">${ord.id}</span>
+                <span class="px-2.5 py-0.5 rounded-full text-[10px] font-black uppercase border ${statusBadge(
+                  ord.status
+                )}">
+                  ${ord.status}
+                </span>
+                <span class="text-[11px] text-gray-400">${ord.date}</span>
+                <span class="text-[10px] uppercase font-bold px-2 py-0.5 rounded bg-amber-500/10 text-amber-300 border border-amber-500/20">${ord.orderType || 'delivery'}</span>
+              </div>
+              <div class="text-xs text-amber-300 font-bold mt-1">
+                ${ord.customerName} • 📞 ${ord.customerPhone} • 📍 ${ord.deliveryZone || 'Lahore'}
+              </div>
+            </div>
+
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <button onclick="window.LFC.updateOrderStatus('${ord.id}', 'preparing')" class="px-2.5 py-1 rounded-lg ${ord.status === 'preparing' ? 'bg-blue-600 text-white' : 'bg-gray-800 text-gray-300 hover:text-white'} text-[11px] font-bold transition" title="Mark Kitchen Preparing">
+                👨‍🍳 Kitchen
+              </button>
+              <button onclick="window.LFC.updateOrderStatus('${ord.id}', 'delivery')" class="px-2.5 py-1 rounded-lg ${ord.status === 'delivery' ? 'bg-purple-600 text-white' : 'bg-gray-800 text-gray-300 hover:text-white'} text-[11px] font-bold transition" title="Mark Out for Delivery">
+                🛵 Delivery
+              </button>
+              <button onclick="window.LFC.updateOrderStatus('${ord.id}', 'delivered')" class="px-2.5 py-1 rounded-lg ${ord.status === 'delivered' ? 'bg-emerald-600 text-white' : 'bg-gray-800 text-gray-300 hover:text-white'} text-[11px] font-bold transition" title="Mark Delivered">
+                ✅ Done
+              </button>
+              <a href="${waLink}" target="_blank" rel="noopener noreferrer" class="px-2.5 py-1 rounded-lg bg-emerald-600/30 hover:bg-emerald-600/50 text-emerald-300 border border-emerald-500/40 text-[11px] font-bold transition flex items-center gap-1" title="WhatsApp Status Update to Customer">
+                💬 WA
+              </a>
+              <button onclick="window.LFC.openReceiptModal('${ord.id}')" class="px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-amber-300 text-[11px] font-bold transition flex items-center gap-1" title="Print Kitchen Slip">
+                🖨️ Slip
+              </button>
+            </div>
+          </div>
+
+          <div class="space-y-1">
+            ${itemsSummary}
+          </div>
+
+          ${
+            ord.specialNotes
+              ? `<div class="p-2.5 rounded-xl bg-[#0B0D16] border border-amber-500/20 text-[11px] text-amber-200/90 italic flex items-center gap-1.5">
+                  <span>📝</span> <span>Note: "${ord.specialNotes}"</span>
+                 </div>`
+              : ''
+          }
+
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-1 pt-2 border-t border-white/10 text-xs">
+            <div class="text-gray-400">
+              Address: <span class="text-gray-200 font-medium">${ord.customerAddress}</span>
+            </div>
+            <div class="text-base font-black text-amber-400 font-heading">
+              Total: Rs. ${(ord.total || 0).toLocaleString()}
+            </div>
+          </div>
+        </div>
+      `;
+      })
+      .join('');
+  }
+
+  function filterOrders(status) {
+    activeOrderFilter = status;
+    const buttons = document.querySelectorAll('.order-filter-btn');
+    buttons.forEach((b) => {
+      const match =
+        (status === 'all' && b.id === 'order-filter-all') ||
+        (status === 'new' && b.id === 'order-filter-new') ||
+        (status === 'preparing' && b.id === 'order-filter-preparing') ||
+        (status === 'delivery' && b.id === 'order-filter-delivery') ||
+        (status === 'delivered' && b.id === 'order-filter-delivered');
+      b.className = match
+        ? 'order-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500 text-black shadow flex-shrink-0'
+        : 'order-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-gray-800 text-gray-300 hover:text-white flex-shrink-0';
+    });
+    renderAdminOrders();
+  }
+
+  function updateOrderStatus(orderId, newStatus) {
+    const ord = orders.find((o) => o.id === orderId);
+    if (!ord) return;
+    ord.status = newStatus;
+    saveData('orders', orders);
+    renderAdminOrders();
+    renderAdminDashboard();
+    showToast(`Order #${orderId} marked as ${newStatus}!`);
+  }
+
+  function exportOrdersCsv() {
+    if (orders.length === 0) {
+      showToast('No orders to export', 'error');
+      return;
+    }
+
+    let csv = 'Order ID,Date,Customer Name,Phone,Address,Zone,Subtotal,Delivery,Discount,Total,Status\n';
+    orders.forEach((o) => {
+      const cleanAddr = `"${(o.customerAddress || '').replace(/"/g, '""')}"`;
+      csv += `${o.id},"${o.date}","${o.customerName}","${o.customerPhone}",${cleanAddr},"${o.deliveryZone || ''}",${o.subtotal},${o.deliveryFee},${o.discount},${o.total},${o.status}\n`;
+    });
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `lfc-orders-${new Date().toISOString().slice(0, 10)}.csv`;
+    link.click();
+    showToast('Orders exported to CSV!');
+  }
+
+  function clearCompletedOrders() {
+    if (!confirm('Clear all delivered orders from list?')) return;
+    orders = orders.filter((o) => o.status !== 'delivered');
+    saveData('orders', orders);
+    renderAdminOrders();
+    renderAdminDashboard();
+    showToast('Delivered orders cleared');
+  }
+
+  // --- Printable Thermal Receipt / Kitchen Slip ---
+  function openReceiptModal(orderId) {
+    const ord = orders.find((o) => o.id === orderId);
+    if (!ord) return;
+
+    const modal = document.getElementById('receipt-modal');
+    const content = document.getElementById('receipt-modal-content');
+    if (!modal || !content) return;
+
+    const itemsRows = (ord.items || [])
+      .map((i) => {
+        const itemLine = `${i.qty}x ${i.name}`;
+        const priceLine = `Rs. ${(i.price * i.qty).toLocaleString()}`;
+        const size = i.selectedSize && i.selectedSize.name ? `[${i.selectedSize.name}]` : '';
+        const spice = i.selectedSpice ? `Spice: ${i.selectedSpice}` : '';
+        const addons =
+          i.selectedAddons && i.selectedAddons.length ? `+ ${i.selectedAddons.map((a) => a.name).join(', ')}` : '';
+
+        return `
+        <div class="border-b border-dashed border-gray-300 pb-1.5">
+          <div class="flex justify-between font-bold">
+            <span>${itemLine}</span>
+            <span>${priceLine}</span>
+          </div>
+          ${size || spice ? `<div class="text-[10px] text-gray-600">${size} ${spice}</div>` : ''}
+          ${addons ? `<div class="text-[10px] text-gray-700">${addons}</div>` : ''}
+        </div>
+      `;
+      })
+      .join('');
+
+    content.innerHTML = `
+      <div class="text-center border-b-2 border-black pb-3">
+        <h2 class="text-lg font-black tracking-wider uppercase font-sans">LAHORE FRIED CHICKEN</h2>
+        <div class="text-[11px] font-bold">KITCHEN ORDER TICKET & RECEIPT</div>
+        <div class="text-[10px] text-gray-600">Taste the Legend • 0322-4940181</div>
+      </div>
+
+      <div class="text-[11px] space-y-0.5 border-b border-dashed border-gray-400 pb-2">
+        <div><b>ORDER #:</b> ${ord.id}</div>
+        <div><b>TIME:</b> ${ord.date}</div>
+        <div><b>TYPE:</b> ${ord.orderType.toUpperCase()}</div>
+        <div><b>CUSTOMER:</b> ${ord.customerName}</div>
+        <div><b>PHONE:</b> ${ord.customerPhone}</div>
+        <div><b>AREA:</b> ${ord.deliveryZone || 'Lahore'}</div>
+        <div><b>ADDRESS:</b> ${ord.customerAddress}</div>
+        ${ord.specialNotes ? `<div><b>INSTRUCTIONS:</b> <span class="text-red-700">${ord.specialNotes}</span></div>` : ''}
+      </div>
+
+      <div class="space-y-2 py-2">
+        ${itemsRows}
+      </div>
+
+      <div class="border-t-2 border-black pt-2 space-y-1 text-xs">
+        <div class="flex justify-between"><span>SUBTOTAL:</span><span>Rs. ${(ord.subtotal || 0).toLocaleString()}</span></div>
+        <div class="flex justify-between"><span>DELIVERY FEE:</span><span>${ord.deliveryFee === 0 ? 'FREE' : 'Rs. ' + ord.deliveryFee}</span></div>
+        ${ord.discount > 0 ? `<div class="flex justify-between text-red-600"><span>DISCOUNT (${ord.promoCode || 'PROMO'}):</span><span>- Rs. ${ord.discount}</span></div>` : ''}
+        <div class="flex justify-between font-black text-sm pt-1 border-t border-gray-400">
+          <span>GRAND TOTAL:</span>
+          <span>Rs. ${(ord.total || 0).toLocaleString()}</span>
+        </div>
+      </div>
+
+      <div class="text-center pt-3 text-[10px] text-gray-500">
+        Thank you for choosing LFC Lahore!<br/>
+        Developer: Trivox solutions
+      </div>
+    `;
+
+    modal.classList.remove('hidden');
+  }
+
+  function closeReceiptModal() {
+    const modal = document.getElementById('receipt-modal');
+    if (modal) modal.classList.add('hidden');
+  }
+
+  // --- Admin Menu Items & Multi-Options Manager ---
   let tempNewItemImage = './images/hero-1.jpg';
 
   function renderAdminMenuItems() {
     const list = document.getElementById('admin-menu-list');
+    const countEl = document.getElementById('admin-menu-count');
     if (!list) return;
 
+    if (countEl) countEl.textContent = menuItems.length;
+
     list.innerHTML = menuItems
-      .map(
-        (item) => `
-        <div class="flex items-center justify-between p-3 rounded-2xl bg-[#1A1D27] border border-gray-800 text-xs sm:text-sm gap-2 sm:gap-3">
-          <img src="${item.image}" alt="" class="w-11 h-11 rounded-xl object-cover bg-black flex-shrink-0" onerror="this.src='./images/hero-1.jpg'"/>
-          <div class="flex-1 min-w-0">
-            <div class="font-extrabold text-white truncate">${item.name}</div>
-            <div class="text-[11px] text-gray-400">
-              <span class="text-amber-400 uppercase font-bold">${item.cat}</span> • Rs. ${item.price.toLocaleString()}
+      .map((item) => {
+        const sizesStr = item.sizes && item.sizes.length ? `${item.sizes.length} sizes` : '1 size';
+        const addonsStr = item.addons && item.addons.length ? `${item.addons.length} extras` : 'No extras';
+
+        return `
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between p-3.5 rounded-2xl bg-[#141826] border border-gray-800 text-xs sm:text-sm gap-3">
+          <div class="flex items-center gap-3 min-w-0">
+            <img src="${item.image}" alt="" class="w-12 h-12 rounded-xl object-cover bg-black flex-shrink-0 border border-gray-800" onerror="this.src='./images/hero-1.jpg'"/>
+            <div class="min-w-0">
+              <div class="font-extrabold text-white truncate flex items-center gap-2">
+                <span>${item.name}</span>
+                ${
+                  item.badge
+                    ? `<span class="px-2 py-0.2 rounded text-[9px] font-black uppercase bg-amber-500/20 text-amber-300 border border-amber-500/30">${item.badge}</span>`
+                    : ''
+                }
+              </div>
+              <div class="text-[11px] text-gray-400">
+                <span class="text-amber-400 uppercase font-bold">${item.cat}</span> • Base: Rs. ${item.price.toLocaleString()} • <span class="text-emerald-400">${sizesStr}</span> • <span class="text-blue-400">${addonsStr}</span>
+              </div>
             </div>
           </div>
-          <div class="flex items-center gap-1.5 sm:gap-2">
-            <button onclick="window.LFC.toggleStock(${item.id})" class="px-2.5 py-1 rounded-lg text-[10px] sm:text-xs font-black transition ${
-          item.inStock ? 'bg-emerald-950 text-emerald-400 border border-emerald-800' : 'bg-red-950 text-red-400 border border-red-800'
-        }">
+
+          <div class="flex items-center gap-1.5 sm:gap-2 self-end sm:self-center">
+            <button onclick="window.LFC.openEditItemModal(${item.id})" class="px-2.5 py-1.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-amber-300 font-bold text-xs transition flex items-center gap-1">
+              <span>✏️ Edit & Options</span>
+            </button>
+            <button onclick="window.LFC.toggleStock(${item.id})" class="px-2.5 py-1.5 rounded-xl text-xs font-black transition ${
+              item.inStock
+                ? 'bg-emerald-950/80 text-emerald-400 border border-emerald-800/80'
+                : 'bg-red-950/80 text-red-400 border border-red-800/80'
+            }">
               ${item.inStock ? 'In Stock' : 'Out'}
             </button>
-            <button onclick="window.LFC.deleteMenuItem(${item.id})" class="text-gray-500 hover:text-red-400 p-1 transition" title="Delete">
+            <button onclick="window.LFC.deleteMenuItem(${item.id})" class="text-gray-500 hover:text-red-400 p-1.5 transition" title="Delete">
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
             </button>
           </div>
         </div>
-      `
-      )
+      `;
+      })
+      .join('');
+  }
+
+  function searchAdminMenu(q) {
+    const filter = (q || '').toLowerCase().trim();
+    const list = document.getElementById('admin-menu-list');
+    if (!list) return;
+
+    if (!filter) {
+      renderAdminMenuItems();
+      return;
+    }
+
+    const matched = menuItems.filter((m) => m.name.toLowerCase().includes(filter) || m.cat.toLowerCase().includes(filter));
+    list.innerHTML = matched
+      .map((item) => `
+        <div class="flex items-center justify-between p-3.5 rounded-2xl bg-[#141826] border border-gray-800 text-xs sm:text-sm gap-3">
+          <div class="flex items-center gap-3 min-w-0">
+            <img src="${item.image}" alt="" class="w-12 h-12 rounded-xl object-cover bg-black flex-shrink-0" onerror="this.src='./images/hero-1.jpg'"/>
+            <div class="min-w-0">
+              <div class="font-bold text-white truncate">${item.name}</div>
+              <div class="text-[11px] text-amber-400">Rs. ${item.price.toLocaleString()} • ${item.cat}</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="window.LFC.openEditItemModal(${item.id})" class="px-2.5 py-1.5 rounded-xl bg-gray-800 text-amber-300 font-bold text-xs">Edit</button>
+            <button onclick="window.LFC.toggleStock(${item.id})" class="px-2.5 py-1.5 rounded-xl text-xs font-bold ${item.inStock ? 'text-emerald-400 bg-emerald-950' : 'text-red-400 bg-red-950'}">${item.inStock ? 'In Stock' : 'Out'}</button>
+          </div>
+        </div>
+      `)
       .join('');
   }
 
@@ -1246,6 +2611,7 @@
     saveData('menu_items', menuItems);
     renderMenu();
     renderAdminMenuItems();
+    renderAdminDashboard();
     showToast('Menu item deleted');
   }
 
@@ -1276,7 +2642,19 @@
       image: tempNewItemImage || './images/hero-1.jpg',
       badge: badge || 'New',
       inStock: true,
-      spiciness: 2
+      spiciness: 2,
+      sizes: [
+        { name: 'Regular Portion', price: 0 },
+        { name: 'Double / Large Portion', price: 180 },
+        { name: 'Meal (With Fries & Drink)', price: 250 }
+      ],
+      spiceLevels: ['Mild Crunchy', 'Hot Spicy Lahori', 'Extra Ghost Pepper 🔥'],
+      addons: [
+        { name: 'Extra Garlic Mayo Dip', price: 60 },
+        { name: 'Melted Cheddar Slice', price: 80 },
+        { name: 'Peri Peri Masala Fries', price: 120 },
+        { name: 'Chilled Soft Drink Can', price: 90 }
+      ]
     };
 
     menuItems.unshift(newItem);
@@ -1288,7 +2666,449 @@
 
     renderMenu();
     renderAdminMenuItems();
-    showToast(`Added ${name} to menu!`);
+    renderAdminDashboard();
+    showToast(`Added ${name} with multi-options to menu!`);
+  }
+
+  // --- Admin Edit Menu Item Modal & Multi-Options Rows ---
+  let currentEditingItem = null;
+
+  function openEditItemModal(itemId) {
+    const item = menuItems.find((m) => m.id === itemId);
+    if (!item) return;
+
+    currentEditingItem = JSON.parse(JSON.stringify(item));
+
+    const modal = document.getElementById('admin-edit-item-modal');
+    const idEl = document.getElementById('edit-item-id');
+    const nameEl = document.getElementById('edit-item-name');
+    const catEl = document.getElementById('edit-item-cat');
+    const priceEl = document.getElementById('edit-item-price');
+    const badgeEl = document.getElementById('edit-item-badge');
+    const stockEl = document.getElementById('edit-item-stock');
+    const descEl = document.getElementById('edit-item-desc');
+    const imgEl = document.getElementById('edit-item-image');
+
+    if (idEl) idEl.value = item.id;
+    if (nameEl) nameEl.value = item.name;
+    if (priceEl) priceEl.value = item.price;
+    if (badgeEl) badgeEl.value = item.badge || '';
+    if (stockEl) stockEl.value = item.inStock ? 'true' : 'false';
+    if (descEl) descEl.value = item.desc || '';
+    if (imgEl) imgEl.value = item.image || '';
+
+    // Populate category dropdown
+    if (catEl) {
+      catEl.innerHTML = categories
+        .filter((c) => c.id !== 'all')
+        .map((c) => `<option value="${c.id}" ${c.id === item.cat ? 'selected' : ''}>${c.name}</option>`)
+        .join('');
+    }
+
+    renderEditSizesRows();
+    renderEditAddonsRows();
+
+    if (modal) modal.classList.remove('hidden');
+  }
+
+  function closeEditItemModal() {
+    const modal = document.getElementById('admin-edit-item-modal');
+    if (modal) modal.classList.add('hidden');
+    currentEditingItem = null;
+  }
+
+  function renderEditSizesRows() {
+    const container = document.getElementById('edit-sizes-container');
+    if (!container || !currentEditingItem) return;
+
+    const sizes = currentEditingItem.sizes || [];
+    container.innerHTML = sizes
+      .map(
+        (s, idx) => `
+        <div class="flex items-center gap-2">
+          <input type="text" value="${s.name}" onchange="window.LFC.updateEditSizeName(${idx}, this.value)" placeholder="Size Name" class="flex-1 px-2.5 py-1.5 rounded-lg bg-[#0B0D16] border border-gray-800 text-xs text-white"/>
+          <div class="flex items-center gap-1 w-28">
+            <span class="text-[10px] text-gray-500">+Rs.</span>
+            <input type="number" value="${s.price}" onchange="window.LFC.updateEditSizePrice(${idx}, this.value)" class="w-full px-2 py-1.5 rounded-lg bg-[#0B0D16] border border-gray-800 text-xs text-white"/>
+          </div>
+          <button type="button" onclick="window.LFC.removeEditSizeRow(${idx})" class="text-red-400 hover:text-red-300 p-1 font-bold">✕</button>
+        </div>
+      `
+      )
+      .join('');
+  }
+
+  function addEditSizeRow() {
+    if (!currentEditingItem) return;
+    if (!currentEditingItem.sizes) currentEditingItem.sizes = [];
+    currentEditingItem.sizes.push({ name: 'New Size', price: 100 });
+    renderEditSizesRows();
+  }
+
+  function removeEditSizeRow(idx) {
+    if (!currentEditingItem || !currentEditingItem.sizes) return;
+    currentEditingItem.sizes.splice(idx, 1);
+    renderEditSizesRows();
+  }
+
+  function updateEditSizeName(idx, val) {
+    if (currentEditingItem && currentEditingItem.sizes && currentEditingItem.sizes[idx]) {
+      currentEditingItem.sizes[idx].name = val;
+    }
+  }
+
+  function updateEditSizePrice(idx, val) {
+    if (currentEditingItem && currentEditingItem.sizes && currentEditingItem.sizes[idx]) {
+      currentEditingItem.sizes[idx].price = Number(val) || 0;
+    }
+  }
+
+  function renderEditAddonsRows() {
+    const container = document.getElementById('edit-addons-container');
+    if (!container || !currentEditingItem) return;
+
+    const addons = currentEditingItem.addons || [];
+    container.innerHTML = addons
+      .map(
+        (a, idx) => `
+        <div class="flex items-center gap-2">
+          <input type="text" value="${a.name}" onchange="window.LFC.updateEditAddonName(${idx}, this.value)" placeholder="Add-on Name" class="flex-1 px-2.5 py-1.5 rounded-lg bg-[#0B0D16] border border-gray-800 text-xs text-white"/>
+          <div class="flex items-center gap-1 w-28">
+            <span class="text-[10px] text-gray-500">+Rs.</span>
+            <input type="number" value="${a.price}" onchange="window.LFC.updateEditAddonPrice(${idx}, this.value)" class="w-full px-2 py-1.5 rounded-lg bg-[#0B0D16] border border-gray-800 text-xs text-white"/>
+          </div>
+          <button type="button" onclick="window.LFC.removeEditAddonRow(${idx})" class="text-red-400 hover:text-red-300 p-1 font-bold">✕</button>
+        </div>
+      `
+      )
+      .join('');
+  }
+
+  function addEditAddonRow() {
+    if (!currentEditingItem) return;
+    if (!currentEditingItem.addons) currentEditingItem.addons = [];
+    currentEditingItem.addons.push({ name: 'Extra Dip Sauce', price: 60 });
+    renderEditAddonsRows();
+  }
+
+  function removeEditAddonRow(idx) {
+    if (!currentEditingItem || !currentEditingItem.addons) return;
+    currentEditingItem.addons.splice(idx, 1);
+    renderEditAddonsRows();
+  }
+
+  function updateEditAddonName(idx, val) {
+    if (currentEditingItem && currentEditingItem.addons && currentEditingItem.addons[idx]) {
+      currentEditingItem.addons[idx].name = val;
+    }
+  }
+
+  function updateEditAddonPrice(idx, val) {
+    if (currentEditingItem && currentEditingItem.addons && currentEditingItem.addons[idx]) {
+      currentEditingItem.addons[idx].price = Number(val) || 0;
+    }
+  }
+
+  function saveEditedMenuItem() {
+    const idEl = document.getElementById('edit-item-id');
+    const nameEl = document.getElementById('edit-item-name');
+    const catEl = document.getElementById('edit-item-cat');
+    const priceEl = document.getElementById('edit-item-price');
+    const badgeEl = document.getElementById('edit-item-badge');
+    const stockEl = document.getElementById('edit-item-stock');
+    const descEl = document.getElementById('edit-item-desc');
+    const imgEl = document.getElementById('edit-item-image');
+
+    const itemId = Number(idEl ? idEl.value : 0);
+    const itemIndex = menuItems.findIndex((m) => m.id === itemId);
+    if (itemIndex < 0) return;
+
+    menuItems[itemIndex].name = nameEl ? nameEl.value.trim() : menuItems[itemIndex].name;
+    menuItems[itemIndex].cat = catEl ? catEl.value : menuItems[itemIndex].cat;
+    menuItems[itemIndex].price = priceEl ? parseFloat(priceEl.value) || menuItems[itemIndex].price : menuItems[itemIndex].price;
+    menuItems[itemIndex].badge = badgeEl ? badgeEl.value.trim() : '';
+    menuItems[itemIndex].inStock = stockEl ? stockEl.value === 'true' : true;
+    menuItems[itemIndex].desc = descEl ? descEl.value.trim() : menuItems[itemIndex].desc;
+    menuItems[itemIndex].image = imgEl && imgEl.value.trim() ? imgEl.value.trim() : menuItems[itemIndex].image;
+
+    if (currentEditingItem) {
+      if (currentEditingItem.sizes) menuItems[itemIndex].sizes = currentEditingItem.sizes;
+      if (currentEditingItem.addons) menuItems[itemIndex].addons = currentEditingItem.addons;
+    }
+
+    saveData('menu_items', menuItems);
+    renderMenu();
+    renderAdminMenuItems();
+    closeEditItemModal();
+    showToast('Dish & multi-options saved successfully!');
+  }
+
+  // --- Promo Codes & Coupons Manager ---
+  function renderAdminCoupons() {
+    const list = document.getElementById('admin-coupons-list');
+    if (!list) return;
+
+    list.innerHTML = promos
+      .map(
+        (p) => `
+        <div class="flex items-center justify-between p-3.5 rounded-2xl bg-[#141826] border border-gray-800 text-xs sm:text-sm gap-3">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="font-mono font-black text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/20">${p.code}</span>
+              <span class="font-bold text-white">${p.type === 'percent' ? `${p.discount}% OFF` : `Rs. ${p.discount} OFF`}</span>
+              <span class="text-[10px] ${p.active ? 'text-emerald-400' : 'text-gray-500 font-bold'}">${p.active ? '● Active' : '● Disabled'}</span>
+            </div>
+            <div class="text-[11px] text-gray-400 mt-1">${p.desc || `Min order Rs. ${p.minOrder || 0}`}</div>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="window.LFC.togglePromoCode('${p.code}')" class="px-2.5 py-1 rounded-xl text-xs font-bold ${p.active ? 'bg-amber-500/20 text-amber-300' : 'bg-gray-800 text-gray-400'}">
+              ${p.active ? 'Disable' : 'Enable'}
+            </button>
+            <button onclick="window.LFC.deletePromoCode('${p.code}')" class="text-gray-500 hover:text-red-400 p-1" title="Delete">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+            </button>
+          </div>
+        </div>
+      `
+      )
+      .join('');
+  }
+
+  function addNewPromoCode() {
+    const codeEl = document.getElementById('new-promo-code');
+    const typeEl = document.getElementById('new-promo-type');
+    const discountEl = document.getElementById('new-promo-discount');
+    const minEl = document.getElementById('new-promo-min');
+    const descEl = document.getElementById('new-promo-desc');
+
+    const code = codeEl ? codeEl.value.trim().toUpperCase() : '';
+    const type = typeEl ? typeEl.value : 'flat';
+    const discount = discountEl ? parseFloat(discountEl.value) : 0;
+    const minOrder = minEl ? parseFloat(minEl.value) || 0 : 0;
+    const desc = descEl ? descEl.value.trim() : '';
+
+    if (!code || isNaN(discount) || discount <= 0) {
+      showToast('Please enter coupon code and discount amount', 'error');
+      return;
+    }
+
+    if (promos.some((p) => p.code.toUpperCase() === code)) {
+      showToast('Coupon code already exists', 'error');
+      return;
+    }
+
+    promos.unshift({
+      code,
+      type,
+      discount,
+      minOrder,
+      active: true,
+      desc: desc || `${type === 'percent' ? discount + '% OFF' : 'Rs. ' + discount + ' OFF'} on orders above Rs. ${minOrder}`
+    });
+
+    saveData('promos', promos);
+    renderAdminCoupons();
+    renderAdminDashboard();
+
+    if (codeEl) codeEl.value = '';
+    if (discountEl) discountEl.value = '';
+    if (minEl) minEl.value = '';
+    if (descEl) descEl.value = '';
+
+    showToast(`Created coupon code: ${code}`);
+  }
+
+  function togglePromoCode(code) {
+    const promo = promos.find((p) => p.code === code);
+    if (!promo) return;
+    promo.active = !promo.active;
+    saveData('promos', promos);
+    renderAdminCoupons();
+    renderAdminDashboard();
+    showToast(`Coupon ${code} ${promo.active ? 'enabled' : 'disabled'}`);
+  }
+
+  function deletePromoCode(code) {
+    if (!confirm(`Delete coupon code ${code}?`)) return;
+    promos = promos.filter((p) => p.code !== code);
+    saveData('promos', promos);
+    renderAdminCoupons();
+    renderAdminDashboard();
+    showToast('Coupon deleted');
+  }
+
+  // --- Delivery Zones Manager ---
+  function renderAdminZones() {
+    const list = document.getElementById('admin-zones-list');
+    if (!list) return;
+
+    list.innerHTML = zones
+      .map(
+        (z) => `
+        <div class="flex items-center justify-between p-3.5 rounded-2xl bg-[#141826] border border-gray-800 text-xs sm:text-sm gap-3">
+          <div>
+            <div class="font-extrabold text-white flex items-center gap-2">
+              <span>${z.name}</span>
+              <span class="text-amber-400 font-bold">Rs. ${z.fee}</span>
+            </div>
+            <div class="text-[11px] text-emerald-400 mt-0.5">⏱️ ${z.time} delivery time</div>
+          </div>
+          <button onclick="window.LFC.deleteDeliveryZone('${z.id}')" class="text-gray-500 hover:text-red-400 p-1" title="Delete Zone">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+          </button>
+        </div>
+      `
+      )
+      .join('');
+  }
+
+  function addNewDeliveryZone() {
+    const nameEl = document.getElementById('new-zone-name');
+    const feeEl = document.getElementById('new-zone-fee');
+    const timeEl = document.getElementById('new-zone-time');
+
+    const name = nameEl ? nameEl.value.trim() : '';
+    const fee = feeEl ? parseFloat(feeEl.value) : 150;
+    const time = timeEl ? timeEl.value.trim() : '25-35 mins';
+
+    if (!name || isNaN(fee)) {
+      showToast('Please enter zone name and delivery fee', 'error');
+      return;
+    }
+
+    const id = name.toLowerCase().replace(/[^a-z0-9]/g, '_');
+    zones.push({ id, name, fee, time });
+    saveData('zones', zones);
+
+    renderAdminZones();
+    renderZoneSelect();
+    renderAdminDashboard();
+
+    if (nameEl) nameEl.value = '';
+    if (feeEl) feeEl.value = '';
+    if (timeEl) timeEl.value = '';
+
+    showToast(`Added delivery zone: ${name}`);
+  }
+
+  function deleteDeliveryZone(id) {
+    if (zones.length <= 1) {
+      showToast('You must keep at least 1 delivery zone', 'error');
+      return;
+    }
+    if (!confirm('Delete this delivery zone?')) return;
+    zones = zones.filter((z) => z.id !== id);
+    if (settings.selectedZoneId === id) {
+      settings.selectedZoneId = zones[0].id;
+    }
+    saveData('zones', zones);
+    saveData('settings', settings);
+    renderAdminZones();
+    renderZoneSelect();
+    renderAdminDashboard();
+    updateCartUI();
+    showToast('Delivery zone removed');
+  }
+
+  // --- Store Status Switch ---
+  function updateStoreStatus(status) {
+    settings.storeStatus = status;
+    saveData('settings', settings);
+
+    const quickSelect = document.getElementById('admin-quick-status-select');
+    const settingSelect = document.getElementById('admin-setting-status');
+    if (quickSelect) quickSelect.value = status;
+    if (settingSelect) settingSelect.value = status;
+
+    renderAdminDashboard();
+    showToast(`Store status set to: ${status.toUpperCase()}`);
+  }
+
+  // --- Data Backup & Restore ---
+  function exportDataJson() {
+    const backup = {
+      settings,
+      menuItems,
+      categories,
+      heroSlides,
+      branches,
+      zones,
+      promos,
+      orders,
+      exportedAt: new Date().toISOString()
+    };
+
+    const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `lfc-backup-${new Date().toISOString().slice(0, 10)}.json`;
+    link.click();
+    showToast('Store data downloaded as JSON backup!');
+  }
+
+  function importDataJson(fileInput) {
+    if (!fileInput.files || !fileInput.files[0]) return;
+    const file = fileInput.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      try {
+        const data = JSON.parse(e.target.result);
+        if (data.settings) {
+          settings = { ...DEFAULT_SETTINGS, ...data.settings };
+          saveData('settings', settings);
+        }
+        if (data.menuItems && Array.isArray(data.menuItems)) {
+          menuItems = data.menuItems;
+          saveData('menu_items', menuItems);
+        }
+        if (data.categories && Array.isArray(data.categories)) {
+          categories = data.categories;
+          saveData('categories', categories);
+        }
+        if (data.heroSlides && Array.isArray(data.heroSlides)) {
+          heroSlides = data.heroSlides;
+          saveData('hero_slides', heroSlides);
+        }
+        if (data.branches && Array.isArray(data.branches)) {
+          branches = data.branches;
+          saveData('branches', branches);
+        }
+        if (data.zones && Array.isArray(data.zones)) {
+          zones = data.zones;
+          saveData('zones', zones);
+        }
+        if (data.promos && Array.isArray(data.promos)) {
+          promos = data.promos;
+          saveData('promos', promos);
+        }
+        if (data.orders && Array.isArray(data.orders)) {
+          orders = data.orders;
+          saveData('orders', orders);
+        }
+
+        updateBrandLogos();
+        renderCategories();
+        renderMenu();
+        renderHeroSlide(0);
+        renderBranches();
+        renderAdminDashboard();
+        renderAdminOrders();
+        renderAdminMenuItems();
+        renderAdminCoupons();
+        renderAdminZones();
+        renderAdminCategories();
+        renderAdminHeroSlides();
+        renderAdminBranches();
+        renderAdminSettings();
+        updateCartUI();
+
+        showToast('Store data restored successfully!');
+      } catch (err) {
+        showToast('Invalid backup file', 'error');
+      }
+    };
+    reader.readAsText(file);
   }
 
   // --- Admin Categories Manager ---
@@ -1297,40 +3117,37 @@
     if (!list) return;
 
     list.innerHTML = categories
-      .map(
-        (cat) => {
-          const count = cat.id === 'all' ? menuItems.length : menuItems.filter((m) => m.cat === cat.id).length;
-          const isAll = cat.id === 'all';
-          return `
-          <div class="flex items-center justify-between p-3 rounded-2xl bg-[#1A1D27] border border-gray-800 text-xs sm:text-sm gap-2">
-            <div class="flex-1 min-w-0">
-              <div class="font-extrabold text-white truncate flex items-center gap-2">
-                <span>${cat.name}</span>
-                <span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded font-mono font-bold">${cat.id}</span>
-              </div>
-              <div class="text-[11px] text-gray-400">${count} dish(es) linked</div>
+      .map((cat) => {
+        const count = cat.id === 'all' ? menuItems.length : menuItems.filter((m) => m.cat === cat.id).length;
+        const isAll = cat.id === 'all';
+        return `
+        <div class="flex items-center justify-between p-3 rounded-2xl bg-[#141826] border border-gray-800 text-xs sm:text-sm gap-2">
+          <div class="flex-1 min-w-0">
+            <div class="font-extrabold text-white truncate flex items-center gap-2">
+              <span>${cat.name}</span>
+              <span class="text-[10px] text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded font-mono font-bold">${cat.id}</span>
             </div>
-            ${
-              !isAll
-                ? `
-              <div class="flex items-center gap-1.5">
-                <button onclick="window.LFC.promptEditCategory('${cat.id}')" class="px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-amber-300 font-bold text-xs transition">
-                  Rename
-                </button>
-                <button onclick="window.LFC.deleteCategory('${cat.id}')" class="text-gray-500 hover:text-red-400 p-1 transition" title="Delete Category">
-                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                </button>
-              </div>
-            `
-                : '<span class="text-[10px] text-gray-500 font-bold px-2 py-1">System Default</span>'
-            }
+            <div class="text-[11px] text-gray-400">${count} dish(es) linked</div>
           </div>
-        `;
-        }
-      )
+          ${
+            !isAll
+              ? `
+            <div class="flex items-center gap-1.5">
+              <button onclick="window.LFC.promptEditCategory('${cat.id}')" class="px-2.5 py-1 rounded-lg bg-gray-800 hover:bg-gray-700 text-amber-300 font-bold text-xs transition">
+                Rename
+              </button>
+              <button onclick="window.LFC.deleteCategory('${cat.id}')" class="text-gray-500 hover:text-red-400 p-1 transition" title="Delete Category">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+              </button>
+            </div>
+          `
+              : '<span class="text-[10px] text-gray-500 font-bold px-2 py-1">System Default</span>'
+          }
+        </div>
+      `;
+      })
       .join('');
 
-    // Update Category Selector in Add Menu Item
     const catSelect = document.getElementById('new-item-cat');
     if (catSelect) {
       catSelect.innerHTML = categories
@@ -1407,7 +3224,7 @@
     list.innerHTML = heroSlides
       .map(
         (s, idx) => `
-        <div class="p-3 sm:p-4 rounded-2xl bg-[#1A1D27] border border-gray-800 space-y-3">
+        <div class="p-3 sm:p-4 rounded-2xl bg-[#141826] border border-gray-800 space-y-3">
           <div class="flex items-center gap-3">
             <img src="${s.image}" alt="" class="w-14 h-14 rounded-xl object-cover bg-black flex-shrink-0 border border-gray-800" onerror="this.src='./images/hero-1.jpg'"/>
             <div class="flex-1 min-w-0">
@@ -1470,7 +3287,7 @@
     list.innerHTML = branches
       .map(
         (b) => `
-        <div class="p-3.5 rounded-2xl bg-[#1A1D27] border border-gray-800 space-y-2">
+        <div class="p-3.5 rounded-2xl bg-[#141826] border border-gray-800 space-y-2">
           <div class="flex items-center justify-between">
             <h4 class="font-extrabold text-white text-xs sm:text-sm">${b.name}</h4>
             <button onclick="window.LFC.deleteBranch(${b.id})" class="text-gray-500 hover:text-red-400 p-1 transition" title="Delete Branch">
@@ -1523,6 +3340,7 @@
 
     renderBranches();
     renderAdminBranches();
+    renderAdminDashboard();
     showToast(`Added branch: ${name}`);
   }
 
@@ -1536,6 +3354,7 @@
     saveData('branches', branches);
     renderBranches();
     renderAdminBranches();
+    renderAdminDashboard();
     showToast('Branch removed');
   }
 
@@ -1567,15 +3386,19 @@
     const feeEl = document.getElementById('admin-setting-fee');
     const freeEl = document.getElementById('admin-setting-free');
     const nameEl = document.getElementById('admin-setting-storename');
+    const statusEl = document.getElementById('admin-setting-status');
+    const announceEl = document.getElementById('admin-setting-announcement');
 
     if (waEl) waEl.value = settings.whatsappNumber;
     if (phoneEl) phoneEl.value = settings.phoneCallNumber;
     if (feeEl) feeEl.value = settings.deliveryFee;
     if (freeEl) freeEl.value = settings.freeDeliveryAbove;
     if (nameEl) nameEl.value = settings.storeName;
+    if (statusEl) statusEl.value = settings.storeStatus || 'open';
+    if (announceEl) announceEl.value = settings.announcementText || '';
 
     const logoPreview = document.getElementById('admin-logo-preview');
-    if (logoPreview) logoPreview.src = settings.logoUrl || './images/logo.png';
+    if (logoPreview) logoPreview.src = settings.logoUrl || './src/assets/images/regenerated_image_1792104663328.png';
   }
 
   function saveAdminSettings() {
@@ -1584,16 +3407,21 @@
     const feeEl = document.getElementById('admin-setting-fee');
     const freeEl = document.getElementById('admin-setting-free');
     const nameEl = document.getElementById('admin-setting-storename');
+    const statusEl = document.getElementById('admin-setting-status');
+    const announceEl = document.getElementById('admin-setting-announcement');
 
     if (waEl && waEl.value.trim()) settings.whatsappNumber = waEl.value.trim();
     if (phoneEl && phoneEl.value.trim()) settings.phoneCallNumber = phoneEl.value.trim();
     if (feeEl && !isNaN(parseFloat(feeEl.value))) settings.deliveryFee = parseFloat(feeEl.value);
     if (freeEl && !isNaN(parseFloat(freeEl.value))) settings.freeDeliveryAbove = parseFloat(freeEl.value);
     if (nameEl && nameEl.value.trim()) settings.storeName = nameEl.value.trim();
+    if (statusEl) settings.storeStatus = statusEl.value;
+    if (announceEl && announceEl.value.trim()) settings.announcementText = announceEl.value.trim();
 
     saveData('settings', settings);
     updateBrandLogos();
     updateCartUI();
+    renderAdminDashboard();
     showToast('Store settings saved successfully!');
   }
 
@@ -1606,6 +3434,9 @@
     menuItems = [...DEFAULT_MENU_ITEMS];
     branches = [...DEFAULT_BRANCHES];
     reviews = [...DEFAULT_REVIEWS];
+    zones = [...DEFAULT_ZONES];
+    promos = [...DEFAULT_PROMOS];
+    orders = [...DEFAULT_ORDERS];
     cart = [];
 
     updateBrandLogos();
@@ -1615,7 +3446,11 @@
     renderReviews();
     renderBranches();
     updateCartUI();
+    renderAdminDashboard();
+    renderAdminOrders();
     renderAdminMenuItems();
+    renderAdminCoupons();
+    renderAdminZones();
     renderAdminCategories();
     renderAdminHeroSlides();
     renderAdminBranches();
@@ -1787,8 +3622,11 @@
       if (e.key === 'Escape') {
         closeCartDrawer();
         closeAdminModal();
-        if (window.LFC && typeof window.LFC.closeReviewModal === 'function') {
-          window.LFC.closeReviewModal();
+        closeCustomizeModal();
+        closeReceiptModal();
+        closeEditItemModal();
+        if (typeof closeReviewModal === 'function') {
+          closeReviewModal();
         }
       }
     });
@@ -1797,10 +3635,15 @@
   // --- Window Controller Export ---
   window.LFC = {
     addToCart,
-    addToCartById: (id) => {
-      const item = menuItems.find((m) => m.id === id);
-      if (item) addToCart(item, 1);
-    },
+    addToCartById,
+    openCustomizeModal,
+    closeCustomizeModal,
+    selectCustomizeSize,
+    selectCustomizeSpice,
+    toggleCustomizeAddon,
+    stepCustomizeQty,
+    confirmCustomizedItem,
+    changeDeliveryZone,
     updateCartItemQty,
     removeCartItem,
     clearCart,
@@ -1832,9 +3675,35 @@
     submitAdminPin,
     changeAdminPin,
     switchAdminTab,
+    filterOrders,
+    updateOrderStatus,
+    exportOrdersCsv,
+    clearCompletedOrders,
+    openReceiptModal,
+    closeReceiptModal,
     toggleStock,
     deleteMenuItem,
     addNewMenuItem,
+    searchAdminMenu,
+    openEditItemModal,
+    closeEditItemModal,
+    saveEditedMenuItem,
+    addEditSizeRow,
+    removeEditSizeRow,
+    updateEditSizeName,
+    updateEditSizePrice,
+    addEditAddonRow,
+    removeEditAddonRow,
+    updateEditAddonName,
+    updateEditAddonPrice,
+    addNewPromoCode,
+    togglePromoCode,
+    deletePromoCode,
+    addNewDeliveryZone,
+    deleteDeliveryZone,
+    updateStoreStatus,
+    exportDataJson,
+    importDataJson,
     addNewCategory,
     promptEditCategory,
     deleteCategory,

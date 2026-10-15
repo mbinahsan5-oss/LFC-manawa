@@ -68,18 +68,26 @@
             },
             colors: {
               brand: {
-                dark: '#08090E',
-                card: '#141722',
-                cardBorder: '#222838',
+                dark: '#0c0e18',
+                midnight: '#131728',
+                ember: '#1e1422',
+                card: '#15192c',
+                cardHover: '#1c223c',
+                cardBorder: '#27314f',
                 gold: '#F59E0B',
                 amber: '#FBBF24',
                 red: '#E11D48',
+                crimson: '#DC2626',
+                flame: '#FF5722',
+                orange: '#EA580C',
+                emerald: '#10B981',
               }
             },
             animation: {
               'float': 'float 4s ease-in-out infinite',
               'pulse-glow': 'pulseGlow 2.5s ease-in-out infinite',
               'shimmer': 'shimmer 2.5s infinite',
+              'badge-bounce': 'badgeBounce 2s infinite',
             },
             keyframes: {
               float: {
@@ -87,11 +95,15 @@
                 '50%': { transform: 'translateY(-8px)' },
               },
               pulseGlow: {
-                '0%, 100%': { opacity: '0.4', transform: 'scale(1)' },
-                '50%': { opacity: '0.8', transform: 'scale(1.05)' },
+                '0%, 100%': { opacity: '0.5', transform: 'scale(1)' },
+                '50%': { opacity: '0.85', transform: 'scale(1.08)' },
               },
               shimmer: {
                 '100%': { transform: 'translateX(100%)' }
+              },
+              badgeBounce: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-3px)' },
               }
             }
           }
@@ -100,34 +112,78 @@
     </script>
     
     <style>
+      :root {
+        --color-bg-base: #0c0e18;
+        --glow-primary: rgba(225, 29, 72, 0.22);
+        --glow-secondary: rgba(245, 158, 11, 0.20);
+        --glow-tertiary: rgba(255, 87, 34, 0.14);
+        --card-bg: #15192c;
+        --card-border: #26314f;
+      }
+
+      /* Theme 1: Flame Crimson & Golden Honey (Default) */
+      body.theme-flame {
+        --color-bg-base: #0c0e18;
+        --glow-primary: rgba(225, 29, 72, 0.26);
+        --glow-secondary: rgba(245, 158, 11, 0.22);
+        --glow-tertiary: rgba(255, 87, 34, 0.16);
+      }
+
+      /* Theme 2: Crispy Golden Honey & Warm Embers */
+      body.theme-gold {
+        --color-bg-base: #110e0c;
+        --glow-primary: rgba(245, 158, 11, 0.28);
+        --glow-secondary: rgba(217, 119, 6, 0.24);
+        --glow-tertiary: rgba(234, 88, 12, 0.18);
+      }
+
+      /* Theme 3: Sunset Royale & Neon Ruby */
+      body.theme-sunset {
+        --color-bg-base: #0f0c1a;
+        --glow-primary: rgba(244, 63, 94, 0.28);
+        --glow-secondary: rgba(139, 92, 246, 0.24);
+        --glow-tertiary: rgba(245, 158, 11, 0.18);
+      }
+
       body {
         font-family: 'Plus Jakarta Sans', sans-serif;
-        background-color: #08090E;
+        background-color: var(--color-bg-base);
+        background-image: 
+          radial-gradient(ellipse 90% 55% at 50% -12%, var(--glow-primary), transparent 60%),
+          radial-gradient(circle 550px at 10% 20%, var(--glow-secondary), transparent 45%),
+          radial-gradient(circle 650px at 90% 40%, var(--glow-tertiary), transparent 48%),
+          radial-gradient(circle 550px at 20% 80%, var(--glow-primary), transparent 45%),
+          radial-gradient(circle 600px at 85% 85%, var(--glow-secondary), transparent 48%);
+        background-attachment: fixed;
         color: #F3F4F6;
         -webkit-tap-highlight-color: transparent;
+        transition: background-color 0.4s ease;
       }
       h1, h2, h3, h4, .font-heading {
         font-family: 'Outfit', sans-serif;
       }
       ::-webkit-scrollbar {
-        width: 6px;
-        height: 6px;
+        width: 7px;
+        height: 7px;
       }
       ::-webkit-scrollbar-track {
-        background: #08090E;
+        background: #0c0e18;
       }
       ::-webkit-scrollbar-thumb {
-        background: #222838;
-        border-radius: 4px;
+        background: #27314f;
+        border-radius: 9999px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: #F59E0B;
+        background: linear-gradient(180deg, #F59E0B, #E11D48);
       }
       .glow-amber {
-        box-shadow: 0 0 35px rgba(245, 158, 11, 0.25);
+        box-shadow: 0 0 35px rgba(245, 158, 11, 0.35);
+      }
+      .glow-red {
+        box-shadow: 0 0 35px rgba(225, 29, 72, 0.35);
       }
       .glow-border {
-        border-color: rgba(245, 158, 11, 0.4);
+        border-color: rgba(245, 158, 11, 0.5);
       }
       .no-scrollbar::-webkit-scrollbar {
         display: none;
@@ -284,7 +340,7 @@
 
     </style>
   </head>
-  <body class="bg-[#08090E] text-gray-100 min-h-screen selection:bg-amber-500 selection:text-black pb-16 sm:pb-0" id="top">
+  <body class="theme-flame bg-[#0c0e18] text-gray-100 min-h-screen selection:bg-amber-500 selection:text-black pb-16 sm:pb-0" id="top">
 
     <!-- Scroll Progress Bar -->
     <div id="scroll-progress"></div>
@@ -293,10 +349,10 @@
     <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full px-4"></div>
 
     <!-- Top Announcement Bar with Live Ticker -->
-    <div class="relative overflow-hidden bg-gradient-to-r from-red-800 via-amber-600 to-red-800 text-white text-[11px] sm:text-xs font-bold py-1.5 px-4 text-center tracking-wide flex items-center justify-between border-b border-amber-500/30">
+    <div class="relative overflow-hidden bg-gradient-to-r from-red-900 via-amber-600 to-red-900 text-white text-[11px] sm:text-xs font-bold py-1.5 px-4 text-center tracking-wide flex items-center justify-between border-b border-amber-500/40 shadow-md">
       <div class="hidden md:flex items-center gap-2">
         <span class="animate-pulse">🔥</span>
-        <span>Lahore's #1 Secret 12-Spice Crispy Chicken</span>
+        <span>LFC Lahore • 12-Spice Secret Crispy Chicken</span>
       </div>
 
       <!-- Center Live Ticker -->
@@ -307,57 +363,60 @@
         </span>
       </div>
 
-      <div class="hidden sm:flex items-center gap-2">
-        <span>Use: <span class="bg-black/40 px-2 py-0.5 rounded text-amber-300 font-mono">LFC100</span> (Rs. 100 OFF)</span>
+      <div class="hidden sm:flex items-center gap-3">
+        <span>Coupon: <span class="bg-black/50 px-2 py-0.5 rounded text-amber-300 font-mono font-black border border-amber-400/40">LFC100</span> (Rs. 100 OFF)</span>
+        <span class="text-[10px] text-amber-300 bg-black/40 px-2 py-0.5 rounded border border-amber-500/30 font-bold flex items-center gap-1">
+          <span>⚡ Fast Lahore Delivery</span>
+        </span>
       </div>
     </div>
 
-    <!-- Navigation Header -->
-    <header id="site-header" class="sticky top-0 z-40 bg-[#08090E]/90 backdrop-blur-md border-b border-gray-800/80">
+    <!-- Navigation Header with LFC Brand Replacement -->
+    <header id="site-header" class="sticky top-0 z-40 bg-[#0a0c14]/95 backdrop-blur-md border-b border-amber-500/25 shadow-2xl shadow-black/70">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between">
         
-        <!-- Brand Logo & Slogan (Controlled via Admin) -->
+        <!-- Brand Logo & Prominent LFC Header -->
         <a href="#top" class="flex items-center gap-2.5 sm:gap-3.5 group">
-          <div class="relative">
-            <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-500 to-red-600 opacity-40 blur group-hover:opacity-75 transition duration-500"></div>
-            <img src="./images/logo.png" alt="LFC Logo" class="brand-logo-img relative h-10 sm:h-12 w-auto object-contain transform group-hover:scale-105 transition" onerror="this.src='./images/logo.png'" />
+          <div class="relative flex-shrink-0">
+            <div class="absolute -inset-1.5 rounded-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 opacity-80 blur-md group-hover:opacity-100 group-hover:blur-lg transition duration-500 animate-pulse"></div>
+            <img src="./src/assets/images/regenerated_image_1792104663328.png" alt="LFC - Lahore Fried Chicken Logo" class="brand-logo-img relative h-12 w-12 sm:h-16 sm:w-16 object-cover rounded-full ring-2 ring-amber-400/90 shadow-xl shadow-amber-500/40 transform group-hover:scale-110 group-hover:rotate-2 transition-all duration-300 drop-shadow-[0_4px_14px_rgba(245,158,11,0.55)] border-2 border-amber-300/40" referrerpolicy="no-referrer" onerror="this.src='./images/logo.png'" />
           </div>
           <div>
-            <div class="text-lg sm:text-2xl font-black text-white tracking-wider flex items-center gap-1 font-heading">
-              <span>LAHORE FRIED</span>
-              <span class="text-amber-400">CHICKEN</span>
+            <div class="flex items-center gap-2">
+              <span class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 filter drop-shadow font-heading">LFC</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 border border-amber-500/40 shadow-sm">Lahore</span>
             </div>
-            <div class="text-[9px] sm:text-[11px] text-amber-500/90 font-black tracking-widest uppercase -mt-0.5 flex items-center gap-1.5">
+            <div class="text-[9px] sm:text-[11px] text-amber-300/90 font-extrabold tracking-widest uppercase -mt-0.5 flex items-center gap-1.5">
               <span>Taste The Legend</span>
-              <span class="w-1 h-1 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span class="text-emerald-400 text-[8px] font-extrabold">Open Till 2:30 AM</span>
+              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
+              <span class="text-emerald-400 text-[8px] font-black">Open Till 2:30 AM</span>
             </div>
           </div>
         </a>
 
         <!-- Desktop Navigation Links -->
-        <nav class="hidden lg:flex items-center gap-7 text-xs font-bold text-gray-300 tracking-wide uppercase">
-          <a href="#menu" class="hover:text-amber-400 transition">Menu</a>
-          <a href="#deals" class="hover:text-amber-400 transition">Deals & Combos</a>
-          <a href="#why-lfc" class="hover:text-amber-400 transition">Why LFC</a>
-          <a href="#reviews" class="hover:text-amber-400 transition">Reviews</a>
-          <a href="#branches" class="hover:text-amber-400 transition">Branches</a>
+        <nav class="hidden lg:flex items-center gap-6 text-xs font-bold text-gray-200 tracking-wide uppercase">
+          <a href="#menu" class="hover:text-amber-400 transition py-1">Menu</a>
+          <a href="#deals" class="hover:text-amber-400 transition py-1">Deals & Combos</a>
+          <a href="#why-lfc" class="hover:text-amber-400 transition py-1">Why LFC</a>
+          <a href="#reviews" class="hover:text-amber-400 transition py-1">Reviews</a>
+          <a href="#branches" class="hover:text-amber-400 transition py-1">Branches</a>
         </nav>
 
-        <!-- Right Action Buttons -->
+        <!-- Right Action Buttons (Clean & Professional: WhatsApp + Cart) -->
         <div class="flex items-center gap-2 sm:gap-3">
           
-          <!-- Direct WhatsApp Header Button (No visible phone number, click opens WhatsApp directly) -->
-          <a href="https://wa.me/923224940181?text=Hi%20LFC!%20I%20would%20like%20to%20place%20an%20order." target="_blank" rel="noopener noreferrer" class="store-wa-link flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-emerald-600/25 active:scale-95 transition" title="Chat on WhatsApp">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.158.572 4.183 1.564 5.932l-1.636 5.973 6.136-1.61c1.701.928 3.65 1.705 5.936 1.705 6.627 0 12-5.373 12-12s-5.373-12-12-12z"/></svg>
+          <!-- Direct WhatsApp Header Button -->
+          <a href="https://wa.me/923224940181?text=Hi%20LFC!%20I%20would%20like%20to%20place%20an%20order." target="_blank" rel="noopener noreferrer" class="store-wa-link flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-black text-xs sm:text-sm shadow-lg shadow-emerald-600/30 active:scale-95 transition" title="Chat on WhatsApp">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.158.572 4.183 1.564 5.932l-1.636 5.973 6.136-1.61c1.701.928 3.65 1.705 5.936 1.705 6.627 0 12-5.373 12-12s-5.373-12-12-12z"/></svg>
             <span class="hidden sm:inline">WhatsApp</span>
           </a>
 
           <!-- Cart Trigger Button -->
-          <button onclick="window.LFC.openCartDrawer()" class="cart-btn-trigger relative flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-400 text-black font-black text-xs sm:text-sm shadow-lg shadow-amber-500/20 active:scale-95 transition">
+          <button onclick="window.LFC.openCartDrawer()" class="cart-btn-trigger relative flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-400 text-black font-black text-xs sm:text-sm shadow-lg shadow-amber-500/25 active:scale-95 transition">
             <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
             <span class="cart-subtotal-badge font-heading">Rs. 0</span>
-            <span class="cart-count-badge hidden absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#08090E]">0</span>
+            <span class="cart-count-badge hidden absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#0c0e18]">0</span>
           </button>
 
         </div>
@@ -541,59 +600,62 @@
         <div class="reveal grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           
           <!-- Deal 1 -->
-          <div class="p-5 sm:p-6 rounded-3xl bg-[#141722] border border-amber-500/30 flex flex-col justify-between relative overflow-hidden group shadow-xl">
-            <span class="absolute top-4 right-4 bg-red-600 text-white font-black text-[10px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-wider shadow">Save 25%</span>
+          <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-amber-500/30 hover:border-amber-400/80 flex flex-col justify-between relative overflow-hidden group shadow-2xl hover:shadow-[0_20px_50px_rgba(245,158,11,0.18)] transition-all duration-300">
+            <span class="absolute top-4 right-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-black font-black text-[10px] sm:text-xs px-3.5 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-black/60 z-10 border border-amber-300/40">Save 25%</span>
             <div>
-              <div class="relative overflow-hidden rounded-2xl mb-4">
-                <img src="./images/hero-1.jpg" alt="Family Feast" loading="lazy" decoding="async" class="w-full h-40 sm:h-44 object-cover group-hover:scale-105 transition duration-500" onerror="this.src='./images/hero-1.jpg'"/>
+              <div class="relative overflow-hidden rounded-2xl mb-4 border border-white/10 group-hover:border-amber-500/40 transition">
+                <img src="./images/hero-1.jpg" alt="Family Feast" loading="lazy" decoding="async" class="w-full h-40 sm:h-44 object-cover group-hover:scale-108 transition duration-500" onerror="this.src='./images/hero-1.jpg'"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#181c2b] via-transparent to-transparent opacity-80"></div>
               </div>
-              <h3 class="text-lg sm:text-xl font-black text-white font-heading">Family Feast Mega Box</h3>
-              <p class="text-gray-400 text-xs mt-2 leading-relaxed">4 Crispy Zinger Burgers, 4 Pcs Golden Fried Chicken, 1 Jumbo Fries, 2 Paratha Rolls, and 1.5L Chilled Soft Drink.</p>
+              <h3 class="text-lg sm:text-xl font-black text-white font-heading group-hover:text-amber-300 transition">Family Feast Mega Box</h3>
+              <p class="text-gray-300 text-xs mt-2 leading-relaxed">4 Crispy Zinger Burgers, 4 Pcs Golden Fried Chicken, 1 Jumbo Fries, 2 Paratha Rolls, and 1.5L Chilled Soft Drink.</p>
             </div>
-            <div class="pt-4 mt-4 border-t border-gray-800 flex items-center justify-between">
+            <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between">
               <div>
-                <span class="text-[10px] sm:text-xs text-gray-500 line-through">Rs. 3,850</span>
-                <div class="text-amber-400 font-black text-xl sm:text-2xl font-heading">Rs. 2,890</div>
+                <span class="text-[10px] sm:text-xs text-gray-400 line-through">Rs. 3,850</span>
+                <div class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 font-black text-xl sm:text-2xl font-heading">Rs. 2,890</div>
               </div>
-              <button onclick="window.LFC.addToCartById(9)" class="px-4 sm:px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-black text-xs uppercase tracking-wider transition shadow-md">Order Deal</button>
+              <button onclick="window.LFC.addToCartById(9)" class="px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-xs uppercase tracking-wider transition shadow-lg shadow-amber-500/25 active:scale-95">Order Deal</button>
             </div>
           </div>
 
           <!-- Deal 2 -->
-          <div class="p-5 sm:p-6 rounded-3xl bg-[#141722] border border-gray-800 flex flex-col justify-between relative overflow-hidden group shadow-xl">
-            <span class="absolute top-4 right-4 bg-amber-600 text-white font-black text-[10px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-wider shadow">Duo Pack</span>
+          <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-amber-500/30 hover:border-amber-400/80 flex flex-col justify-between relative overflow-hidden group shadow-2xl hover:shadow-[0_20px_50px_rgba(245,158,11,0.18)] transition-all duration-300">
+            <span class="absolute top-4 right-4 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-black font-black text-[10px] sm:text-xs px-3.5 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-black/60 z-10 border border-amber-300/40">Duo Pack</span>
             <div>
-              <div class="relative overflow-hidden rounded-2xl mb-4">
-                <img src="./images/hero-4.jpg" alt="Couple Crunch" loading="lazy" decoding="async" class="w-full h-40 sm:h-44 object-cover group-hover:scale-105 transition duration-500" onerror="this.src='./images/hero-4.jpg'"/>
+              <div class="relative overflow-hidden rounded-2xl mb-4 border border-white/10 group-hover:border-amber-500/40 transition">
+                <img src="./images/hero-4.jpg" alt="Couple Crunch" loading="lazy" decoding="async" class="w-full h-40 sm:h-44 object-cover group-hover:scale-108 transition duration-500" onerror="this.src='./images/hero-4.jpg'"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#181c2b] via-transparent to-transparent opacity-80"></div>
               </div>
-              <h3 class="text-lg sm:text-xl font-black text-white font-heading">Couple Crunch Deal</h3>
-              <p class="text-gray-400 text-xs mt-2 leading-relaxed">2 Zinger Burgers, 2 Pcs Crunchy Fried Chicken, 1 Large Fries, and 2 Soft Drink cans (250ml).</p>
+              <h3 class="text-lg sm:text-xl font-black text-white font-heading group-hover:text-amber-300 transition">Couple Crunch Deal</h3>
+              <p class="text-gray-300 text-xs mt-2 leading-relaxed">2 Zinger Burgers, 2 Pcs Crunchy Fried Chicken, 1 Large Fries, and 2 Soft Drink cans (250ml).</p>
             </div>
-            <div class="pt-4 mt-4 border-t border-gray-800 flex items-center justify-between">
+            <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between">
               <div>
-                <span class="text-[10px] sm:text-xs text-gray-500 line-through">Rs. 1,850</span>
-                <div class="text-amber-400 font-black text-xl sm:text-2xl font-heading">Rs. 1,450</div>
+                <span class="text-[10px] sm:text-xs text-gray-400 line-through">Rs. 1,850</span>
+                <div class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 font-black text-xl sm:text-2xl font-heading">Rs. 1,450</div>
               </div>
-              <button onclick="window.LFC.addToCartById(10)" class="px-4 sm:px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-black text-xs uppercase tracking-wider transition shadow-md">Order Deal</button>
+              <button onclick="window.LFC.addToCartById(10)" class="px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-xs uppercase tracking-wider transition shadow-lg shadow-amber-500/25 active:scale-95">Order Deal</button>
             </div>
           </div>
 
           <!-- Deal 3 -->
-          <div class="p-5 sm:p-6 rounded-3xl bg-[#141722] border border-gray-800 flex flex-col justify-between relative overflow-hidden group shadow-xl">
-            <span class="absolute top-4 right-4 bg-emerald-600 text-white font-black text-[10px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-wider shadow">Hot Special</span>
+          <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-amber-500/30 hover:border-amber-400/80 flex flex-col justify-between relative overflow-hidden group shadow-2xl hover:shadow-[0_20px_50px_rgba(245,158,11,0.18)] transition-all duration-300">
+            <span class="absolute top-4 right-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-black font-black text-[10px] sm:text-xs px-3.5 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-black/60 z-10 border border-amber-300/40">Hot Special</span>
             <div>
-              <div class="relative overflow-hidden rounded-2xl mb-4">
-                <img src="./images/hero-3.jpg" alt="Pizza & Bucket" loading="lazy" decoding="async" class="w-full h-40 sm:h-44 object-cover group-hover:scale-105 transition duration-500" onerror="this.src='./images/hero-3.jpg'"/>
+              <div class="relative overflow-hidden rounded-2xl mb-4 border border-white/10 group-hover:border-amber-500/40 transition">
+                <img src="./images/hero-3.jpg" alt="Pizza & Bucket" loading="lazy" decoding="async" class="w-full h-40 sm:h-44 object-cover group-hover:scale-108 transition duration-500" onerror="this.src='./images/hero-3.jpg'"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#181c2b] via-transparent to-transparent opacity-80"></div>
               </div>
-              <h3 class="text-lg sm:text-xl font-black text-white font-heading">Pizza & Chicken Platter</h3>
-              <p class="text-gray-400 text-xs mt-2 leading-relaxed">1 Medium Cheesy Loaded Pizza + 5 Pcs Hot Tender Strips + 2 Garlic Dips + 2 Chilled Soft Drinks.</p>
+              <h3 class="text-lg sm:text-xl font-black text-white font-heading group-hover:text-amber-300 transition">Pizza & Chicken Platter</h3>
+              <p class="text-gray-300 text-xs mt-2 leading-relaxed">1 Medium Cheesy Loaded Pizza + 5 Pcs Hot Tender Strips + 2 Garlic Dips + 2 Chilled Soft Drinks.</p>
             </div>
-            <div class="pt-4 mt-4 border-t border-gray-800 flex items-center justify-between">
+            <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between">
               <div>
-                <span class="text-[10px] sm:text-xs text-gray-500 line-through">Rs. 2,100</span>
-                <div class="text-amber-400 font-black text-xl sm:text-2xl font-heading">Rs. 1,690</div>
+                <span class="text-[10px] sm:text-xs text-gray-400 line-through">Rs. 2,100</span>
+                <div class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 font-black text-xl sm:text-2xl font-heading">Rs. 1,690</div>
               </div>
-              <button onclick="window.LFC.addToCartById(3)" class="px-4 sm:px-5 py-2 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-black text-xs uppercase tracking-wider transition shadow-md">Order Deal</button>
+              <button onclick="window.LFC.addToCartById(3)" class="px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-xs uppercase tracking-wider transition shadow-lg shadow-amber-500/25 active:scale-95">Order Deal</button>
             </div>
           </div>
 
@@ -601,7 +663,7 @@
       </div>
     </section>
 
-    <!-- Why LFC Section -->
+    <!-- Why LFC Section (Unified Luxury Dark Gradient) -->
     <section id="why-lfc" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
         <span class="text-amber-400 text-xs font-black uppercase tracking-widest">The LFC Standard</span>
@@ -610,42 +672,42 @@
 
       <div class="reveal grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         
-        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#141722] border border-gray-800 text-center">
-          <div class="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 rounded-xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-xl sm:text-2xl">🍗</div>
-          <h3 class="font-black text-white text-xs sm:text-base font-heading mb-1 sm:mb-2">Secret 12 Spices</h3>
-          <p class="text-gray-400 text-[10px] sm:text-xs leading-relaxed">Authentic Lahori spices blended for a signature craggy crust and juicy meat inside.</p>
+        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-white/10 hover:border-amber-400/50 hover:shadow-xl hover:shadow-amber-500/10 text-center transition group">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl group-hover:scale-110 transition">🍗</div>
+          <h3 class="font-black text-white text-xs sm:text-base font-heading mb-1 sm:mb-2 group-hover:text-amber-300 transition">Secret 12 Spices</h3>
+          <p class="text-gray-300 text-[10px] sm:text-xs leading-relaxed">Authentic Lahori spices blended for a signature craggy crust and juicy meat inside.</p>
         </div>
 
-        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#141722] border border-red-500/30 text-center">
-          <div class="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 rounded-xl bg-red-500/10 border border-red-500/30 flex items-center justify-center text-red-400 text-xl sm:text-2xl">✨</div>
-          <h3 class="font-black text-white text-xs sm:text-base font-heading mb-1 sm:mb-2">100% Fresh Halal</h3>
-          <p class="text-gray-400 text-[10px] sm:text-xs leading-relaxed">Daily-sourced premium poultry, never frozen, prepared in clean kitchens.</p>
+        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-white/10 hover:border-amber-400/50 hover:shadow-xl hover:shadow-amber-500/10 text-center transition group">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl group-hover:scale-110 transition">✨</div>
+          <h3 class="font-black text-white text-xs sm:text-base font-heading mb-1 sm:mb-2 group-hover:text-amber-300 transition">100% Fresh Halal</h3>
+          <p class="text-gray-300 text-[10px] sm:text-xs leading-relaxed">Daily-sourced premium poultry, never frozen, prepared in clean kitchens.</p>
         </div>
 
-        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#141722] border border-gray-800 text-center">
-          <div class="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 rounded-xl bg-yellow-500/10 border border-yellow-500/30 flex items-center justify-center text-yellow-400 text-xl sm:text-2xl">⚡</div>
-          <h3 class="font-black text-white text-xs sm:text-base font-heading mb-1 sm:mb-2">Hot Delivery</h3>
-          <p class="text-gray-400 text-[10px] sm:text-xs leading-relaxed">Dispatched in insulated heat bags across Lahore in under 30 to 45 mins.</p>
+        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-white/10 hover:border-amber-400/50 hover:shadow-xl hover:shadow-amber-500/10 text-center transition group">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl group-hover:scale-110 transition">⚡</div>
+          <h3 class="font-black text-white text-xs sm:text-base font-heading mb-1 sm:mb-2 group-hover:text-amber-300 transition">Hot Delivery</h3>
+          <p class="text-gray-300 text-[10px] sm:text-xs leading-relaxed">Dispatched in insulated heat bags across Lahore in under 30 to 45 mins.</p>
         </div>
 
-        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-[#141722] border border-gray-800 text-center">
-          <div class="w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 rounded-xl bg-emerald-500/10 border border-emerald-500/30 flex items-center justify-center text-emerald-400 text-xl sm:text-2xl">💬</div>
-          <h3 class="font-black text-white text-xs sm:text-base font-heading mb-1 sm:mb-2">WhatsApp Order</h3>
-          <p class="text-gray-400 text-[10px] sm:text-xs leading-relaxed">Instant order bill sent right to our WhatsApp team for quick confirmation.</p>
+        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-white/10 hover:border-amber-400/50 hover:shadow-xl hover:shadow-amber-500/10 text-center transition group">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl group-hover:scale-110 transition">💬</div>
+          <h3 class="font-black text-white text-xs sm:text-base font-heading mb-1 sm:mb-2 group-hover:text-amber-300 transition">WhatsApp Order</h3>
+          <p class="text-gray-300 text-[10px] sm:text-xs leading-relaxed">Instant order bill sent right to our WhatsApp team for quick confirmation.</p>
         </div>
 
       </div>
     </section>
 
     <!-- Reviews Section -->
-    <section id="reviews" class="py-12 sm:py-16 bg-[#0B0C12] border-y border-gray-800/80">
+    <section id="reviews" class="py-12 sm:py-16 bg-gradient-to-b from-[#151424] via-[#101322] to-[#161222] border-y border-amber-500/20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 sm:mb-10">
           <div>
             <span class="text-amber-400 text-xs font-black uppercase tracking-widest">Real Customer Love</span>
             <h2 class="text-2xl sm:text-4xl font-black text-white font-heading mt-1">What Lahoris Are Saying</h2>
           </div>
-          <button onclick="window.LFC.openReviewModal()" class="px-4 py-2 rounded-xl bg-[#141722] hover:bg-gray-800 text-amber-400 border border-amber-500/30 text-xs font-bold transition flex items-center gap-1.5 self-start sm:self-auto">
+          <button onclick="window.LFC.openReviewModal()" class="px-4 py-2 rounded-xl bg-[#1a1f35] hover:bg-[#232b4a] text-amber-300 border border-amber-500/40 text-xs font-bold transition flex items-center gap-1.5 self-start sm:self-auto shadow-md">
             <span>✍️ Write a Review</span>
           </button>
         </div>
@@ -659,22 +721,28 @@
       <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
         <span class="text-amber-400 text-xs font-black uppercase tracking-widest">Dine-In • Takeaway • Delivery</span>
         <h2 class="text-2xl sm:text-4xl font-black text-white font-heading mt-1">Our Lahore Branches</h2>
-        <p class="text-gray-400 text-xs sm:text-sm mt-2">Managed in real-time by the LFC Operations Team.</p>
+        <p class="text-gray-300 text-xs sm:text-sm mt-2">Managed in real-time by the LFC Operations Team.</p>
       </div>
 
       <div id="branches-grid" class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"></div>
     </section>
 
-    <!-- Footer with Trivox Solutions Credits -->
-    <footer class="bg-[#05060A] border-t border-gray-800/80 py-10 sm:py-12 text-xs text-gray-400">
+    <!-- Footer with LFC Branding & Trivox Solutions Credits -->
+    <footer class="bg-gradient-to-b from-[#121422] to-[#080910] border-t border-amber-500/30 py-10 sm:py-12 text-xs text-gray-300">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-gray-800/80">
           <div class="flex items-center gap-3">
-            <img src="./images/logo.png" alt="LFC" class="brand-logo-img h-10 w-auto" onerror="this.src='./images/logo.png'"/>
+            <div class="relative flex-shrink-0">
+              <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-500 to-red-600 opacity-70 blur-sm"></div>
+              <img src="./src/assets/images/regenerated_image_1792104663328.png" alt="LFC Logo" class="brand-logo-img relative h-12 w-12 rounded-full object-cover ring-2 ring-amber-400/80 shadow-md shadow-amber-500/30" referrerpolicy="no-referrer" onerror="this.src='./images/logo.png'"/>
+            </div>
             <div>
-              <div class="text-white font-black text-base sm:text-lg font-heading">LAHORE FRIED CHICKEN</div>
-              <div class="text-amber-500 text-[10px] sm:text-[11px] font-bold">Taste The Legend • Serving Lahore with Pride</div>
+              <div class="text-white font-black text-xl sm:text-2xl font-heading tracking-wider flex items-center gap-2">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-red-500">LFC</span>
+                <span class="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-sans font-bold">Lahore</span>
+              </div>
+              <div class="text-amber-400 text-[10px] sm:text-[11px] font-bold">Taste The Legend • Crispy Fried Chicken, Burgers & Pizzas</div>
             </div>
           </div>
           <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-gray-300 font-bold text-xs">
@@ -687,17 +755,16 @@
           </div>
         </div>
 
-        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 text-gray-500 text-[11px]">
-          <p>© 2026 Lahore Fried Chicken (LFC). All Rights Reserved.</p>
+        <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 text-gray-400 text-[11px]">
+          <p>© 2026 LFC (Lahore Fried Chicken). All Rights Reserved. <span onclick="window.LFC.openAdminModal()" class="cursor-pointer text-gray-800 hover:text-gray-500 transition ml-2 select-none" title="Staff Gateway">•</span></p>
           
           <!-- Developer Credit -->
-          <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#141722] border border-gray-800 text-gray-300">
+          <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#181d30] border border-amber-500/20 text-gray-300">
             <span class="text-amber-400 font-bold">Developer:</span>
             <span class="font-extrabold text-white tracking-wide">Trivox solutions</span>
           </div>
         </div>
 
-      </div>
     </footer>
 
     <!-- App-like Mobile Bottom Navigation Bar -->
@@ -791,15 +858,22 @@
           </div>
 
           <!-- Customer Delivery Form -->
-          <div class="p-4 rounded-2xl bg-[#141722] border border-gray-800 space-y-2.5">
-            <h4 class="font-black text-white text-xs uppercase tracking-wider flex items-center gap-1.5 font-heading text-amber-400">
-              <span>📍</span> Delivery Information
+          <div class="p-4 rounded-2xl bg-[#141722] border border-amber-500/20 space-y-2.5">
+            <h4 class="font-black text-white text-xs uppercase tracking-wider flex items-center justify-between font-heading text-amber-400">
+              <span class="flex items-center gap-1.5"><span>📍</span> Customer & Delivery Details</span>
+              <span id="zone-eta-badge" class="text-[10px] text-emerald-400 font-bold bg-emerald-950/80 px-2 py-0.5 rounded-full border border-emerald-800/60 hidden">⏱️ 25-35 mins</span>
             </h4>
             
             <input type="text" id="checkout-name" placeholder="Full Name *" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"/>
             <input type="tel" id="checkout-phone" placeholder="Phone Number (e.g. 0322-1234567) *" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"/>
-            <textarea id="checkout-address" rows="2" placeholder="Full Delivery Address (House/Street/Area, Lahore) *" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"></textarea>
-            <input type="text" id="checkout-notes" placeholder="Special Instructions (e.g. Extra spicy, extra dip)" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"/>
+            
+            <div id="checkout-zone-container">
+              <label class="block text-[10px] font-black uppercase tracking-wider text-amber-400/90 mb-1">Select Delivery Area in Lahore</label>
+              <select id="checkout-zone-select" onchange="window.LFC.changeDeliveryZone(this.value)" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"></select>
+            </div>
+
+            <textarea id="checkout-address" rows="2" placeholder="Full Address (House / Street / Block / Landmark, Lahore) *" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"></textarea>
+            <input type="text" id="checkout-notes" placeholder="Special Instructions (e.g. extra dip, don't ring bell)" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500"/>
           </div>
 
           <!-- Bill Summary -->
@@ -854,8 +928,11 @@
           <h4 class="text-lg font-bold text-white font-heading">Security Protected</h4>
           <p class="text-gray-400 text-xs">Enter your authorization PIN to access the LFC Control Suite</p>
           <div class="max-w-xs mx-auto flex gap-2">
-            <input type="password" id="admin-pin-input" placeholder="••••" maxlength="10" class="flex-1 px-4 py-2.5 rounded-xl bg-[#08090E] border border-gray-800 text-center text-white tracking-widest text-lg focus:outline-none focus:border-amber-500"/>
+            <input type="password" id="admin-pin-input" placeholder="Enter PIN (5640)" maxlength="10" onkeydown="if(event.key==='Enter') window.LFC.submitAdminPin()" class="flex-1 px-4 py-2.5 rounded-xl bg-[#08090E] border border-gray-800 text-center text-white tracking-widest text-lg focus:outline-none focus:border-amber-500"/>
             <button onclick="window.LFC.submitAdminPin()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-black text-xs uppercase transition">Unlock</button>
+          </div>
+          <div class="text-[11px] text-gray-500 mt-2">
+            Default Admin PIN: <span class="text-amber-400 font-mono font-black">5640</span>
           </div>
         </div>
 
@@ -866,64 +943,277 @@
           <div id="tab-panel-dashboard" class="lfc-admin-dashboard space-y-5 mb-5">
             <div class="lfc-admin-welcome rounded-3xl p-5 sm:p-7 relative overflow-hidden">
               <div class="relative z-10 max-w-2xl">
-                <div class="text-[10px] sm:text-xs font-black uppercase tracking-[.24em] text-orange-200/80 mb-2">LFC CONTROL CENTER</div>
-                <h3 class="text-2xl sm:text-4xl font-black text-white tracking-tight">Your restaurant. <span class="text-orange-300">Your rules.</span></h3>
-                <p class="text-sm text-gray-300 mt-2 max-w-xl">Manage your menu, promotions, branches, brand identity and ordering settings from one place.</p>
+                <div class="text-[10px] sm:text-xs font-black uppercase tracking-[.24em] text-orange-200/80 mb-2">LFC ADVANCED CONTROL SUITE</div>
+                <h3 class="text-2xl sm:text-4xl font-black text-white tracking-tight">Your restaurant. <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-400 to-orange-400">Your rules.</span></h3>
+                <p class="text-sm text-gray-300 mt-2 max-w-xl">Live orders tracker, dish multi-options builder, promotional coupons, Lahore delivery zones, and real-time operations.</p>
               </div><div class="lfc-admin-flame" aria-hidden="true">🌶️</div>
             </div>
-            <div class="grid grid-cols-2 xl:grid-cols-4 gap-3">
-              <div class="lfc-admin-stat"><span class="lfc-stat-icon">🍗</span><span class="lfc-stat-label">Menu items</span><strong id="admin-stat-menu">—</strong><small>Products in your menu</small></div>
-              <div class="lfc-admin-stat"><span class="lfc-stat-icon">🗂️</span><span class="lfc-stat-label">Categories</span><strong id="admin-stat-categories">—</strong><small>Menu collections</small></div>
-              <div class="lfc-admin-stat"><span class="lfc-stat-icon">🎬</span><span class="lfc-stat-label">Hero slides</span><strong id="admin-stat-slides">—</strong><small>Homepage promotions</small></div>
-              <div class="lfc-admin-stat"><span class="lfc-stat-icon">📍</span><span class="lfc-stat-label">Branches</span><strong id="admin-stat-branches">—</strong><small>Customer locations</small></div>
+            
+            <div class="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-2.5 sm:gap-3">
+              <div class="lfc-admin-stat"><span class="lfc-stat-icon">💰</span><span class="lfc-stat-label">Total Revenue</span><strong id="admin-stat-revenue">Rs. 0</strong><small>Delivered orders</small></div>
+              <div class="lfc-admin-stat"><span class="lfc-stat-icon">🧾</span><span class="lfc-stat-label">Live Orders</span><strong id="admin-stat-orders">0</strong><small id="admin-stat-pending">0 Pending</small></div>
+              <div class="lfc-admin-stat"><span class="lfc-stat-icon">🍗</span><span class="lfc-stat-label">Menu Dishes</span><strong id="admin-stat-menu">—</strong><small id="admin-stat-stock">All in stock</small></div>
+              <div class="lfc-admin-stat"><span class="lfc-stat-icon">🏷️</span><span class="lfc-stat-label">Active Promos</span><strong id="admin-stat-coupons">—</strong><small>Coupons active</small></div>
+              <div class="lfc-admin-stat"><span class="lfc-stat-icon">🛵</span><span class="lfc-stat-label">Delivery Zones</span><strong id="admin-stat-zones">—</strong><small>Lahore zones</small></div>
+              <div class="lfc-admin-stat"><span class="lfc-stat-icon">⚡</span><span class="lfc-stat-label">Store Status</span><strong id="admin-stat-status" class="text-emerald-400">OPEN</strong><small>Till 02:30 AM</small></div>
             </div>
+
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-              <div class="lfc-admin-card p-4 sm:p-5"><div class="text-xs font-black uppercase tracking-widest text-gray-400 mb-3">Quick actions</div>
+              <div class="lfc-admin-card p-4 sm:p-5"><div class="text-xs font-black uppercase tracking-widest text-amber-400 mb-3 flex items-center justify-between"><span>Fast Operations</span><span class="text-[10px] text-gray-500">Live Management</span></div>
                 <div class="grid grid-cols-2 gap-2">
-                  <button onclick="window.LFC.switchAdminTab('menu')" class="lfc-quick-action"><span>🍔</span><span><b>Manage menu</b><small>Prices, photos & stock</small></span><i>↗</i></button>
-                  <button onclick="window.LFC.switchAdminTab('categories')" class="lfc-quick-action"><span>🗂️</span><span><b>Categories</b><small>Organise your dishes</small></span><i>↗</i></button>
-                  <button onclick="window.LFC.switchAdminTab('hero')" class="lfc-quick-action"><span>🔥</span><span><b>Promotions</b><small>Homepage hero slides</small></span><i>↗</i></button>
-                  <button onclick="window.LFC.switchAdminTab('branches')" class="lfc-quick-action"><span>📍</span><span><b>Branches</b><small>Locations & timings</small></span><i>↗</i></button>
-                  <button onclick="window.LFC.switchAdminTab('branding')" class="lfc-quick-action"><span>🎨</span><span><b>Brand identity</b><small>Logo & visual identity</small></span><i>↗</i></button>
-                  <button onclick="window.LFC.switchAdminTab('settings')" class="lfc-quick-action"><span>⚙️</span><span><b>Store settings</b><small>Contact & delivery rules</small></span><i>↗</i></button>
+                  <button onclick="window.LFC.switchAdminTab('orders')" class="lfc-quick-action"><span>🧾</span><span><b>Live Orders</b><small>Kitchen slips & status</small></span><i>↗</i></button>
+                  <button onclick="window.LFC.switchAdminTab('menu')" class="lfc-quick-action"><span>🍔</span><span><b>Menu & Options</b><small>Prices, sizes & add-ons</small></span><i>↗</i></button>
+                  <button onclick="window.LFC.switchAdminTab('coupons')" class="lfc-quick-action"><span>🏷️</span><span><b>Coupons & Deals</b><small>LFC100 & promotions</small></span><i>↗</i></button>
+                  <button onclick="window.LFC.switchAdminTab('zones')" class="lfc-quick-action"><span>🛵</span><span><b>Delivery Zones</b><small>Lahore rates & timings</small></span><i>↗</i></button>
+                  <button onclick="window.LFC.switchAdminTab('branding')" class="lfc-quick-action"><span>🎨</span><span><b>Brand Identity</b><small>LFC logo & styles</small></span><i>↗</i></button>
+                  <button onclick="window.LFC.switchAdminTab('settings')" class="lfc-quick-action"><span>⚙️</span><span><b>Store Settings</b><small>PIN (5640) & Backup</small></span><i>↗</i></button>
                 </div>
               </div>
-              <div class="lfc-admin-card p-4 sm:p-5"><div class="text-xs font-black uppercase tracking-widest text-gray-400 mb-3">Store management checklist</div>
-                <div class="lfc-check-row"><span class="lfc-check-dot"></span><span><b>Keep your menu fresh</b><small>Update prices, descriptions and availability.</small></span></div>
-                <div class="lfc-check-row"><span class="lfc-check-dot"></span><span><b>Promote your best deals</b><small>Refresh hero slides when offers change.</small></span></div>
-                <div class="lfc-check-row"><span class="lfc-check-dot"></span><span><b>Check customer contact details</b><small>Keep WhatsApp and branch details current.</small></span></div>
-                <div class="mt-4 p-3 rounded-2xl bg-orange-500/10 border border-orange-400/20 text-xs text-orange-100/80">💡 Changes are saved in this browser. A shared multi-device admin system requires a secure server and database.</div>
+              <div class="lfc-admin-card p-4 sm:p-5"><div class="text-xs font-black uppercase tracking-widest text-emerald-400 mb-3">Live Restaurant Status</div>
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between p-3 rounded-xl bg-[#080B14] border border-gray-800">
+                    <div>
+                      <div class="font-bold text-xs text-white">Accepting Customer Orders</div>
+                      <div class="text-[10px] text-gray-400">Controls ordering availability on website</div>
+                    </div>
+                    <select id="admin-quick-status-select" onchange="window.LFC.updateStoreStatus(this.value)" class="px-3 py-1.5 rounded-lg bg-[#141A2B] border border-gray-700 text-xs font-bold text-emerald-400 focus:outline-none">
+                      <option value="open">🟢 Store Open</option>
+                      <option value="busy">🟡 High Rush (Busy)</option>
+                      <option value="closed">🔴 Closed / Pre-Orders</option>
+                    </select>
+                  </div>
+                  <div class="p-3 rounded-2xl bg-amber-500/10 border border-amber-400/20 text-xs text-amber-200/90 flex items-center justify-between">
+                    <span>💡 Full multi-options support enabled: Portions, Spice Levels & Add-ons!</span>
+                    <button onclick="window.LFC.exportDataJson()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 font-bold text-[10px]">💾 Backup JSON</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
+
           <!-- Tabs Navigation -->
           <div class="lfc-admin-tabs flex gap-1.5 sm:gap-2 border-b border-gray-800 pb-3 overflow-x-auto no-scrollbar">
             <button id="tab-btn-dashboard" onclick="window.LFC.switchAdminTab('dashboard')" class="px-3 sm:px-4 py-2 rounded-xl font-black text-xs uppercase tracking-wider bg-amber-500 text-black shadow-md flex-shrink-0">Overview</button>
-            <button id="tab-btn-menu" onclick="window.LFC.switchAdminTab('menu')" class="px-3 sm:px-4 py-2 rounded-xl font-black text-xs uppercase tracking-wider bg-amber-500 text-black shadow-md flex-shrink-0">Menu Items</button>
+            <button id="tab-btn-orders" onclick="window.LFC.switchAdminTab('orders')" class="px-3 sm:px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800 transition flex-shrink-0 flex items-center gap-1.5">
+              <span>Live Orders</span>
+              <span id="admin-orders-badge" class="px-1.5 py-0.2 bg-red-600 text-white text-[9px] font-black rounded-full">0</span>
+            </button>
+            <button id="tab-btn-pos" onclick="window.LFC.switchAdminTab('pos')" class="px-3 sm:px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider text-emerald-400 hover:text-white hover:bg-emerald-950/60 border border-emerald-500/30 transition flex-shrink-0 flex items-center gap-1.5">
+              <span>⚡ POS Quick Order</span>
+            </button>
+            <button id="tab-btn-analytics" onclick="window.LFC.switchAdminTab('analytics')" class="px-3 sm:px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider text-purple-300 hover:text-white hover:bg-purple-950/60 border border-purple-500/30 transition flex-shrink-0 flex items-center gap-1.5">
+              <span>📊 Sales Analytics</span>
+            </button>
+            <button id="tab-btn-menu" onclick="window.LFC.switchAdminTab('menu')" class="px-3 sm:px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800 transition flex-shrink-0">Menu & Multi-Options</button>
+            <button id="tab-btn-coupons" onclick="window.LFC.switchAdminTab('coupons')" class="px-3 sm:px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800 transition flex-shrink-0">Promo Codes</button>
+            <button id="tab-btn-zones" onclick="window.LFC.switchAdminTab('zones')" class="px-3 sm:px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800 transition flex-shrink-0">Delivery Zones</button>
             <button id="tab-btn-categories" onclick="window.LFC.switchAdminTab('categories')" class="px-3 sm:px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800 transition flex-shrink-0">Categories</button>
             <button id="tab-btn-hero" onclick="window.LFC.switchAdminTab('hero')" class="px-3 sm:px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800 transition flex-shrink-0">Hero Slides</button>
             <button id="tab-btn-branches" onclick="window.LFC.switchAdminTab('branches')" class="px-3 sm:px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800 transition flex-shrink-0">Branches</button>
             <button id="tab-btn-branding" onclick="window.LFC.switchAdminTab('branding')" class="px-3 sm:px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800 transition flex-shrink-0">Logo & Identity</button>
-            <button id="tab-btn-settings" onclick="window.LFC.switchAdminTab('settings')" class="px-3 sm:px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800 transition flex-shrink-0">Settings</button>
+            <button id="tab-btn-settings" onclick="window.LFC.switchAdminTab('settings')" class="px-3 sm:px-4 py-2 rounded-xl font-bold text-xs uppercase tracking-wider text-gray-400 hover:text-white hover:bg-gray-800 transition flex-shrink-0">Settings & Backup</button>
           </div>
 
-          <!-- Tab 1: Menu Items Panel -->
-          <div id="tab-panel-menu" class="space-y-5">
-            <div class="p-4 rounded-2xl bg-[#141722] border border-gray-800 space-y-3">
-              <h4 class="font-black text-white text-xs uppercase tracking-wider text-amber-400">Add New Dish with Custom Photo</h4>
+          <!-- Tab: Live Orders Panel -->
+          <div id="tab-panel-orders" class="hidden space-y-4">
+            <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-3 p-4 rounded-2xl bg-[#141722] border border-gray-800">
+              <div class="flex-1 flex flex-col sm:flex-row items-stretch sm:items-center gap-2">
+                <input type="text" id="admin-orders-search" oninput="window.LFC.searchAdminOrders(this.value)" placeholder="🔍 Search Order #, Customer, Phone..." class="px-3.5 py-2 rounded-xl bg-[#090C16] border border-gray-700 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 w-full sm:w-64"/>
+                <div class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5">
+                  <button onclick="window.LFC.filterOrders('all')" id="order-filter-all" class="order-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-amber-500 text-black shadow flex-shrink-0">All (<span id="count-filter-all">0</span>)</button>
+                  <button onclick="window.LFC.filterOrders('new')" id="order-filter-new" class="order-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-gray-800 text-gray-300 hover:text-white flex-shrink-0">🟡 New (<span id="count-filter-new">0</span>)</button>
+                  <button onclick="window.LFC.filterOrders('preparing')" id="order-filter-preparing" class="order-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-gray-800 text-gray-300 hover:text-white flex-shrink-0">👨‍🍳 Kitchen (<span id="count-filter-preparing">0</span>)</button>
+                  <button onclick="window.LFC.filterOrders('delivery')" id="order-filter-delivery" class="order-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-gray-800 text-gray-300 hover:text-white flex-shrink-0">🛵 Delivery (<span id="count-filter-delivery">0</span>)</button>
+                  <button onclick="window.LFC.filterOrders('delivered')" id="order-filter-delivered" class="order-filter-btn px-3 py-1.5 rounded-xl text-xs font-bold bg-gray-800 text-gray-300 hover:text-white flex-shrink-0">✅ Delivered (<span id="count-filter-delivered">0</span>)</button>
+                </div>
+              </div>
+              <div class="flex items-center gap-2 flex-wrap">
+                <button onclick="window.LFC.generateTestOrder()" class="px-3 py-1.5 rounded-xl bg-amber-500/15 hover:bg-amber-500/25 text-amber-300 border border-amber-500/40 text-xs font-bold transition flex items-center gap-1">
+                  <span>⚡ +Test Order</span>
+                </button>
+                <button onclick="window.LFC.exportOrdersCsv()" class="px-3 py-1.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-emerald-400 border border-emerald-500/30 text-xs font-bold transition flex items-center gap-1.5">
+                  <span>📥 CSV</span>
+                </button>
+                <button onclick="window.LFC.clearCompletedOrders()" class="px-3 py-1.5 rounded-xl bg-red-950/60 hover:bg-red-900 text-red-300 border border-red-800/60 text-xs font-bold transition">
+                  Clear Delivered
+                </button>
+              </div>
+            </div>
+
+            <!-- Orders Cards List -->
+            <div id="admin-orders-list" class="space-y-3"></div>
+          </div>
+
+          <!-- Tab: POS Quick Order Entry (Take walk-in, counter or phone orders with multi-options) -->
+          <div id="tab-panel-pos" class="hidden space-y-5">
+            <div class="p-4 sm:p-6 rounded-2xl bg-gradient-to-br from-[#181d33] via-[#14182a] to-[#121524] border-2 border-emerald-500/40 space-y-4 shadow-xl">
+              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-gray-800 pb-3">
+                <div>
+                  <h4 class="font-black text-white text-sm sm:text-base uppercase tracking-wider text-emerald-400 flex items-center gap-2">
+                    <span>⚡</span> LFC POS Quick Order Terminal
+                  </h4>
+                  <p class="text-gray-400 text-xs mt-0.5">Rapid counter, phone, and walk-in order creation with complete portion & spice options.</p>
+                </div>
+                <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-wider bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">Live Terminal</span>
+              </div>
+
+              <!-- Form Fields -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div class="sm:col-span-2">
+                  <label class="block text-[10px] font-black uppercase text-amber-400 mb-1">Select Menu Dish *</label>
+                  <select id="pos-item-select" onchange="window.LFC.onPosDishSelect(this.value)" class="w-full px-3 py-2 rounded-xl bg-[#090c18] border border-gray-700 text-xs text-white focus:outline-none focus:border-amber-500"></select>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-black uppercase text-amber-400 mb-1">Quantity</label>
+                  <input type="number" id="pos-item-qty" min="1" max="50" value="1" oninput="window.LFC.calcPosTotal()" class="w-full px-3 py-2 rounded-xl bg-[#090c18] border border-gray-700 text-xs text-white focus:outline-none focus:border-amber-500"/>
+                </div>
+              </div>
+
+              <!-- Dynamic Multi-Options Container for POS -->
+              <div id="pos-options-container" class="p-3.5 rounded-xl bg-[#0d1020] border border-gray-800 space-y-3">
+                <div class="text-[11px] font-black uppercase tracking-wider text-amber-300 flex items-center justify-between">
+                  <span>⚙️ Select Dish Multi-Options</span>
+                  <span id="pos-base-price-badge" class="text-xs text-emerald-400 font-bold">Base: Rs. 0</span>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+                  <!-- Size Radio Group -->
+                  <div class="p-2.5 rounded-lg bg-[#14182b] border border-gray-800 space-y-1.5">
+                    <span class="font-bold text-amber-400 block text-[11px]">📏 Portion Size:</span>
+                    <div id="pos-sizes-list" class="space-y-1"></div>
+                  </div>
+
+                  <!-- Spice Level Radio Group -->
+                  <div class="p-2.5 rounded-lg bg-[#14182b] border border-gray-800 space-y-1.5">
+                    <span class="font-bold text-red-400 block text-[11px]">🌶️ Spice Level:</span>
+                    <div id="pos-spice-list" class="space-y-1"></div>
+                  </div>
+
+                  <!-- Add-ons Checkboxes -->
+                  <div class="p-2.5 rounded-lg bg-[#14182b] border border-gray-800 space-y-1.5">
+                    <span class="font-bold text-emerald-400 block text-[11px]">✨ Add-ons / Extras:</span>
+                    <div id="pos-addons-list" class="space-y-1 max-h-36 overflow-y-auto pr-1"></div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Customer & Delivery Details -->
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <div>
+                  <label class="block text-[10px] font-black uppercase text-gray-400 mb-1">Customer Name *</label>
+                  <input type="text" id="pos-customer-name" placeholder="Customer name" class="w-full px-3 py-2 rounded-xl bg-[#090c18] border border-gray-700 text-xs text-white focus:outline-none focus:border-amber-500"/>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-black uppercase text-gray-400 mb-1">Customer Phone *</label>
+                  <input type="tel" id="pos-customer-phone" placeholder="03xx-xxxxxxx" class="w-full px-3 py-2 rounded-xl bg-[#090c18] border border-gray-700 text-xs text-white focus:outline-none focus:border-amber-500"/>
+                </div>
+                <div>
+                  <label class="block text-[10px] font-black uppercase text-gray-400 mb-1">Order Mode</label>
+                  <select id="pos-order-type" onchange="window.LFC.calcPosTotal()" class="w-full px-3 py-2 rounded-xl bg-[#090c18] border border-gray-700 text-xs text-white focus:outline-none focus:border-amber-500">
+                    <option value="dinein">🍽️ Dine-In</option>
+                    <option value="pickup">🥡 Takeaway / Pickup</option>
+                    <option value="delivery">🛵 Delivery</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input type="text" id="pos-customer-address" placeholder="Address (if Delivery, otherwise leave blank)" class="w-full px-3 py-2 rounded-xl bg-[#090c18] border border-gray-700 text-xs text-white focus:outline-none focus:border-amber-500"/>
+                <input type="text" id="pos-special-notes" placeholder="Special kitchen instructions (e.g. extra crispy)" class="w-full px-3 py-2 rounded-xl bg-[#090c18] border border-gray-700 text-xs text-white focus:outline-none focus:border-amber-500"/>
+              </div>
+
+              <!-- POS Total and Action -->
+              <div class="p-3.5 rounded-xl bg-[#0c0f1e] border border-gray-800 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <div class="text-[10px] text-gray-400 font-bold uppercase">Order Total Payable</div>
+                  <div id="pos-total-display" class="text-2xl font-black text-amber-400 font-heading">Rs. 0</div>
+                </div>
+                <div class="flex gap-2">
+                  <button type="button" onclick="window.LFC.createPosOrder(false)" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-black text-xs uppercase tracking-wider shadow-lg transition active:scale-95">
+                    Save Order
+                  </button>
+                  <button type="button" onclick="window.LFC.createPosOrder(true)" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-black font-black text-xs uppercase tracking-wider shadow-lg transition active:scale-95">
+                    🖨️ Save & Print Slip
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tab: Sales & Revenue Analytics Panel -->
+          <div id="tab-panel-analytics" class="hidden space-y-5">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <div class="p-4 rounded-2xl bg-gradient-to-br from-[#1a1428] to-[#121526] border border-purple-500/30">
+                <span class="text-[10px] font-black uppercase text-purple-400 tracking-wider">Total Sales</span>
+                <div id="analytics-total-rev" class="text-2xl font-black text-white font-heading mt-1">Rs. 0</div>
+                <div class="text-[10px] text-gray-400 mt-1">Delivered orders</div>
+              </div>
+              <div class="p-4 rounded-2xl bg-gradient-to-br from-[#121f28] to-[#121526] border border-cyan-500/30">
+                <span class="text-[10px] font-black uppercase text-cyan-400 tracking-wider">Completed Orders</span>
+                <div id="analytics-total-orders" class="text-2xl font-black text-white font-heading mt-1">0</div>
+                <div id="analytics-pending-orders" class="text-[10px] text-amber-400 mt-1">0 pending</div>
+              </div>
+              <div class="p-4 rounded-2xl bg-gradient-to-br from-[#1e1714] to-[#121526] border border-amber-500/30">
+                <span class="text-[10px] font-black uppercase text-amber-400 tracking-wider">Average Order (AOV)</span>
+                <div id="analytics-aov" class="text-2xl font-black text-white font-heading mt-1">Rs. 0</div>
+                <div class="text-[10px] text-gray-400 mt-1">Per completed order</div>
+              </div>
+              <div class="p-4 rounded-2xl bg-gradient-to-br from-[#14231b] to-[#121526] border border-emerald-500/30">
+                <span class="text-[10px] font-black uppercase text-emerald-400 tracking-wider">Delivery Coverage</span>
+                <div id="analytics-zones-count" class="text-2xl font-black text-white font-heading mt-1">8 Zones</div>
+                <div class="text-[10px] text-gray-400 mt-1">Lahore delivery areas</div>
+              </div>
+            </div>
+
+            <!-- Top Selling Dishes Ranking -->
+            <div class="p-4 sm:p-5 rounded-2xl bg-[#141829] border border-gray-800 space-y-3">
+              <div class="flex items-center justify-between">
+                <h4 class="font-black text-white text-xs uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                  <span>🏆</span> Best Selling Dishes in Lahore
+                </h4>
+                <button onclick="window.LFC.exportOrdersCsv()" class="text-[11px] text-emerald-400 font-bold hover:underline">📥 Download CSV Report</button>
+              </div>
+              <div id="analytics-top-dishes" class="space-y-2"></div>
+            </div>
+          </div>
+
+          <!-- Tab: Menu Items & Multi-Options Panel -->
+          <div id="tab-panel-menu" class="hidden space-y-5">
+            <div class="p-4 rounded-2xl bg-[#141722] border border-amber-500/30 space-y-3">
+              <div class="flex items-center justify-between">
+                <h4 class="font-black text-white text-xs uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                  <span>🍗</span> Add New Dish with Multi-Options
+                </h4>
+                <span class="text-[10px] text-gray-400 font-bold">Sizes, Spice Levels & Add-ons included</span>
+              </div>
               
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <input type="text" id="new-item-name" placeholder="Dish Name (e.g. Spicy Zinger)" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
-                <select id="new-item-cat" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500">
-                  <option value="burgers">Burgers</option>
-                  <option value="rolls">Paratha Rolls</option>
-                  <option value="pizzas">Loaded Pizzas</option>
-                  <option value="buckets">Fried Buckets</option>
-                  <option value="deals">Mega Deals</option>
-                  <option value="sides">Sides & Drinks</option>
-                </select>
-                <input type="number" id="new-item-price" placeholder="Price in Rs." class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
-                <input type="text" id="new-item-badge" placeholder="Badge Tag (e.g. Bestseller, Spicy)" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+                <input type="text" id="new-item-name" placeholder="Dish Name (e.g. Supreme Crunch Burger) *" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+                <select id="new-item-cat" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"></select>
+                <input type="number" id="new-item-price" placeholder="Base Price in Rs. *" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+                <input type="text" id="new-item-badge" placeholder="Badge Tag (e.g. Bestseller, Spicy, New)" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+              </div>
+
+              <!-- Multi-Options Presets & Customizer for New Dish -->
+              <div class="p-3 rounded-xl bg-[#0A0D16] border border-gray-800/90 space-y-2">
+                <div class="text-[11px] font-black text-amber-300 uppercase tracking-wide flex items-center justify-between">
+                  <span>⚙️ Multi-Option Variations for this Dish</span>
+                  <span class="text-[9px] text-gray-500">Auto-configured with interactive customer choices</span>
+                </div>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                  <div class="p-2 rounded-lg bg-[#121624] border border-gray-800 text-[11px] text-gray-300">
+                    <span class="font-bold text-amber-400 block mb-0.5">📏 Size Variations:</span>
+                    Single (+Rs.0) / Double (+Rs.180) / Meal (+Rs.250)
+                  </div>
+                  <div class="p-2 rounded-lg bg-[#121624] border border-gray-800 text-[11px] text-gray-300">
+                    <span class="font-bold text-red-400 block mb-0.5">🌶️ Spice Levels:</span>
+                    Mild Crunchy / Hot Spicy / Ghost Fire
+                  </div>
+                  <div class="p-2 rounded-lg bg-[#121624] border border-gray-800 text-[11px] text-gray-300">
+                    <span class="font-bold text-emerald-400 block mb-0.5">✨ Add-on Extras:</span>
+                    Extra Dip (+60), Cheese (+80), Fries (+120), Drink (+90)
+                  </div>
+                </div>
               </div>
 
               <!-- Photo Upload Field with Preview -->
@@ -934,18 +1224,66 @@
                     <span>📷 Upload Dish Photo</span>
                     <input type="file" accept="image/*" class="hidden" onchange="window.LFC.setNewItemPhoto(this)"/>
                   </label>
-                  <div class="text-[10px] text-gray-500 mt-1">Select any photo from your phone or PC</div>
+                  <div class="text-[10px] text-gray-500 mt-1">Or paste URL below. Supported: PNG, JPG, WebP</div>
                 </div>
               </div>
 
               <input type="text" id="new-item-desc" placeholder="Short appetizing description" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
-              <button onclick="window.LFC.addNewMenuItem()" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-black text-xs uppercase tracking-wider transition">Add to Menu</button>
+              <button onclick="window.LFC.addNewMenuItem()" class="w-full py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 hover:from-amber-400 hover:to-orange-400 text-black font-black text-xs uppercase tracking-wider transition">Add Dish with Multi-Options</button>
             </div>
 
+            <!-- Existing Menu Items with Stock & Edit buttons -->
+            <div class="flex items-center justify-between pt-2">
+              <h4 class="font-black text-white text-xs uppercase tracking-wider text-gray-400">All Menu Dishes (<span id="admin-menu-count">0</span>)</h4>
+              <input type="text" id="admin-menu-search" oninput="window.LFC.searchAdminMenu(this.value)" placeholder="Filter dishes..." class="px-3 py-1.5 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500 w-44"/>
+            </div>
             <div id="admin-menu-list" class="space-y-2.5"></div>
           </div>
 
-          <!-- Tab 2: Categories Panel (Create & Edit Categories) -->
+          <!-- Tab: Promo Codes & Coupons Manager -->
+          <div id="tab-panel-coupons" class="hidden space-y-5">
+            <div class="p-4 rounded-2xl bg-[#141722] border border-amber-500/30 space-y-3">
+              <h4 class="font-black text-white text-xs uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                <span>🏷️</span> Create New Promotional Coupon
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <input type="text" id="new-promo-code" placeholder="Coupon Code (e.g. CRUNCH30) *" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white uppercase focus:outline-none focus:border-amber-500"/>
+                <select id="new-promo-type" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500">
+                  <option value="flat">Flat Discount (Rs.)</option>
+                  <option value="percent">Percentage Discount (%)</option>
+                </select>
+                <input type="number" id="new-promo-discount" placeholder="Discount (e.g. 100 or 15) *" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <input type="number" id="new-promo-min" placeholder="Minimum Order Amount (Rs.)" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+                <input type="text" id="new-promo-desc" placeholder="Promotion description shown to customer" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+              </div>
+              <button onclick="window.LFC.addNewPromoCode()" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-black text-xs uppercase tracking-wider transition">Create Coupon Code</button>
+            </div>
+
+            <!-- Existing Coupons List -->
+            <div id="admin-coupons-list" class="space-y-2.5"></div>
+          </div>
+
+          <!-- Tab: Delivery Zones Manager -->
+          <div id="tab-panel-zones" class="hidden space-y-5">
+            <div class="p-4 rounded-2xl bg-[#141722] border border-amber-500/30 space-y-3">
+              <h4 class="font-black text-white text-xs uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                <span>🛵</span> Add Lahore Delivery Zone
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                <input type="text" id="new-zone-name" placeholder="Zone / Area Name (e.g. Bahria Town) *" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+                <input type="number" id="new-zone-fee" placeholder="Delivery Fee in Rs. *" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+                <input type="text" id="new-zone-time" placeholder="Estimated Time (e.g. 25-35 mins) *" class="px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+              </div>
+              <button onclick="window.LFC.addNewDeliveryZone()" class="w-full py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-black text-xs uppercase tracking-wider transition">Save Delivery Zone</button>
+            </div>
+
+            <!-- Existing Zones List -->
+            <div id="admin-zones-list" class="space-y-2.5"></div>
+          </div>
+
+          <!-- Tab: Categories Panel (Create & Edit Categories) -->
           <div id="tab-panel-categories" class="hidden space-y-5">
             <div class="p-4 rounded-2xl bg-[#141722] border border-gray-800 space-y-3">
               <h4 class="font-black text-white text-xs uppercase tracking-wider text-amber-400">Add New Category</h4>
@@ -960,13 +1298,13 @@
             <div id="admin-categories-list" class="space-y-2.5"></div>
           </div>
 
-          <!-- Tab 3: Hero Slides Panel (Photo Upload + Text) -->
+          <!-- Tab: Hero Slides Panel (Photo Upload + Text) -->
           <div id="tab-panel-hero" class="hidden space-y-4">
             <p class="text-gray-400 text-xs">Preview and manage your 4 primary promotional slides with custom photos.</p>
             <div id="admin-hero-list" class="space-y-3"></div>
           </div>
 
-          <!-- Tab 4: Branch Locations Manager -->
+          <!-- Tab: Branch Locations Manager -->
           <div id="tab-panel-branches" class="hidden space-y-5">
             <div class="p-4 rounded-2xl bg-[#141722] border border-gray-800 space-y-3">
               <h4 class="font-black text-white text-xs uppercase tracking-wider text-amber-400">Add New Branch Location</h4>
@@ -985,20 +1323,24 @@
             <div id="admin-branches-list" class="space-y-2.5"></div>
           </div>
 
-          <!-- Tab 5: Branding & Site Logo Customizer -->
+          <!-- Tab: Branding & Site Logo Customizer -->
           <div id="tab-panel-branding" class="hidden space-y-4">
             <div class="p-4 rounded-2xl bg-[#141722] border border-gray-800 space-y-4">
               <h4 class="font-black text-white text-xs uppercase tracking-wider text-amber-400">Change Site Logo</h4>
               <p class="text-gray-400 text-xs">Upload your restaurant logo directly or specify a custom URL.</p>
 
-              <div class="flex items-center gap-4 p-4 rounded-xl bg-[#08090E] border border-gray-800">
-                <img id="admin-logo-preview" src="./images/logo.png" alt="Current Logo" class="h-16 w-auto object-contain bg-black/50 p-2 rounded-xl border border-gray-700"/>
+              <div class="flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-xl bg-[#08090E] border border-gray-800">
+                <img id="admin-logo-preview" src="./src/assets/images/regenerated_image_1792104663328.png" alt="Current Logo" class="h-16 w-16 rounded-full object-cover ring-2 ring-amber-400/80 shadow-md"/>
                 <div class="space-y-2">
-                  <label class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-black font-black text-xs uppercase tracking-wider cursor-pointer inline-flex items-center gap-2 transition">
-                    <span>📤 Upload Logo Image</span>
-                    <input type="file" accept="image/*" class="hidden" onchange="window.LFC.uploadCustomLogo(this)"/>
-                  </label>
-                  <div class="text-[10px] text-gray-500">PNG, SVG, or JPG format recommended</div>
+                  <div class="flex flex-wrap gap-2">
+                    <label class="px-3 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-black font-black text-xs uppercase tracking-wider cursor-pointer inline-flex items-center gap-1.5 transition">
+                      <span>📤 Upload New</span>
+                      <input type="file" accept="image/*" class="hidden" onchange="window.LFC.uploadCustomLogo(this)"/>
+                    </label>
+                    <button onclick="window.LFC.setLogoUrlManually('./src/assets/images/regenerated_image_1792104663328.png')" class="px-2.5 py-1.5 rounded-xl bg-black border border-amber-500/40 text-amber-300 hover:text-white text-[10px] font-bold">✨ Use Enhanced LFC Crest</button>
+                    <button onclick="window.LFC.setLogoUrlManually('./src/assets/images/images/logo.png')" class="px-2.5 py-1.5 rounded-xl bg-black border border-gray-700 text-gray-300 hover:text-white text-[10px] font-bold">✏️ Use Original Sketch</button>
+                  </div>
+                  <div class="text-[10px] text-gray-500">Enhanced high-res LFC emblem or original sketch logo</div>
                 </div>
               </div>
 
@@ -1012,9 +1354,30 @@
             </div>
           </div>
 
-          <!-- Tab 6: Settings Panel & Change PIN -->
+          <!-- Tab: Settings Panel & Change PIN -->
           <div id="tab-panel-settings" class="hidden space-y-5">
             
+            <!-- Store Status Controls -->
+            <div class="p-4 rounded-2xl bg-[#141722] border border-gray-800 space-y-3">
+              <h4 class="font-black text-white text-xs uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                <span>⚡</span> Store Status & Banner Announcement
+              </h4>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-bold text-gray-300 mb-1">Store Status</label>
+                  <select id="admin-setting-status" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500">
+                    <option value="open">🟢 Store Open & Taking Orders</option>
+                    <option value="busy">🟡 High Rush (Delays Expected)</option>
+                    <option value="closed">🔴 Closed / Pre-Orders Only</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-bold text-gray-300 mb-1">Top Announcement Bar Text</label>
+                  <input type="text" id="admin-setting-announcement" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+                </div>
+              </div>
+            </div>
+
             <!-- Change PIN Section -->
             <div class="p-4 rounded-2xl bg-[#141722] border border-gray-800 space-y-3">
               <h4 class="font-black text-white text-xs uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
@@ -1058,7 +1421,7 @@
               </div>
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <div>
-                  <label class="block text-xs font-bold text-gray-300 mb-1">Delivery Fee (Rs.)</label>
+                  <label class="block text-xs font-bold text-gray-300 mb-1">Standard Delivery Fee (Rs.)</label>
                   <input type="number" id="admin-setting-fee" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
                 </div>
                 <div>
@@ -1068,6 +1431,23 @@
               </div>
 
               <button onclick="window.LFC.saveAdminSettings()" class="w-full py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider transition">Save Store Settings</button>
+            </div>
+
+            <!-- Backup & Restore Data -->
+            <div class="p-4 rounded-2xl bg-[#141722] border border-gray-800 space-y-3">
+              <h4 class="font-black text-white text-xs uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                <span>💾</span> Backup & Restore Store Data
+              </h4>
+              <p class="text-gray-400 text-xs">Save all menu items, multi-options, live orders, promo codes, and branches to a JSON file or restore anytime.</p>
+              <div class="flex flex-wrap gap-2.5">
+                <button onclick="window.LFC.exportDataJson()" class="px-4 py-2 rounded-xl bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold transition flex items-center gap-1.5">
+                  <span>📥 Download Backup (JSON)</span>
+                </button>
+                <label class="px-4 py-2 rounded-xl bg-gray-800 hover:bg-gray-700 text-white text-xs font-bold cursor-pointer transition flex items-center gap-1.5">
+                  <span>📤 Restore from File</span>
+                  <input type="file" accept=".json" class="hidden" onchange="window.LFC.importDataJson(this)"/>
+                </label>
+              </div>
             </div>
 
             <!-- Danger Zone -->
@@ -1114,6 +1494,167 @@
     <button id="back-to-top" onclick="window.scrollTo({top:0, behavior:'smooth'})" aria-label="Back to top" title="Back to top">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 15l7-7 7 7" /></svg>
     </button>
+
+    <!-- Item Multi-Option Customization Modal -->
+    <div id="item-customize-modal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-[#101422] border border-amber-500/30 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+        <!-- Header with item image and close button -->
+        <div class="relative h-44 sm:h-52 bg-black flex-shrink-0">
+          <img id="cust-modal-img" src="./images/hero-1.jpg" alt="" class="w-full h-full object-cover" onerror="this.src='./images/hero-1.jpg'"/>
+          <div class="absolute inset-0 bg-gradient-to-t from-[#101422] via-[#101422]/40 to-transparent"></div>
+          <button onclick="window.LFC.closeCustomizeModal()" class="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 text-white flex items-center justify-center hover:bg-black transition">✕</button>
+          <span id="cust-modal-badge" class="absolute top-3 left-3 bg-red-600 text-white font-black text-[10px] uppercase px-2.5 py-1 rounded-md shadow-md tracking-wider">Bestseller</span>
+          <div class="absolute bottom-3 left-4 right-4">
+            <h3 id="cust-modal-title" class="text-xl sm:text-2xl font-black text-white font-heading leading-tight">Dish Name</h3>
+            <p id="cust-modal-desc" class="text-gray-300 text-xs line-clamp-2 mt-1">Dish description</p>
+          </div>
+        </div>
+
+        <!-- Scrollable Options Body -->
+        <div class="p-4 sm:p-5 overflow-y-auto space-y-4 flex-1">
+          
+          <!-- Size / Portion Variations -->
+          <div id="cust-section-sizes" class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-black text-amber-400 uppercase tracking-wider flex items-center gap-1.5">
+                <span>📏</span> Select Size / Portion
+              </label>
+              <span class="text-[10px] text-gray-400 uppercase font-bold">Required</span>
+            </div>
+            <div id="cust-sizes-list" class="grid grid-cols-1 sm:grid-cols-2 gap-2"></div>
+          </div>
+
+          <!-- Spice Level Options -->
+          <div id="cust-section-spice" class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-black text-red-400 uppercase tracking-wider flex items-center gap-1.5">
+                <span>🌶️</span> Spice Level
+              </label>
+              <span class="text-[10px] text-gray-400 uppercase font-bold">Choose 1</span>
+            </div>
+            <div id="cust-spice-list" class="flex flex-wrap gap-2"></div>
+          </div>
+
+          <!-- Add-ons / Extras -->
+          <div id="cust-section-addons" class="space-y-2">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-black text-emerald-400 uppercase tracking-wider flex items-center gap-1.5">
+                <span>✨</span> Popular Extras & Add-ons
+              </label>
+              <span class="text-[10px] text-gray-400 uppercase font-bold">Optional</span>
+            </div>
+            <div id="cust-addons-list" class="space-y-1.5"></div>
+          </div>
+
+          <!-- Special Instructions -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-black text-gray-300 uppercase tracking-wider flex items-center gap-1.5">
+              <span>📝</span> Cooking Notes
+            </label>
+            <input type="text" id="cust-special-notes" placeholder="e.g. Extra crispy, dip on the side, no mayo" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+          </div>
+
+        </div>
+
+        <!-- Footer with Stepper and Add Button -->
+        <div class="p-4 sm:p-5 border-t border-gray-800/80 bg-[#131726] flex items-center gap-3">
+          <div class="flex items-center bg-[#0B0D16] rounded-xl border border-gray-800 p-1">
+            <button onclick="window.LFC.stepCustomizeQty(-1)" class="w-8 h-8 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 font-bold transition flex items-center justify-center">−</button>
+            <span id="cust-modal-qty" class="w-8 text-center font-black text-white text-sm">1</span>
+            <button onclick="window.LFC.stepCustomizeQty(1)" class="w-8 h-8 rounded-lg text-gray-300 hover:text-white hover:bg-gray-800 font-bold transition flex items-center justify-center">+</button>
+          </div>
+
+          <button onclick="window.LFC.confirmCustomizedItem()" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-amber-500 via-orange-500 to-amber-500 hover:from-amber-400 hover:to-orange-400 text-black font-black text-xs sm:text-sm uppercase tracking-wider shadow-lg shadow-amber-500/20 active:scale-98 transition flex items-center justify-between">
+            <span>Add to Order</span>
+            <span id="cust-modal-total-btn" class="font-heading font-extrabold text-sm sm:text-base">Rs. 490</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Kitchen Order Slip / Receipt Printable Modal -->
+    <div id="receipt-modal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-4">
+      <div class="bg-white text-black rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl flex flex-col font-mono text-xs">
+        <div class="bg-amber-500 p-3.5 flex items-center justify-between font-sans">
+          <span class="font-black text-black text-sm uppercase flex items-center gap-1.5"><span>🧾</span> LFC Kitchen Receipt</span>
+          <button onclick="window.LFC.closeReceiptModal()" class="text-black hover:opacity-75 font-bold">✕</button>
+        </div>
+        <div id="receipt-modal-content" class="p-5 space-y-3 overflow-y-auto max-h-[75vh]"></div>
+        <div class="p-3 bg-gray-100 border-t border-gray-300 flex gap-2 font-sans">
+          <button onclick="window.print()" class="flex-1 py-2 rounded-xl bg-gray-900 text-white font-bold text-xs uppercase hover:bg-black transition">🖨️ Print Slip</button>
+          <button onclick="window.LFC.closeReceiptModal()" class="px-4 py-2 rounded-xl bg-gray-300 text-gray-800 font-bold text-xs uppercase hover:bg-gray-400 transition">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Admin Edit Menu Item Modal -->
+    <div id="admin-edit-item-modal" class="hidden fixed inset-0 bg-black/85 backdrop-blur-md z-50 flex items-center justify-center p-3 sm:p-4">
+      <div class="bg-[#121624] border border-amber-500/40 rounded-3xl w-full max-w-xl overflow-hidden shadow-2xl flex flex-col max-h-[92vh]">
+        <div class="p-4 border-b border-gray-800 flex items-center justify-between bg-[#151B2E]">
+          <h3 class="font-black text-amber-400 text-sm sm:text-base uppercase tracking-wider font-heading">Edit Dish & Multi-Options</h3>
+          <button onclick="window.LFC.closeEditItemModal()" class="text-gray-400 hover:text-white">✕</button>
+        </div>
+        <div class="p-4 sm:p-6 overflow-y-auto space-y-4 flex-1">
+          <input type="hidden" id="edit-item-id"/>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[10px] text-gray-400 font-bold mb-1">Dish Name *</label>
+              <input type="text" id="edit-item-name" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+            </div>
+            <div>
+              <label class="block text-[10px] text-gray-400 font-bold mb-1">Category</label>
+              <select id="edit-item-cat" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"></select>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div>
+              <label class="block text-[10px] text-gray-400 font-bold mb-1">Base Price (Rs.) *</label>
+              <input type="number" id="edit-item-price" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+            </div>
+            <div>
+              <label class="block text-[10px] text-gray-400 font-bold mb-1">Badge Tag</label>
+              <input type="text" id="edit-item-badge" placeholder="Bestseller, Spicy" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+            </div>
+            <div>
+              <label class="block text-[10px] text-gray-400 font-bold mb-1">In Stock?</label>
+              <select id="edit-item-stock" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500">
+                <option value="true">In Stock (Available)</option>
+                <option value="false">Sold Out</option>
+              </select>
+            </div>
+          </div>
+          <div>
+            <label class="block text-[10px] text-gray-400 font-bold mb-1">Description</label>
+            <textarea id="edit-item-desc" rows="2" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"></textarea>
+          </div>
+          <div>
+            <label class="block text-[10px] text-gray-400 font-bold mb-1">Image URL or Local Path</label>
+            <input type="text" id="edit-item-image" class="w-full px-3 py-2 rounded-xl bg-[#08090E] border border-gray-800 text-xs text-white focus:outline-none focus:border-amber-500"/>
+          </div>
+
+          <!-- Multi-Options Editor -->
+          <div class="p-3.5 rounded-2xl bg-[#090C16] border border-gray-800/90 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-black text-amber-400 uppercase tracking-wider">Multi-Option Sizes / Variations</span>
+              <button type="button" onclick="window.LFC.addEditSizeRow()" class="px-2.5 py-1 rounded-lg bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-bold hover:bg-amber-500/30">+ Add Size</button>
+            </div>
+            <div id="edit-sizes-container" class="space-y-2"></div>
+          </div>
+
+          <div class="p-3.5 rounded-2xl bg-[#090C16] border border-gray-800/90 space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-black text-emerald-400 uppercase tracking-wider">Multi-Option Add-ons / Extras</span>
+              <button type="button" onclick="window.LFC.addEditAddonRow()" class="px-2.5 py-1 rounded-lg bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold hover:bg-emerald-500/30">+ Add Extra</button>
+            </div>
+            <div id="edit-addons-container" class="space-y-2"></div>
+          </div>
+        </div>
+        <div class="p-4 border-t border-gray-800 bg-[#151B2E] flex gap-2">
+          <button onclick="window.LFC.saveEditedMenuItem()" class="flex-1 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-white font-black text-xs uppercase tracking-wider transition">Save Changes</button>
+          <button onclick="window.LFC.closeEditItemModal()" class="px-5 py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-gray-300 font-bold text-xs uppercase transition">Cancel</button>
+        </div>
+      </div>
+    </div>
 
     <!-- Pure Standard JavaScript Application -->
     <script src="./app.js"></script>
