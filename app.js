@@ -18,23 +18,23 @@
     whatsappNumber: '0322-4940181',
     adminPin: '5640', // Protected Master Admin PIN
     deliveryFee: 150,
-    freeDeliveryAbove: 2000,
+    freeDeliveryAbove: 1000,
     storeTiming: '12:00 PM - 02:30 AM',
     currency: 'Rs.',
     storeStatus: 'open', // 'open' | 'busy' | 'closed'
     selectedZoneId: 'gulberg',
-    announcementText: '🔥 Free Delivery in Lahore on Orders Above Rs. 2,000! | Code: LFC100 for Rs. 100 OFF'
+    announcementText: '🔥 Free Delivery in Lahore on Orders Above Rs. 1,000! | Code: LFC100 for Rs. 100 OFF'
   };
 
   const DEFAULT_ZONES = [
-    { id: 'gulberg', name: 'Gulberg & MM Alam Road', fee: 150, time: '20-30 mins' },
-    { id: 'dha', name: 'DHA Lahore (Phases 1-8)', fee: 200, time: '25-35 mins' },
-    { id: 'johar', name: 'Johar Town & Faisal Town', fee: 180, time: '25-35 mins' },
-    { id: 'modeltown', name: 'Model Town & Garden Town', fee: 160, time: '20-30 mins' },
-    { id: 'cantt', name: 'Lahore Cantt & Saddar', fee: 190, time: '25-35 mins' },
-    { id: 'bahria', name: 'Bahria Town & Raiwind Road', fee: 250, time: '35-50 mins' },
-    { id: 'mall', name: 'Mall Road, Anarkali & Old Lahore', fee: 170, time: '25-40 mins' },
-    { id: 'other', name: 'Other Areas in Lahore', fee: 220, time: '35-50 mins' }
+    { id: 'gulberg', name: 'Gulberg & MM Alam Road', fee: 150, time: 'Fast Delivery' },
+    { id: 'dha', name: 'DHA Lahore (Phases 1-8)', fee: 200, time: 'Fast Delivery' },
+    { id: 'johar', name: 'Johar Town & Faisal Town', fee: 180, time: 'Fast Delivery' },
+    { id: 'modeltown', name: 'Model Town & Garden Town', fee: 160, time: 'Fast Delivery' },
+    { id: 'cantt', name: 'Lahore Cantt & Saddar', fee: 190, time: 'Fast Delivery' },
+    { id: 'bahria', name: 'Bahria Town & Raiwind Road', fee: 250, time: 'Fast Delivery' },
+    { id: 'mall', name: 'Mall Road, Anarkali & Old Lahore', fee: 170, time: 'Fast Delivery' },
+    { id: 'other', name: 'Other Areas in Lahore', fee: 220, time: 'Fast Delivery' }
   ];
 
   const DEFAULT_PROMOS = [
@@ -547,6 +547,9 @@
         if (key === 'settings') {
           merged.adminPin = '5640';
           merged.logoUrl = './images/logo.png';
+          if (!merged.freeDeliveryAbove || merged.freeDeliveryAbove === 2000 || merged.freeDeliveryAbove === 1500) {
+            merged.freeDeliveryAbove = 1000;
+          }
         }
         return merged;
       }
@@ -694,7 +697,7 @@
     const subtotal = getCartSubtotal();
     if (subtotal === 0) return 0;
     if (orderType !== 'delivery') return 0;
-    if (subtotal >= (settings.freeDeliveryAbove || 2000)) return 0;
+    if (subtotal >= (settings.freeDeliveryAbove || 1000)) return 0;
     const zone = getCurrentDeliveryZone();
     return Number(zone.fee) || Number(settings.deliveryFee) || 150;
   }
