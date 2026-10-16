@@ -3496,10 +3496,10 @@
     showToast('Thank you for reviewing LFC!');
   }
 
-  // --- URL Hash Listener for Admin Access: #AdminLFC1 ---
+  // --- URL Hash Listener for Admin Access: #admin, #AdminLFC1, #5640 ---
   function checkAdminUrlHash() {
-    const hash = window.location.hash;
-    if (hash === '#AdminLFC1' || hash.toLowerCase() === '#adminlfc1') {
+    const hash = (window.location.hash || '').toLowerCase();
+    if (hash === '#admin' || hash === '#adminpanel' || hash === '#adminlfc1' || hash === '#5640') {
       openAdminModal();
     }
   }
@@ -3676,6 +3676,8 @@
     changeAdminPin,
     switchAdminTab,
     filterOrders,
+    searchAdminOrders,
+    generateTestOrder,
     updateOrderStatus,
     exportOrdersCsv,
     clearCompletedOrders,
