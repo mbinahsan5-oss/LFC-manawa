@@ -13,7 +13,7 @@
     storeName: 'LFC',
     fullName: 'Lahore Fried Chicken (LFC)',
     tagline: 'Taste the Legend',
-    logoUrl: './src/assets/images/regenerated_image_1792104663328.png',
+    logoUrl: './images/logo.png',
     phoneCallNumber: '0322-4940181',
     whatsappNumber: '0322-4940181',
     adminPin: '5640', // Protected Master Admin PIN
@@ -545,14 +545,28 @@
       if (typeof fallback === 'object' && fallback !== null && !Array.isArray(fallback)) {
         const merged = Object.assign({}, fallback, parsed);
         if (key === 'settings') {
-          if (!merged.adminPin || merged.adminPin === '1234') {
-            merged.adminPin = '5640';
-          }
-          if (!merged.logoUrl || merged.logoUrl === './images/logo.png' || merged.logoUrl === './src/assets/images/lfc_brand_logo_1792104493306.jpg') {
-            merged.logoUrl = './src/assets/images/regenerated_image_1792104663328.png';
-          }
+          merged.adminPin = '5640';
+          merged.logoUrl = './images/logo.png';
         }
         return merged;
+      }
+      if (key === 'menu_items' && Array.isArray(parsed)) {
+        return parsed.map((item, idx) => {
+          let img = item.image || './images/hero-1.jpg';
+          if (!img || img.includes('src/assets') || img.includes('regenerated')) {
+            img = item.cat === 'pizzas' ? './images/hero-3.jpg' : item.cat === 'rolls' ? './images/hero-2.jpg' : item.cat === 'buckets' ? './images/hero-4.jpg' : './images/hero-1.jpg';
+          }
+          return {
+            ...item,
+            image: img
+          };
+        });
+      }
+      if (key === 'hero_slides' && Array.isArray(parsed)) {
+        return parsed.map((s, idx) => ({
+          ...s,
+          image: s.image && !s.image.includes('src/assets') ? s.image : (idx === 1 ? './images/hero-2.jpg' : idx === 2 ? './images/hero-3.jpg' : idx === 3 ? './images/hero-4.jpg' : './images/hero-1.jpg')
+        }));
       }
       return parsed;
     } catch (e) {
@@ -730,7 +744,13 @@
     const modalBadge = document.getElementById('cust-modal-badge');
     const notesInput = document.getElementById('cust-special-notes');
 
-    if (modalImg) modalImg.src = item.image;
+    if (modalImg) {
+      modalImg.src = item.image;
+      modalImg.onerror = () => {
+        modalImg.onerror = null;
+        modalImg.src = './images/hero-1.jpg';
+      };
+    }
     if (modalTitle) modalTitle.textContent = item.name;
     if (modalDesc) modalDesc.textContent = item.desc;
     if (modalBadge) {
@@ -1034,29 +1054,29 @@
             const noteTag = i.specialNotes ? `Note: "${i.specialNotes}"` : '';
 
             return `
-            <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-[#141826] border border-gray-800 shadow-sm hover:border-amber-500/40 transition">
-              <img src="${i.image}" alt="${i.name}" loading="lazy" decoding="async" class="w-14 h-14 rounded-xl object-cover bg-black flex-shrink-0 border border-gray-800" onerror="this.src='./images/hero-1.jpg'"/>
+            <div class="flex items-start gap-3 p-3.5 rounded-2xl bg-white border border-amber-200/90 shadow-sm hover:border-amber-400 transition">
+              <img src="${i.image}" alt="${i.name}" loading="lazy" decoding="async" class="w-14 h-14 rounded-xl object-cover bg-amber-50 flex-shrink-0 border border-amber-200" onerror="this.onerror=null; this.src='./images/hero-1.jpg';"/>
               <div class="flex-1 min-w-0">
-                <h4 class="font-black text-xs sm:text-sm text-white truncate font-heading">${i.name}</h4>
-                <div class="text-[11px] text-amber-400 font-black mt-0.5">Rs. ${(i.price * i.qty).toLocaleString()}</div>
+                <h4 class="font-black text-xs sm:text-sm text-gray-900 truncate font-heading">${i.name}</h4>
+                <div class="text-[11px] text-amber-700 font-black mt-0.5">Rs. ${(i.price * i.qty).toLocaleString()}</div>
                 
                 <!-- Multi-Options Details -->
                 <div class="mt-1 space-y-0.5 text-[10px]">
                   ${
                     sizeTag || spiceTag
-                      ? `<div class="text-amber-300 font-bold flex items-center gap-1"><span>📏 ${sizeTag}</span> • <span>🌶️ ${spiceTag}</span></div>`
+                      ? `<div class="text-amber-800 font-bold flex items-center gap-1"><span>📏 ${sizeTag}</span> • <span>🌶️ ${spiceTag}</span></div>`
                       : ''
                   }
-                  ${addonsText ? `<div class="text-emerald-400 font-medium">${addonsText}</div>` : ''}
-                  ${noteTag ? `<div class="text-gray-400 italic">${noteTag}</div>` : ''}
+                  ${addonsText ? `<div class="text-emerald-700 font-medium">${addonsText}</div>` : ''}
+                  ${noteTag ? `<div class="text-gray-500 italic">${noteTag}</div>` : ''}
                 </div>
               </div>
-              <div class="flex items-center bg-[#0B0D16] rounded-xl border border-gray-800 p-1">
-                <button onclick="window.LFC.updateCartItemQty('${i.id}', -1)" class="w-6 h-6 flex items-center justify-center rounded text-gray-300 hover:text-white hover:bg-gray-800 text-sm font-bold transition">−</button>
-                <span class="w-6 text-center font-black text-xs text-white">${i.qty}</span>
-                <button onclick="window.LFC.updateCartItemQty('${i.id}', 1)" class="w-6 h-6 flex items-center justify-center rounded text-gray-300 hover:text-white hover:bg-gray-800 text-sm font-bold transition">+</button>
+              <div class="flex items-center bg-amber-50 rounded-xl border border-amber-200 p-1">
+                <button onclick="window.LFC.updateCartItemQty('${i.id}', -1)" class="w-6 h-6 flex items-center justify-center rounded text-gray-700 hover:text-slate-950 hover:bg-amber-200 text-sm font-bold transition">−</button>
+                <span class="w-6 text-center font-black text-xs text-slate-950">${i.qty}</span>
+                <button onclick="window.LFC.updateCartItemQty('${i.id}', 1)" class="w-6 h-6 flex items-center justify-center rounded text-gray-700 hover:text-slate-950 hover:bg-amber-200 text-sm font-bold transition">+</button>
               </div>
-              <button onclick="window.LFC.removeCartItem('${i.id}')" class="text-gray-500 hover:text-red-400 p-1 transition" title="Remove">
+              <button onclick="window.LFC.removeCartItem('${i.id}')" class="text-gray-400 hover:text-red-500 p-1 transition" title="Remove">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
               </button>
             </div>
@@ -1165,10 +1185,11 @@
   // --- Dynamic Logo, Contact & Store Status Sync ---
   function updateBrandLogos() {
     const logoImgs = document.querySelectorAll('.brand-logo-img');
-    const safeLogo = settings && settings.logoUrl ? settings.logoUrl : './src/assets/images/regenerated_image_1792104663328.png';
+    const safeLogo = settings && settings.logoUrl ? settings.logoUrl : './images/logo.png';
     logoImgs.forEach((img) => {
       img.src = safeLogo;
       img.onerror = () => {
+        img.onerror = null;
         img.src = './images/logo.png';
       };
     });
@@ -1232,10 +1253,15 @@
 
     if (imgEl) {
       imgEl.classList.add('scale-95', 'opacity-0');
-      imgEl.src = slide.image;
+      imgEl.onerror = () => {
+        imgEl.onerror = null;
+        imgEl.src = './images/hero-1.jpg';
+        imgEl.classList.remove('scale-95', 'opacity-0');
+      };
       imgEl.onload = () => {
         imgEl.classList.remove('scale-95', 'opacity-0');
       };
+      imgEl.src = slide.image;
     }
 
     renderHeroThumbnails();
@@ -1250,19 +1276,19 @@
         (s, idx) => `
         <button 
           onclick="window.LFC.goToHeroSlide(${idx})"
-          class="relative flex items-center gap-2 p-1.5 sm:p-2 rounded-xl transition-all duration-300 text-left border ${
+          class="relative flex items-center gap-1.5 sm:gap-2 p-1.5 sm:p-2 rounded-xl transition-all duration-300 text-left border cursor-pointer flex-shrink-0 ${
             idx === activeSlideIndex
-              ? 'bg-amber-500/20 border-amber-400 shadow-lg shadow-amber-500/20 scale-105'
-              : 'bg-[#141826]/90 border-gray-800/80 hover:border-gray-700 opacity-75 hover:opacity-100'
+              ? 'bg-amber-100/90 border-amber-400 shadow-md shadow-amber-500/20 scale-102 ring-1 ring-amber-400'
+              : 'bg-white/90 border-amber-200/90 hover:border-amber-300 opacity-80 hover:opacity-100 shadow-xs'
           }">
-          <img src="${s.image}" alt="" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-cover bg-black flex-shrink-0" onerror="this.src='./images/hero-1.jpg'"/>
-          <div class="hidden md:block pr-2">
-            <div class="text-[11px] font-black text-white leading-tight truncate max-w-[100px]">${s.highlight}</div>
-            <div class="text-[10px] text-amber-400 font-extrabold">${s.priceTag}</div>
+          <img src="${s.image}" alt="" class="w-8 h-8 sm:w-10 sm:h-10 rounded-lg object-cover flex-shrink-0" onerror="this.src='./images/hero-1.jpg'"/>
+          <div class="pr-1 sm:pr-2">
+            <div class="text-[10px] sm:text-[11px] font-black text-gray-950 leading-tight truncate max-w-[85px] sm:max-w-[110px] font-heading">${s.highlight}</div>
+            <div class="text-[9px] sm:text-[10px] text-amber-700 font-extrabold">${s.priceTag}</div>
           </div>
           ${
             idx === activeSlideIndex
-              ? '<span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-400 animate-ping"></span>'
+              ? '<span class="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-amber-500 animate-ping"></span>'
               : ''
           }
         </button>
@@ -1307,10 +1333,10 @@
     container.innerHTML = categories
       .map(
         (c) => `
-        <button onclick="window.LFC.setCategory('${c.id}')" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap transition-all duration-200 flex-shrink-0 ${
+        <button onclick="window.LFC.setCategory('${c.id}')" class="px-4 sm:px-5 py-2 sm:py-2.5 rounded-xl font-black text-xs sm:text-sm whitespace-nowrap transition-all duration-200 flex-shrink-0 cursor-pointer ${
           activeCategory === c.id
-            ? 'bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-black shadow-lg shadow-amber-500/25 scale-105'
-            : 'bg-gradient-to-b from-[#181c2b] to-[#0f111a] text-gray-300 hover:text-white hover:border-amber-500/40 border border-white/10'
+            ? 'bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 shadow-md shadow-amber-400/30 scale-105 border border-yellow-300'
+            : 'bg-white text-gray-800 hover:text-amber-800 hover:border-amber-400 border border-amber-200/90 shadow-sm font-bold'
         }">
           ${c.name}
         </button>
@@ -1347,19 +1373,19 @@
       .map((item) => {
         const spicinessDots =
           item.spiciness > 0
-            ? `<div class="hidden sm:flex items-center gap-1 text-[10px] text-amber-200 font-bold bg-neutral-900/90 px-2 py-0.5 rounded-full border border-amber-500/30">
+            ? `<div class="hidden sm:flex items-center gap-1 text-[10px] text-amber-900 font-bold bg-amber-100/90 px-2 py-0.5 rounded-full border border-amber-300">
                 <span>🌶️</span><span>${'🔥'.repeat(item.spiciness)}</span>
                </div>`
             : '';
 
         const badgeHtml = item.badge
-          ? `<span class="absolute top-2.5 left-2.5 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-black font-black text-[9px] sm:text-[10px] uppercase px-2.5 py-0.5 rounded-lg shadow-xl shadow-black/80 tracking-wider z-10 border border-amber-300/40 backdrop-blur-sm">
+          ? `<span class="absolute top-2.5 left-2.5 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 font-black text-[9px] sm:text-[10px] uppercase px-2.5 py-0.5 rounded-lg shadow-md tracking-wider z-10 border border-yellow-300">
               ${item.badge}
              </span>`
           : '';
 
         const stockOverlay = !item.inStock
-          ? `<div class="absolute inset-0 bg-black/85 backdrop-blur-[2px] flex items-center justify-center rounded-3xl z-20">
+          ? `<div class="absolute inset-0 bg-slate-950/80 backdrop-blur-[2px] flex items-center justify-center rounded-3xl z-20">
               <span class="bg-red-600 text-white font-black text-[10px] sm:text-xs px-3 py-1 rounded-full uppercase tracking-wider">Sold Out</span>
              </div>`
           : '';
@@ -1368,46 +1394,46 @@
           (item.sizes && item.sizes.length > 1) || (item.addons && item.addons.length > 0);
 
         return `
-          <div class="group relative bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] rounded-3xl border border-white/10 hover:border-amber-400/60 hover:shadow-[0_20px_45px_rgba(245,158,11,0.18)] transition-all duration-300 flex flex-col overflow-hidden">
+          <div class="group relative bg-white rounded-[26px] border-2 border-amber-200/90 hover:border-amber-400 shadow-[0_10px_30px_-5px_rgba(245,158,11,0.12)] hover:shadow-[0_20px_45px_-5px_rgba(245,158,11,0.25)] transition-all duration-300 flex flex-col overflow-hidden hover:-translate-y-1.5">
             ${stockOverlay}
             
-            <div class="relative aspect-[4/3] sm:h-48 overflow-hidden bg-black flex-shrink-0 cursor-pointer" onclick="window.LFC.openCustomizeModal(${item.id})">
+            <div class="relative aspect-[4/3] sm:h-52 overflow-hidden bg-amber-50 flex-shrink-0 cursor-pointer" onclick="window.LFC.openCustomizeModal(${item.id})">
               ${badgeHtml}
-              <img src="${item.image}" alt="${item.name}" loading="lazy" decoding="async" class="w-full h-full object-cover transform group-hover:scale-108 transition-all duration-500" onerror="this.src='./images/hero-1.jpg'"/>
-              <div class="absolute inset-0 bg-gradient-to-t from-[#181c2b] via-black/30 to-transparent opacity-90"></div>
+              <img src="${item.image}" alt="${item.name}" loading="lazy" decoding="async" class="w-full h-full object-cover transform group-hover:scale-108 transition-all duration-500" onerror="this.onerror=null; this.src='./images/hero-1.jpg';"/>
+              <div class="absolute inset-0 bg-gradient-to-t from-white/90 via-transparent to-transparent opacity-60"></div>
             </div>
 
-            <div class="p-3.5 sm:p-5 flex-1 flex flex-col justify-between">
+            <div class="p-4 sm:p-5 flex-1 flex flex-col justify-between">
               <div>
                 <div class="flex items-start justify-between gap-1 mb-1.5">
-                  <h3 onclick="window.LFC.openCustomizeModal(${item.id})" class="font-extrabold text-sm sm:text-base text-white group-hover:text-amber-300 transition leading-snug line-clamp-1 font-heading cursor-pointer">${item.name}</h3>
+                  <h3 onclick="window.LFC.openCustomizeModal(${item.id})" class="font-extrabold text-sm sm:text-base text-gray-900 group-hover:text-amber-600 transition leading-snug line-clamp-1 font-heading cursor-pointer">${item.name}</h3>
                   ${spicinessDots}
                 </div>
-                <p class="text-gray-400 text-[11px] sm:text-xs line-clamp-2 leading-relaxed mb-3">${item.desc}</p>
+                <p class="text-gray-600 text-[11px] sm:text-xs line-clamp-2 leading-relaxed mb-3">${item.desc}</p>
                 
                 ${
                   hasMultiOptions
-                    ? `<div class="inline-flex items-center gap-1.5 text-[9px] font-bold text-amber-300 bg-gradient-to-r from-amber-500/15 to-transparent border border-amber-500/30 px-2.5 py-0.5 rounded-full mb-2.5">
-                        <span class="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse"></span>
+                    ? `<div class="inline-flex items-center gap-1.5 text-[9px] font-bold text-amber-900 bg-amber-50 border border-amber-300/80 px-2.5 py-0.5 rounded-full mb-2.5">
+                        <span class="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse"></span>
                         <span>Portions, Spiciness & Extras</span>
                        </div>`
                     : ''
                 }
               </div>
 
-              <div class="pt-3 border-t border-white/10 flex items-center justify-between gap-2 mt-auto">
+              <div class="pt-3 border-t border-amber-100 flex items-center justify-between gap-2 mt-auto">
                 <div>
-                  <span class="text-[9px] sm:text-[10px] text-gray-400 uppercase font-bold tracking-wider block">From</span>
-                  <div class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 font-black text-base sm:text-xl tracking-tight font-heading">Rs. ${item.price.toLocaleString()}</div>
+                  <span class="text-[9px] sm:text-[10px] text-gray-500 uppercase font-bold tracking-wider block">From</span>
+                  <div class="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 font-black text-base sm:text-xl tracking-tight font-heading">Rs. ${item.price.toLocaleString()}</div>
                 </div>
 
                 <button 
                   onclick="window.LFC.openCustomizeModal(${item.id})"
                   ${!item.inStock ? 'disabled' : ''}
-                  class="flex items-center gap-1.5 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl font-black text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 ${
+                  class="flex items-center gap-1.5 px-4 sm:px-4.5 py-2 sm:py-2.5 rounded-xl font-black text-[11px] sm:text-xs uppercase tracking-wider transition-all duration-200 cursor-pointer ${
                     item.inStock
-                      ? 'bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black shadow-lg shadow-amber-500/25 active:scale-95'
-                      : 'bg-gray-800 text-gray-500 cursor-not-allowed'
+                      ? 'bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 hover:from-amber-300 hover:to-yellow-200 text-slate-950 shadow-md shadow-amber-400/30 active:scale-95'
+                      : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }">
                   <span class="text-sm font-bold">+</span>
                   <span>Order</span>
@@ -1459,26 +1485,26 @@
     grid.innerHTML = reviews
       .map(
         (r) => `
-        <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-white/10 hover:border-amber-400/50 hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-300 flex flex-col justify-between">
+        <div class="p-5 sm:p-6 rounded-3xl bg-white border border-amber-200/90 hover:border-amber-400 hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300 flex flex-col justify-between shadow-sm">
           <div>
             <div class="flex items-center justify-between mb-3">
-              <div class="flex text-amber-400 text-xs sm:text-sm">
+              <div class="flex text-amber-500 text-xs sm:text-sm">
                 ${'★'.repeat(r.rating)}${'☆'.repeat(5 - r.rating)}
               </div>
-              <span class="text-[11px] text-gray-500">${r.date}</span>
+              <span class="text-[11px] text-gray-500 font-medium">${r.date}</span>
             </div>
-            <p class="text-gray-300 text-xs sm:text-sm leading-relaxed mb-4 italic">"${r.comment}"</p>
+            <p class="text-gray-700 text-xs sm:text-sm leading-relaxed mb-4 italic">"${r.comment}"</p>
           </div>
-          <div class="flex items-center gap-3 pt-3 border-t border-white/10">
-            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-amber-500 to-yellow-400 flex items-center justify-center font-black text-black text-xs sm:text-sm shadow-md">
+          <div class="flex items-center gap-3 pt-3 border-t border-amber-100">
+            <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-gradient-to-tr from-amber-400 to-yellow-300 flex items-center justify-center font-black text-slate-950 text-xs sm:text-sm shadow-sm border border-amber-300">
               ${r.name.charAt(0)}
             </div>
             <div>
-              <div class="font-bold text-xs sm:text-sm text-white">${r.name}</div>
-              <div class="text-[10px] sm:text-xs text-amber-400/90 flex items-center gap-1">
+              <div class="font-bold text-xs sm:text-sm text-gray-900">${r.name}</div>
+              <div class="text-[10px] sm:text-xs text-amber-800 flex items-center gap-1 font-medium">
                 <span>📍 ${r.location}</span>
-                <span class="text-gray-600">•</span>
-                <span class="text-emerald-400 font-bold">Verified Lahori</span>
+                <span class="text-gray-400">•</span>
+                <span class="text-emerald-600 font-bold">Verified Lahori</span>
               </div>
             </div>
           </div>
@@ -1498,32 +1524,32 @@
         const safeBranchPhone = b.phone ? String(b.phone) : '0322-4940181';
         const cleanBranchPhone = safeBranchPhone.replace(/[^0-9]/g, '');
         return `
-        <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-white/10 hover:border-amber-400/50 hover:shadow-2xl hover:shadow-amber-500/10 transition-all duration-300 flex flex-col justify-between">
+        <div class="p-5 sm:p-6 rounded-3xl bg-white border border-amber-200/90 hover:border-amber-400 hover:shadow-xl hover:shadow-amber-500/10 transition-all duration-300 flex flex-col justify-between shadow-sm">
           <div>
             <div class="flex items-center justify-between mb-2">
-              <h3 class="font-extrabold text-white text-sm sm:text-base font-heading">${b.name}</h3>
-              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wide bg-emerald-950/80 text-emerald-400 border border-emerald-800/60">
+              <h3 class="font-extrabold text-gray-900 text-sm sm:text-base font-heading">${b.name}</h3>
+              <span class="px-2.5 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wide bg-emerald-100 text-emerald-800 border border-emerald-300">
                 Open Now
               </span>
             </div>
-            <p class="text-gray-400 text-xs leading-relaxed mb-4">${b.address}</p>
-            <div class="space-y-1.5 text-xs text-gray-300 mb-5">
+            <p class="text-gray-600 text-xs leading-relaxed mb-4">${b.address}</p>
+            <div class="space-y-1.5 text-xs text-gray-700 mb-5">
               <div class="flex items-center gap-2">
-                <span class="text-amber-400 font-bold">🕒 Hours:</span>
+                <span class="text-amber-700 font-bold">🕒 Hours:</span>
                 <span>${b.timings}</span>
               </div>
               <div class="flex items-center gap-2">
-                <span class="text-amber-400 font-bold">📞 Phone:</span>
-                <a href="tel:${cleanBranchPhone}" class="hover:text-amber-400 font-bold underline decoration-dotted">${safeBranchPhone}</a>
+                <span class="text-amber-700 font-bold">📞 Phone:</span>
+                <a href="tel:${cleanBranchPhone}" class="text-amber-700 hover:text-amber-900 font-bold underline decoration-dotted">${safeBranchPhone}</a>
               </div>
             </div>
           </div>
 
-          <div class="flex gap-2 pt-3 border-t border-white/10">
-            <a href="tel:${cleanBranchPhone}" class="flex-1 text-center py-2.5 rounded-xl bg-gray-800 hover:bg-gray-700 text-white font-bold text-xs transition">
+          <div class="flex gap-2 pt-3 border-t border-amber-100">
+            <a href="tel:${cleanBranchPhone}" class="flex-1 text-center py-2.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-300 font-bold text-xs transition">
               Call Branch
             </a>
-            <a href="${b.mapUrl}" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2.5 rounded-xl bg-gradient-to-r from-amber-500/15 to-yellow-500/15 hover:from-amber-500/25 hover:to-yellow-500/25 text-amber-300 border border-amber-500/30 font-bold text-xs transition">
+            <a href="${b.mapUrl}" target="_blank" rel="noopener noreferrer" class="flex-1 text-center py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-bold text-xs shadow-sm transition">
               Directions ↗
             </a>
           </div>
@@ -1763,7 +1789,8 @@
     if (!modal) return;
     modal.classList.add('hidden');
 
-    if (window.location.hash.toLowerCase() === '#adminlfc1') {
+    const h = (window.location.hash || '').toLowerCase();
+    if (h.includes('admin') || h.includes('5640')) {
       try {
         history.replaceState(null, null, window.location.pathname + window.location.search);
       } catch (e) {
@@ -3496,10 +3523,24 @@
     showToast('Thank you for reviewing LFC!');
   }
 
-  // --- URL Hash Listener for Admin Access: #admin, #AdminLFC1, #5640 ---
+  // --- URL Hash Listener for Admin Access: #admin, #admin-login, #adminpanel, ?admin=true, /admin ---
   function checkAdminUrlHash() {
     const hash = (window.location.hash || '').toLowerCase();
-    if (hash === '#admin' || hash === '#adminpanel' || hash === '#adminlfc1' || hash === '#5640') {
+    const search = (window.location.search || '').toLowerCase();
+    const pathname = (window.location.pathname || '').toLowerCase();
+    if (
+      hash === '#admin' ||
+      hash === '#admin-login' ||
+      hash === '#adminlogin' ||
+      hash === '#adminpanel' ||
+      hash === '#admin-panel' ||
+      hash === '#adminlfc1' ||
+      hash === '#5640' ||
+      hash === '#lfcadmin' ||
+      search.includes('admin') ||
+      search.includes('5640') ||
+      pathname.endsWith('/admin')
+    ) {
       openAdminModal();
     }
   }
@@ -3608,9 +3649,10 @@
       });
     }
 
-    // Check URL hash for #AdminLFC1
+    // Check URL hash for admin access
     checkAdminUrlHash();
     window.addEventListener('hashchange', checkAdminUrlHash);
+    window.addEventListener('popstate', checkAdminUrlHash);
 
     // Keyboard shortcuts: Alt+A or Ctrl+Shift+L opens admin; ESC closes overlays
     window.addEventListener('keydown', (e) => {

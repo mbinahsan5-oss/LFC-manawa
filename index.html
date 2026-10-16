@@ -113,74 +113,49 @@
     
     <style>
       :root {
-        --color-bg-base: #0c0e18;
-        --glow-primary: rgba(225, 29, 72, 0.22);
-        --glow-secondary: rgba(245, 158, 11, 0.20);
-        --glow-tertiary: rgba(255, 87, 34, 0.14);
-        --card-bg: #15192c;
-        --card-border: #26314f;
-      }
-
-      /* Theme 1: Flame Crimson & Golden Honey (Default) */
-      body.theme-flame {
-        --color-bg-base: #0c0e18;
-        --glow-primary: rgba(225, 29, 72, 0.26);
-        --glow-secondary: rgba(245, 158, 11, 0.22);
-        --glow-tertiary: rgba(255, 87, 34, 0.16);
-      }
-
-      /* Theme 2: Crispy Golden Honey & Warm Embers */
-      body.theme-gold {
-        --color-bg-base: #110e0c;
-        --glow-primary: rgba(245, 158, 11, 0.28);
-        --glow-secondary: rgba(217, 119, 6, 0.24);
-        --glow-tertiary: rgba(234, 88, 12, 0.18);
-      }
-
-      /* Theme 3: Sunset Royale & Neon Ruby */
-      body.theme-sunset {
-        --color-bg-base: #0f0c1a;
-        --glow-primary: rgba(244, 63, 94, 0.28);
-        --glow-secondary: rgba(139, 92, 246, 0.24);
-        --glow-tertiary: rgba(245, 158, 11, 0.18);
+        --color-bg-base: #FAF8F5;
+        --glow-primary: rgba(251, 191, 36, 0.40);
+        --glow-secondary: rgba(254, 240, 138, 0.65);
+        --glow-tertiary: rgba(245, 158, 11, 0.30);
+        --card-bg: #FFFFFF;
+        --card-border: #FDE68A;
       }
 
       body {
         font-family: 'Plus Jakarta Sans', sans-serif;
-        background-color: var(--color-bg-base);
+        background-color: #FAF8F5;
         background-image: 
-          radial-gradient(ellipse 90% 55% at 50% -12%, var(--glow-primary), transparent 60%),
-          radial-gradient(circle 550px at 10% 20%, var(--glow-secondary), transparent 45%),
-          radial-gradient(circle 650px at 90% 40%, var(--glow-tertiary), transparent 48%),
-          radial-gradient(circle 550px at 20% 80%, var(--glow-primary), transparent 45%),
-          radial-gradient(circle 600px at 85% 85%, var(--glow-secondary), transparent 48%);
+          radial-gradient(circle 900px at 15% -5%, rgba(254, 240, 138, 0.60), transparent 60%),
+          radial-gradient(circle 800px at 85% 15%, rgba(253, 224, 71, 0.50), transparent 55%),
+          radial-gradient(circle 950px at 50% 45%, rgba(254, 243, 199, 0.55), transparent 60%),
+          radial-gradient(circle 850px at 15% 75%, rgba(253, 230, 138, 0.50), transparent 50%),
+          radial-gradient(circle 800px at 85% 90%, rgba(251, 191, 36, 0.40), transparent 55%);
         background-attachment: fixed;
-        color: #F3F4F6;
+        color: #18181B;
         -webkit-tap-highlight-color: transparent;
-        transition: background-color 0.4s ease;
       }
       h1, h2, h3, h4, .font-heading {
         font-family: 'Outfit', sans-serif;
       }
       ::-webkit-scrollbar {
-        width: 7px;
-        height: 7px;
+        width: 8px;
+        height: 8px;
       }
       ::-webkit-scrollbar-track {
-        background: #0c0e18;
+        background: #FAF8F5;
       }
       ::-webkit-scrollbar-thumb {
-        background: #27314f;
+        background: #FBBF24;
         border-radius: 9999px;
       }
       ::-webkit-scrollbar-thumb:hover {
-        background: linear-gradient(180deg, #F59E0B, #E11D48);
+        background: #F59E0B;
       }
       .glow-amber {
-        box-shadow: 0 0 35px rgba(245, 158, 11, 0.35);
+        box-shadow: 0 10px 40px rgba(245, 158, 11, 0.28);
       }
       .glow-red {
-        box-shadow: 0 0 35px rgba(225, 29, 72, 0.35);
+        box-shadow: 0 10px 35px rgba(225, 29, 72, 0.25);
       }
       .glow-border {
         border-color: rgba(245, 158, 11, 0.5);
@@ -239,8 +214,8 @@
         transition: box-shadow 0.3s ease, background-color 0.3s ease, padding 0.3s ease;
       }
       #site-header.is-scrolled {
-        box-shadow: 0 12px 30px -12px rgba(0, 0, 0, 0.75);
-        background-color: rgba(8, 9, 14, 0.97);
+        box-shadow: 0 12px 30px -12px rgba(245, 158, 11, 0.20);
+        background-color: rgba(255, 255, 255, 0.98);
       }
 
       /* Back-to-top floating button */
@@ -255,9 +230,9 @@
         align-items: center;
         justify-content: center;
         border-radius: 9999px;
-        background: linear-gradient(135deg, #F59E0B, #E11D48);
+        background: linear-gradient(135deg, #F59E0B, #EA580C);
         color: #fff;
-        box-shadow: 0 10px 25px -8px rgba(225, 29, 72, 0.7);
+        box-shadow: 0 10px 25px -8px rgba(234, 88, 12, 0.5);
         opacity: 0;
         transform: translateY(16px) scale(0.9);
         pointer-events: none;
@@ -282,39 +257,36 @@
       .delivery-progress-track {
         height: 6px;
         border-radius: 9999px;
-        background: #08090E;
+        background: #FEF3C7;
         overflow: hidden;
-        border: 1px solid #222838;
+        border: 1px solid #FDE68A;
       }
       .delivery-progress-fill {
         height: 100%;
         width: 0%;
         border-radius: 9999px;
-        background: linear-gradient(90deg, #10B981, #FBBF24);
+        background: linear-gradient(90deg, #10B981, #F59E0B);
         transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       }
 
       /* Order type toggle buttons */
       .order-type-btn {
-        background: #0B0C10;
-        color: #D1D5DB;
-        border: 1px solid #222838;
+        background: #FFFFFF;
+        color: #4B5563;
+        border: 1px solid #E5E7EB;
       }
       .order-type-btn:hover {
-        border-color: #374151;
-        color: #fff;
+        border-color: #FBBF24;
+        color: #1F2937;
       }
       .order-type-btn.active {
         background: linear-gradient(90deg, #F59E0B, #FBBF24);
         color: #000;
-        border-color: #FBBF24;
-        box-shadow: 0 6px 16px -6px rgba(245, 158, 11, 0.6);
+        border-color: #F59E0B;
+        box-shadow: 0 6px 16px -6px rgba(245, 158, 11, 0.5);
       }
     
-      /* LFC modern spicy design system */
-      :root { --lfc-hot:#ff5b35; --lfc-gold:#ffb52e; --lfc-ink:#080a10; --lfc-panel:#111520; }
-      body { background-image: radial-gradient(ellipse at 12% 4%, rgba(255,91,53,.09), transparent 32%), radial-gradient(ellipse at 92% 24%, rgba(255,181,46,.06), transparent 28%); }
-      ::selection { background:#ff5b35; color:#fff; }
+      /* Admin Modal Shell (high-contrast kitchen control) */
       .lfc-admin-shell { box-shadow:0 30px 120px rgba(0,0,0,.75),0 0 0 1px rgba(255,255,255,.025); }
       .lfc-admin-topbar { background:linear-gradient(110deg,#151a27,#10131b 72%,#241610); }
       .lfc-admin-dashboard { animation:lfcRise .35s ease both; }
@@ -340,7 +312,7 @@
 
     </style>
   </head>
-  <body class="theme-flame bg-[#0c0e18] text-gray-100 min-h-screen selection:bg-amber-500 selection:text-black pb-16 sm:pb-0" id="top">
+  <body class="bg-[#FAF8F5] text-gray-900 min-h-screen selection:bg-amber-400 selection:text-slate-950 pb-16 sm:pb-0" id="top">
 
     <!-- Scroll Progress Bar -->
     <div id="scroll-progress"></div>
@@ -348,54 +320,56 @@
     <!-- Toast Notification Container -->
     <div id="toast-container" class="fixed top-4 right-4 z-50 flex flex-col gap-2 pointer-events-none max-w-sm w-full px-4"></div>
 
-    <!-- Top Announcement Bar with Live Ticker -->
-    <div class="relative overflow-hidden bg-gradient-to-r from-red-900 via-amber-600 to-red-900 text-white text-[11px] sm:text-xs font-bold py-1.5 px-4 text-center tracking-wide flex items-center justify-between border-b border-amber-500/40 shadow-md">
+    <!-- Top Announcement Bar with Live Ticker (Ultra-Luxe Dark Obsidian & Gold) -->
+    <div class="relative overflow-hidden bg-gradient-to-r from-[#080A12] via-[#121626] to-[#080A12] text-gray-200 text-[11px] sm:text-xs font-black py-2 px-3 sm:px-4 text-center tracking-wide flex items-center justify-between border-b border-amber-500/20 shadow-inner">
       <div class="hidden md:flex items-center gap-2">
-        <span class="animate-pulse">🔥</span>
-        <span>LFC Lahore • 12-Spice Secret Crispy Chicken</span>
+        <span class="animate-pulse">🍗</span>
+        <span class="text-amber-400">LFC Lahore</span>
+        <span class="text-gray-600">•</span>
+        <span class="text-gray-300">12-Spice Secret Crispy Chicken</span>
       </div>
 
       <!-- Center Live Ticker -->
       <div class="flex items-center justify-center gap-2 mx-auto">
         <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-        <span id="live-order-ticker-text" class="transition-all duration-300 font-extrabold text-amber-200">
+        <span id="live-order-ticker-text" class="transition-all duration-300 font-extrabold text-white text-[11px] sm:text-xs">
           🔥 Usman in Gulberg III just ordered Family Feast Combo!
         </span>
       </div>
 
       <div class="hidden sm:flex items-center gap-3">
-        <span>Coupon: <span class="bg-black/50 px-2 py-0.5 rounded text-amber-300 font-mono font-black border border-amber-400/40">LFC100</span> (Rs. 100 OFF)</span>
-        <span class="text-[10px] text-amber-300 bg-black/40 px-2 py-0.5 rounded border border-amber-500/30 font-bold flex items-center gap-1">
+        <span>Coupon: <span class="bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded font-mono font-black border border-amber-500/40">LFC100</span> (Rs. 100 OFF)</span>
+        <span class="text-[10px] text-amber-300 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-500/40 font-bold flex items-center gap-1">
           <span>⚡ Fast Lahore Delivery</span>
         </span>
       </div>
     </div>
 
-    <!-- Navigation Header with LFC Brand Replacement -->
-    <header id="site-header" class="sticky top-0 z-40 bg-[#0a0c14]/95 backdrop-blur-md border-b border-amber-500/25 shadow-2xl shadow-black/70">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-18 sm:h-20 flex items-center justify-between">
+    <!-- Navigation Header (End-Level Luxury Dark Aesthetic with Gold Accents) -->
+    <header id="site-header" class="sticky top-0 z-40 bg-[#0A0D18]/95 backdrop-blur-xl border-b border-amber-500/20 shadow-2xl shadow-black/60 transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 h-17 sm:h-20 flex items-center justify-between">
         
         <!-- Brand Logo & Prominent LFC Header -->
         <a href="#top" class="flex items-center gap-2.5 sm:gap-3.5 group">
           <div class="relative flex-shrink-0">
-            <div class="absolute -inset-1.5 rounded-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 opacity-80 blur-md group-hover:opacity-100 group-hover:blur-lg transition duration-500 animate-pulse"></div>
-            <img src="./src/assets/images/regenerated_image_1792104663328.png" alt="LFC - Lahore Fried Chicken Logo" class="brand-logo-img relative h-12 w-12 sm:h-16 sm:w-16 object-cover rounded-full ring-2 ring-amber-400/90 shadow-xl shadow-amber-500/40 transform group-hover:scale-110 group-hover:rotate-2 transition-all duration-300 drop-shadow-[0_4px_14px_rgba(245,158,11,0.55)] border-2 border-amber-300/40" referrerpolicy="no-referrer" onerror="this.src='./images/logo.png'" />
+            <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-500 via-yellow-400 to-orange-500 opacity-75 blur group-hover:opacity-100 group-hover:blur-md transition duration-500"></div>
+            <img src="./images/logo.png" alt="LFC - Lahore Fried Chicken Logo" class="brand-logo-img relative h-11 w-11 sm:h-15 sm:w-15 object-cover rounded-full ring-2 ring-amber-400/90 shadow-lg shadow-amber-500/30 transform group-hover:scale-108 transition-all duration-300 border-2 border-[#0A0D18]" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='./images/logo.png'" />
           </div>
           <div>
             <div class="flex items-center gap-2">
-              <span class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-amber-500 filter drop-shadow font-heading">LFC</span>
-              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-gradient-to-r from-amber-500/20 to-orange-500/20 text-amber-300 border border-amber-500/40 shadow-sm">Lahore</span>
+              <span class="text-2xl sm:text-3xl lg:text-4xl font-black tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-orange-400 to-red-500 filter drop-shadow font-heading">LFC</span>
+              <span class="inline-flex items-center px-2 py-0.5 rounded-full text-[9px] font-black uppercase tracking-wider bg-amber-500/20 text-amber-300 border border-amber-500/40 shadow-sm">Lahore</span>
             </div>
-            <div class="text-[9px] sm:text-[11px] text-amber-300/90 font-extrabold tracking-widest uppercase -mt-0.5 flex items-center gap-1.5">
+            <div class="text-[9px] sm:text-[11px] text-amber-400 font-extrabold tracking-widest uppercase -mt-0.5 flex items-center gap-1.5">
               <span>Taste The Legend</span>
               <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span class="text-emerald-400 text-[8px] font-black">Open Till 2:30 AM</span>
+              <span class="text-emerald-400 text-[8px] sm:text-[9px] font-black">Open Till 2:30 AM</span>
             </div>
           </div>
         </a>
 
-        <!-- Desktop Navigation Links -->
-        <nav class="hidden lg:flex items-center gap-6 text-xs font-bold text-gray-200 tracking-wide uppercase">
+        <!-- Desktop Navigation Links (Clean & High Contrast) -->
+        <nav class="hidden lg:flex items-center gap-7 text-xs font-bold text-gray-200 tracking-wide uppercase">
           <a href="#menu" class="hover:text-amber-400 transition py-1">Menu</a>
           <a href="#deals" class="hover:text-amber-400 transition py-1">Deals & Combos</a>
           <a href="#why-lfc" class="hover:text-amber-400 transition py-1">Why LFC</a>
@@ -403,76 +377,96 @@
           <a href="#branches" class="hover:text-amber-400 transition py-1">Branches</a>
         </nav>
 
-        <!-- Right Action Buttons (Clean & Professional: WhatsApp + Cart) -->
+        <!-- Right Action Buttons (Clean & Professional: WhatsApp + Cart Only) -->
         <div class="flex items-center gap-2 sm:gap-3">
-          
+
           <!-- Direct WhatsApp Header Button -->
-          <a href="https://wa.me/923224940181?text=Hi%20LFC!%20I%20would%20like%20to%20place%20an%20order." target="_blank" rel="noopener noreferrer" class="store-wa-link flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-black text-xs sm:text-sm shadow-lg shadow-emerald-600/30 active:scale-95 transition" title="Chat on WhatsApp">
+          <a href="https://wa.me/923224940181?text=Hi%20LFC!%20I%20would%20like%20to%20place%20an%20order." target="_blank" rel="noopener noreferrer" class="store-wa-link flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-emerald-600 to-green-600 hover:from-emerald-500 hover:to-green-500 text-white font-black text-xs sm:text-sm shadow-lg shadow-emerald-950 active:scale-95 transition" title="Chat on WhatsApp">
             <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.298.144.347.491 1.2.534 1.287.043.087.072.188.014.304-.058.116-.087.188-.173.289l-.26.304c-.087.086-.177.18-.076.354.101.174.449.741.964 1.201.662.591 1.221.774 1.394.86s.275.072.376-.043c.101-.116.433-.506.549-.68.116-.173.231-.145.39-.087s1.011.477 1.184.564.289.13.332.202c.045.072.045.419-.099.824zm-3.423-14.416c-6.627 0-12 5.373-12 12 0 2.158.572 4.183 1.564 5.932l-1.636 5.973 6.136-1.61c1.701.928 3.65 1.705 5.936 1.705 6.627 0 12-5.373 12-12s-5.373-12-12-12z"/></svg>
             <span class="hidden sm:inline">WhatsApp</span>
           </a>
 
           <!-- Cart Trigger Button -->
-          <button onclick="window.LFC.openCartDrawer()" class="cart-btn-trigger relative flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-400 text-black font-black text-xs sm:text-sm shadow-lg shadow-amber-500/25 active:scale-95 transition">
-            <svg class="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
-            <span class="cart-subtotal-badge font-heading">Rs. 0</span>
-            <span class="cart-count-badge hidden absolute -top-2 -right-2 bg-red-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#0c0e18]">0</span>
+          <button onclick="window.LFC.openCartDrawer()" class="cart-btn-trigger relative flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-black text-xs sm:text-sm shadow-lg shadow-amber-500/25 active:scale-95 transition cursor-pointer">
+            <svg class="w-4 h-4 sm:w-5 sm:h-5 text-slate-950" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" /></svg>
+            <span class="cart-subtotal-badge font-heading font-black">Rs. 0</span>
+            <span class="cart-count-badge hidden absolute -top-1.5 -right-1.5 sm:-top-2 sm:-right-2 bg-red-600 text-white text-[10px] font-black w-5 h-5 rounded-full flex items-center justify-center border-2 border-[#0A0D18]">0</span>
           </button>
 
         </div>
       </div>
     </header>
 
-    <!-- Hero Section (Spectacular Visuals & Glowing Aura) -->
-    <section class="relative overflow-hidden bg-gradient-to-b from-[#10121C] via-[#08090E] to-[#08090E] py-10 sm:py-16 md:py-24 border-b border-gray-800/80">
+    <!-- Hero Section (Optimized for Mobile Glory with Radiant Food Halo & Fast CTAs) -->
+    <section class="relative overflow-hidden bg-gradient-to-b from-[#FFFDF7] via-[#FFF9E6] to-[#FAF8F5] py-6 sm:py-14 md:py-20 border-b border-amber-200/90">
       
       <!-- Ambient Mineral Glow Orbs in Background -->
-      <div class="absolute -top-24 -left-24 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none animate-pulse-glow"></div>
-      <div class="absolute top-1/2 -right-24 w-96 h-96 bg-red-600/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -top-24 -left-24 w-96 h-96 bg-yellow-300/40 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute top-1/2 -right-24 w-96 h-96 bg-amber-400/25 rounded-full blur-3xl pointer-events-none"></div>
 
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 items-center">
+      <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 relative z-10">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10 lg:gap-12 items-center">
           
           <!-- Left Presentation Content -->
-          <div class="lg:col-span-6 space-y-5 sm:space-y-6">
+          <div class="lg:col-span-6 space-y-4 sm:space-y-6">
             
-            <div class="inline-flex items-center gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-gradient-to-r from-amber-500/20 to-red-500/10 border border-amber-500/40 text-amber-300 text-xs font-black uppercase tracking-wider shadow-sm">
+            <!-- Rating Pill Badge -->
+            <div class="inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full bg-white border border-amber-300 text-amber-900 text-[11px] sm:text-xs font-black uppercase tracking-wider shadow-sm">
               <span class="animate-bounce">🍗</span>
               <span id="hero-badge">#1 Crispy Chicken in Lahore</span>
-              <span class="text-gray-500">•</span>
-              <span id="hero-rating" class="text-white text-[11px]">4.9 ★ (1,840+ reviews)</span>
+              <span class="text-amber-400">•</span>
+              <span id="hero-rating" class="text-gray-700 text-[10px] sm:text-[11px] font-bold">4.9 ★ (1,840+ reviews)</span>
             </div>
 
-            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-white tracking-tight leading-none font-heading">
+            <!-- Main Headline -->
+            <h1 class="text-3xl sm:text-5xl lg:text-6xl font-black text-gray-950 tracking-tight leading-[1.08] sm:leading-none font-heading">
               <span id="hero-title" class="block">THE ULTIMATE CRISPY</span>
-              <span id="hero-highlight" class="block text-transparent bg-clip-text bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 filter drop-shadow">FAMILY FEAST</span>
+              <span id="hero-highlight" class="block text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 filter drop-shadow-sm">FAMILY FEAST</span>
             </h1>
 
-            <p id="hero-subtitle" class="text-gray-300 text-sm sm:text-base lg:text-lg leading-relaxed max-w-xl">
+            <p id="hero-subtitle" class="text-gray-700 text-xs sm:text-base lg:text-lg leading-relaxed max-w-xl font-medium">
               Signature Zinger burger, golden crunch bucket, cheesy pizza slice, paratha roll and tender strips in one legendary combo.
             </p>
 
-            <!-- Price and Call to Action -->
-            <div class="flex flex-wrap items-center gap-3 sm:gap-4 pt-1">
-              <div class="bg-[#141722] px-4 sm:px-5 py-2.5 sm:py-3 rounded-2xl border border-gray-800 shadow-inner">
-                <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Special Combo Price</div>
-                <div id="hero-price" class="text-xl sm:text-2xl font-black text-amber-400 font-heading">Rs. 2,890</div>
+            <!-- Quick Delivery & Value Highlights (Mobile Friendly) -->
+            <div class="flex flex-wrap items-center gap-1.5 sm:gap-2 text-[10px] sm:text-xs font-bold pt-0.5">
+              <span class="inline-flex items-center gap-1 bg-amber-100/90 border border-amber-300 px-2.5 py-1 rounded-full text-amber-950 font-black shadow-xs">
+                <span>⚡</span> 30-Min Delivery
+              </span>
+              <span class="inline-flex items-center gap-1 bg-emerald-100/90 border border-emerald-300 px-2.5 py-1 rounded-full text-emerald-950 font-black shadow-xs">
+                <span>🛵</span> Free Delivery > Rs. 1500
+              </span>
+              <span class="inline-flex items-center gap-1 bg-red-100/90 border border-red-300 px-2.5 py-1 rounded-full text-red-950 font-black shadow-xs">
+                <span>🔥</span> 100% Fresh Halal
+              </span>
+            </div>
+
+            <!-- Price and Call to Action (Optimized for Mobile Taps) -->
+            <div class="flex items-center gap-2.5 sm:gap-4 pt-1">
+              <div class="bg-white px-3.5 sm:px-5 py-2.5 sm:py-3 rounded-2xl border-2 border-amber-300 shadow-md flex-shrink-0">
+                <div class="text-[9px] sm:text-[10px] text-gray-500 font-bold uppercase tracking-wider">Combo Price</div>
+                <div id="hero-price" class="text-lg sm:text-2xl font-black text-amber-700 font-heading">Rs. 2,890</div>
               </div>
 
-              <button id="hero-cta-btn" class="group relative px-6 sm:px-8 py-3.5 sm:py-4 rounded-2xl bg-gradient-to-r from-red-600 via-rose-600 to-amber-600 hover:from-red-500 hover:to-amber-500 text-white font-black text-sm sm:text-base shadow-2xl shadow-red-600/30 active:scale-95 transition overflow-hidden flex items-center gap-2.5">
-                <span class="relative z-10 flex items-center gap-2">
+              <button id="hero-cta-btn" class="flex-1 sm:flex-none group relative px-4 sm:px-8 py-3 sm:py-4 rounded-2xl bg-gradient-to-r from-amber-500 via-orange-500 to-red-600 hover:from-amber-400 hover:to-orange-500 text-white font-black text-xs sm:text-base shadow-xl shadow-orange-500/25 active:scale-95 transition overflow-hidden flex items-center justify-center gap-1.5 sm:gap-2.5 cursor-pointer">
+                <span class="relative z-10 flex items-center gap-1.5 sm:gap-2">
                   <span>Order Feast Now</span>
                   <svg class="w-4 h-4 sm:w-5 sm:h-5 transform group-hover:translate-x-1 transition" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
                 </span>
-                <div class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+                <div class="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-white/25 to-transparent"></div>
               </button>
+
+              <a href="#menu" class="hidden sm:inline-flex px-4 py-3.5 rounded-2xl bg-white hover:bg-amber-50 text-gray-800 hover:text-amber-800 border-2 border-amber-200 text-xs font-black transition items-center gap-1 shadow-sm">
+                <span>Menu</span>
+                <span>↓</span>
+              </a>
             </div>
 
             <!-- Slide Thumbnails Switcher -->
-            <div class="pt-3">
-              <div class="text-[11px] text-gray-400 font-bold uppercase tracking-wider mb-2 flex items-center justify-between">
+            <div class="pt-2">
+              <div class="text-[10px] sm:text-[11px] text-gray-600 font-bold uppercase tracking-wider mb-2 flex items-center justify-between">
                 <span>Explore Featured Highlights</span>
-                <span class="text-amber-500 text-[10px]">Tap to view</span>
+                <span class="text-amber-700 text-[10px] font-extrabold">Tap to switch</span>
               </div>
               <div id="hero-thumbnails" class="flex items-center gap-2 overflow-x-auto pb-2 no-scrollbar"></div>
             </div>
@@ -480,27 +474,31 @@
           </div>
 
           <!-- Right Showcase Graphical Presentation -->
-          <div class="lg:col-span-6 relative flex items-center justify-center">
+          <div class="lg:col-span-6 relative flex items-center justify-center mt-2 sm:mt-0">
             
             <!-- Radiant Food Halo Backdrop -->
-            <div class="absolute inset-4 rounded-full bg-gradient-to-tr from-amber-500/25 via-red-600/20 to-transparent blur-2xl transform scale-110 pointer-events-none"></div>
+            <div class="absolute inset-0 sm:inset-2 rounded-full bg-gradient-to-tr from-yellow-300/60 via-amber-400/40 to-orange-400/25 blur-3xl transform scale-110 pointer-events-none"></div>
 
-            <div class="relative w-full max-w-md sm:max-w-lg aspect-square rounded-3xl overflow-hidden border border-amber-500/30 bg-[#12141D] shadow-2xl glow-amber group">
+            <div class="relative w-full max-w-sm sm:max-w-md lg:max-w-lg aspect-square rounded-[28px] sm:rounded-3xl overflow-hidden border-2 border-amber-300 bg-white shadow-2xl glow-amber group mx-auto">
               
-              <!-- Floating Badge -->
-              <div class="absolute top-4 left-4 z-20 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-full border border-amber-500/40 text-amber-400 text-xs font-black flex items-center gap-1.5 shadow-lg">
-                <span class="w-2 h-2 rounded-full bg-amber-400 animate-ping"></span>
+              <!-- Floating Top Badges -->
+              <div class="absolute top-3 left-3 sm:top-4 sm:left-4 z-20 bg-white/95 backdrop-blur-md px-3 py-1 sm:px-3.5 sm:py-1.5 rounded-full border border-amber-300 text-amber-900 text-[10px] sm:text-xs font-black flex items-center gap-1.5 shadow-md">
+                <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
                 <span>Fresh Cooked • 100% Halal</span>
               </div>
 
+              <div class="absolute top-3 right-3 sm:top-4 sm:right-4 z-20 bg-gradient-to-r from-amber-500 to-yellow-400 text-slate-950 px-2.5 py-1 rounded-full text-[10px] sm:text-xs font-black shadow-md flex items-center gap-1 border border-yellow-200">
+                <span>🔥 Trending</span>
+              </div>
+
               <!-- Main Hero Dish Image with Float Animation -->
-              <img id="hero-image" src="./images/hero-1.jpg" alt="Hero Dish" class="w-full h-full object-cover transform transition-all duration-700 group-hover:scale-105 animate-float" onerror="this.src='./images/hero-1.jpg'" />
+              <img id="hero-image" src="./images/hero-1.jpg" alt="Hero Dish" class="w-full h-full object-cover transform transition-all duration-700 group-hover:scale-105 animate-float" onerror="this.onerror=null; this.src='./images/hero-1.jpg'" />
 
               <!-- Bottom Glass Feature Pill -->
-              <div class="absolute bottom-3 left-3 right-3 sm:bottom-4 sm:left-4 sm:right-4 bg-[#08090E]/90 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl border border-gray-800 flex items-center justify-between text-[10px] sm:text-xs font-black text-gray-300 shadow-xl">
-                <span class="flex items-center gap-1 text-amber-400">✨ Lahori Spice</span>
-                <span class="flex items-center gap-1 text-red-400">🌶️ Crispy Crunch</span>
-                <span class="flex items-center gap-1 text-emerald-400">⚡ Fast 30-Min</span>
+              <div class="absolute bottom-2.5 left-2.5 right-2.5 sm:bottom-4 sm:left-4 sm:right-4 bg-white/95 backdrop-blur-md p-2.5 sm:p-3.5 rounded-2xl border border-amber-200 flex items-center justify-around text-[9px] sm:text-xs font-black text-gray-800 shadow-lg">
+                <span class="flex items-center gap-1 text-amber-800">✨ Lahori Spice</span>
+                <span class="flex items-center gap-1 text-orange-700">🌶️ Crispy Crunch</span>
+                <span class="flex items-center gap-1 text-emerald-700">⚡ Fast 30-Min</span>
               </div>
 
             </div>
@@ -511,24 +509,24 @@
       </div>
     </section>
 
-    <!-- Trust Stats Strip (animated counters) -->
-    <section class="reveal border-b border-gray-800/80 bg-[#0B0C12]">
+    <!-- Trust Stats Strip (Clean White & Yellow Mineral Bar) -->
+    <section class="reveal border-b border-amber-200/90 bg-white shadow-sm">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-center">
         <div>
-          <div class="text-2xl sm:text-3xl font-black text-amber-400 font-heading"><span class="stat-counter" data-target="4">0</span>+</div>
-          <div class="text-[10px] sm:text-xs text-gray-400 font-bold uppercase tracking-wider mt-1">Lahore Branches</div>
+          <div class="text-2xl sm:text-3xl font-black text-amber-600 font-heading"><span class="stat-counter" data-target="4">0</span>+</div>
+          <div class="text-[10px] sm:text-xs text-gray-600 font-bold uppercase tracking-wider mt-1">Lahore Branches</div>
         </div>
         <div>
-          <div class="text-2xl sm:text-3xl font-black text-amber-400 font-heading"><span class="stat-counter" data-target="1840">0</span>+</div>
-          <div class="text-[10px] sm:text-xs text-gray-400 font-bold uppercase tracking-wider mt-1">5-Star Reviews</div>
+          <div class="text-2xl sm:text-3xl font-black text-amber-600 font-heading"><span class="stat-counter" data-target="1840">0</span>+</div>
+          <div class="text-[10px] sm:text-xs text-gray-600 font-bold uppercase tracking-wider mt-1">5-Star Reviews</div>
         </div>
         <div>
-          <div class="text-2xl sm:text-3xl font-black text-amber-400 font-heading"><span class="stat-counter" data-target="12">0</span></div>
-          <div class="text-[10px] sm:text-xs text-gray-400 font-bold uppercase tracking-wider mt-1">Secret Spices</div>
+          <div class="text-2xl sm:text-3xl font-black text-amber-600 font-heading"><span class="stat-counter" data-target="12">0</span></div>
+          <div class="text-[10px] sm:text-xs text-gray-600 font-bold uppercase tracking-wider mt-1">Secret Spices</div>
         </div>
         <div>
-          <div class="text-2xl sm:text-3xl font-black text-amber-400 font-heading"><span class="stat-counter" data-target="30">0</span> min</div>
-          <div class="text-[10px] sm:text-xs text-gray-400 font-bold uppercase tracking-wider mt-1">Avg. Delivery</div>
+          <div class="text-2xl sm:text-3xl font-black text-amber-600 font-heading"><span class="stat-counter" data-target="30">0</span> min</div>
+          <div class="text-[10px] sm:text-xs text-gray-600 font-bold uppercase tracking-wider mt-1">Avg. Delivery</div>
         </div>
       </div>
     </section>
@@ -540,10 +538,10 @@
           type="text" 
           id="mobile-search-input" 
           placeholder="Search burgers, pizzas, rolls..." 
-          class="w-full px-4 py-2.5 pl-10 pr-9 rounded-xl bg-[#141722] border border-gray-800 text-xs text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 transition shadow-inner"
+          class="w-full px-4 py-2.5 pl-10 pr-9 rounded-xl bg-white border-2 border-amber-300 text-xs text-gray-900 placeholder-gray-500 focus:outline-none focus:border-amber-500 transition shadow-sm"
         />
-        <svg class="w-4 h-4 text-gray-500 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-        <button type="button" id="search-clear-mobile" onclick="window.LFC.clearSearch()" class="hidden absolute right-3 top-2.5 text-gray-500 hover:text-amber-400 transition" aria-label="Clear search">✕</button>
+        <svg class="w-4 h-4 text-amber-600 absolute left-3.5 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+        <button type="button" id="search-clear-mobile" onclick="window.LFC.clearSearch()" class="hidden absolute right-3 top-2.5 text-gray-400 hover:text-amber-600 transition" aria-label="Clear search">✕</button>
       </div>
     </div>
 
@@ -553,8 +551,8 @@
       <!-- Section Title & Desktop Search -->
       <div class="flex flex-col md:flex-row md:items-end justify-between gap-4 mb-6 sm:mb-8">
         <div>
-          <span class="text-amber-400 text-xs font-black uppercase tracking-widest">Our Signature Menu</span>
-          <h2 class="text-2xl sm:text-4xl font-black text-white font-heading mt-1">Explore Lahore's Crunchiest Bites</h2>
+          <span class="text-amber-700 text-xs font-black uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300 inline-block shadow-sm">Our Signature Menu</span>
+          <h2 class="text-2xl sm:text-4xl font-black text-gray-950 font-heading mt-2">Explore Lahore's Crunchiest Bites</h2>
         </div>
 
         <!-- Desktop Search Bar -->
@@ -563,10 +561,10 @@
             type="text" 
             id="menu-search-input" 
             placeholder="Search burgers, pizzas, rolls..." 
-            class="w-full px-4 py-2.5 pl-10 pr-9 rounded-xl bg-[#141722] border border-gray-800 text-sm text-white placeholder-gray-500 focus:outline-none focus:border-amber-500 transition"
+            class="w-full px-4 py-2.5 pl-10 pr-9 rounded-xl bg-white border-2 border-amber-300 text-sm text-gray-900 placeholder-gray-500 focus:outline-none focus:border-amber-500 shadow-sm transition"
           />
-          <svg class="w-4 h-4 text-gray-500 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
-          <button type="button" id="search-clear-desktop" onclick="window.LFC.clearSearch()" class="hidden absolute right-2.5 top-3 text-gray-500 hover:text-amber-400 transition" aria-label="Clear search">✕</button>
+          <svg class="w-4 h-4 text-amber-600 absolute left-3.5 top-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" /></svg>
+          <button type="button" id="search-clear-desktop" onclick="window.LFC.clearSearch()" class="hidden absolute right-2.5 top-3 text-gray-400 hover:text-amber-600 transition" aria-label="Clear search">✕</button>
         </div>
       </div>
 
@@ -574,88 +572,92 @@
       <div id="categories-container" class="flex items-center gap-2 overflow-x-auto pb-4 mb-2 sm:mb-3 no-scrollbar"></div>
 
       <!-- Result count -->
-      <div id="menu-result-count" class="text-[11px] text-gray-500 font-bold mb-4 sm:mb-6"></div>
+      <div id="menu-result-count" class="text-[11px] text-gray-600 font-bold mb-4 sm:mb-6"></div>
 
       <!-- Menu Items Grid: EXACTLY 2 items per row in Mobile (`grid-cols-2`)! -->
       <div id="menu-grid" class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6"></div>
 
       <!-- Empty State -->
       <div id="menu-empty" class="hidden text-center py-16">
-        <div class="text-4xl mb-3">🔍</div>
-        <h3 class="text-lg font-bold text-white mb-1">No items found</h3>
-        <p class="text-sm text-gray-400">Try searching for something else like "Zinger", "Pizza", or "Roll".</p>
+        <div class="text-4xl mb-3">🍗</div>
+        <h3 class="text-lg font-bold text-gray-900 mb-1">No items found</h3>
+        <p class="text-sm text-gray-600">Try searching for something else like "Zinger", "Pizza", or "Roll".</p>
       </div>
 
     </section>
 
-    <!-- Deals & Combos Section -->
-    <section id="deals" class="py-12 sm:py-16 bg-[#0B0C12] border-y border-gray-800/80">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Deals & Combos Section (Radiant White & Golden-Yellow Mineral Showcase) -->
+    <section id="deals" class="py-12 sm:py-16 bg-gradient-to-b from-[#FFFDF7] via-[#FFF9E6] to-[#FAF8F5] border-y border-amber-200/90 relative overflow-hidden">
+      <!-- Ambient Mineral Glow -->
+      <div class="absolute -top-20 -right-20 w-80 h-80 bg-yellow-300/30 rounded-full blur-3xl pointer-events-none"></div>
+      <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-amber-400/25 rounded-full blur-3xl pointer-events-none"></div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
-          <span class="text-red-400 text-xs font-black uppercase tracking-widest">Mega Savings</span>
-          <h2 class="text-2xl sm:text-4xl font-black text-white font-heading mt-1">Lahore Special Combos & Deals</h2>
-          <p class="text-gray-400 text-xs sm:text-sm mt-2">Bigger portions, extra crunch, and unbeatable prices for family & friends.</p>
+          <span class="text-amber-700 text-xs font-black uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300 inline-block shadow-sm">Mega Savings</span>
+          <h2 class="text-2xl sm:text-4xl font-black text-gray-950 font-heading mt-2">Lahore Special Combos & Deals</h2>
+          <p class="text-gray-700 text-xs sm:text-sm mt-2 font-medium">Bigger portions, extra crunch, and unbeatable prices for family & friends.</p>
         </div>
 
         <div class="reveal grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
           
           <!-- Deal 1 -->
-          <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-amber-500/30 hover:border-amber-400/80 flex flex-col justify-between relative overflow-hidden group shadow-2xl hover:shadow-[0_20px_50px_rgba(245,158,11,0.18)] transition-all duration-300">
-            <span class="absolute top-4 right-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-black font-black text-[10px] sm:text-xs px-3.5 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-black/60 z-10 border border-amber-300/40">Save 25%</span>
+          <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-amber-200/90 hover:border-amber-400 flex flex-col justify-between relative overflow-hidden group shadow-xl hover:shadow-[0_20px_45px_rgba(245,158,11,0.22)] transition-all duration-300">
+            <span class="absolute top-4 right-4 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 font-black text-[10px] sm:text-xs px-3.5 py-1 rounded-full uppercase tracking-wider shadow-md z-10 border border-yellow-300">Save 25%</span>
             <div>
-              <div class="relative overflow-hidden rounded-2xl mb-4 border border-white/10 group-hover:border-amber-500/40 transition">
-                <img src="./images/hero-1.jpg" alt="Family Feast" loading="lazy" decoding="async" class="w-full h-40 sm:h-44 object-cover group-hover:scale-108 transition duration-500" onerror="this.src='./images/hero-1.jpg'"/>
-                <div class="absolute inset-0 bg-gradient-to-t from-[#181c2b] via-transparent to-transparent opacity-80"></div>
+              <div class="relative overflow-hidden rounded-2xl mb-4 border border-amber-100 group-hover:border-amber-300 transition">
+                <img src="./images/hero-1.jpg" alt="Family Feast" loading="lazy" decoding="async" class="w-full h-40 sm:h-44 object-cover group-hover:scale-108 transition duration-500" onerror="this.onerror=null; this.src='./images/hero-1.jpg'"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent opacity-60"></div>
               </div>
-              <h3 class="text-lg sm:text-xl font-black text-white font-heading group-hover:text-amber-300 transition">Family Feast Mega Box</h3>
-              <p class="text-gray-300 text-xs mt-2 leading-relaxed">4 Crispy Zinger Burgers, 4 Pcs Golden Fried Chicken, 1 Jumbo Fries, 2 Paratha Rolls, and 1.5L Chilled Soft Drink.</p>
+              <h3 class="text-lg sm:text-xl font-black text-gray-950 font-heading group-hover:text-amber-700 transition">Family Feast Mega Box</h3>
+              <p class="text-gray-600 text-xs mt-2 leading-relaxed">4 Crispy Zinger Burgers, 4 Pcs Golden Fried Chicken, 1 Jumbo Fries, 2 Paratha Rolls, and 1.5L Chilled Soft Drink.</p>
             </div>
-            <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between">
+            <div class="pt-4 mt-4 border-t border-amber-100 flex items-center justify-between">
               <div>
-                <span class="text-[10px] sm:text-xs text-gray-400 line-through">Rs. 3,850</span>
-                <div class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 font-black text-xl sm:text-2xl font-heading">Rs. 2,890</div>
+                <span class="text-[10px] sm:text-xs text-gray-500 line-through font-bold">Rs. 3,850</span>
+                <div class="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 font-black text-xl sm:text-2xl font-heading">Rs. 2,890</div>
               </div>
-              <button onclick="window.LFC.addToCartById(9)" class="px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-xs uppercase tracking-wider transition shadow-lg shadow-amber-500/25 active:scale-95">Order Deal</button>
+              <button onclick="window.LFC.addToCartById(9)" class="px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-black text-xs uppercase tracking-wider transition shadow-md shadow-amber-400/30 active:scale-95 cursor-pointer">Order Deal</button>
             </div>
           </div>
 
           <!-- Deal 2 -->
-          <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-amber-500/30 hover:border-amber-400/80 flex flex-col justify-between relative overflow-hidden group shadow-2xl hover:shadow-[0_20px_50px_rgba(245,158,11,0.18)] transition-all duration-300">
-            <span class="absolute top-4 right-4 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-black font-black text-[10px] sm:text-xs px-3.5 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-black/60 z-10 border border-amber-300/40">Duo Pack</span>
+          <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-amber-200/90 hover:border-amber-400 flex flex-col justify-between relative overflow-hidden group shadow-xl hover:shadow-[0_20px_45px_rgba(245,158,11,0.22)] transition-all duration-300">
+            <span class="absolute top-4 right-4 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 font-black text-[10px] sm:text-xs px-3.5 py-1 rounded-full uppercase tracking-wider shadow-md z-10 border border-yellow-300">Duo Pack</span>
             <div>
-              <div class="relative overflow-hidden rounded-2xl mb-4 border border-white/10 group-hover:border-amber-500/40 transition">
-                <img src="./images/hero-4.jpg" alt="Couple Crunch" loading="lazy" decoding="async" class="w-full h-40 sm:h-44 object-cover group-hover:scale-108 transition duration-500" onerror="this.src='./images/hero-4.jpg'"/>
-                <div class="absolute inset-0 bg-gradient-to-t from-[#181c2b] via-transparent to-transparent opacity-80"></div>
+              <div class="relative overflow-hidden rounded-2xl mb-4 border border-amber-100 group-hover:border-amber-300 transition">
+                <img src="./images/hero-4.jpg" alt="Couple Crunch" loading="lazy" decoding="async" class="w-full h-40 sm:h-44 object-cover group-hover:scale-108 transition duration-500" onerror="this.onerror=null; this.src='./images/hero-4.jpg'"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent opacity-60"></div>
               </div>
-              <h3 class="text-lg sm:text-xl font-black text-white font-heading group-hover:text-amber-300 transition">Couple Crunch Deal</h3>
-              <p class="text-gray-300 text-xs mt-2 leading-relaxed">2 Zinger Burgers, 2 Pcs Crunchy Fried Chicken, 1 Large Fries, and 2 Soft Drink cans (250ml).</p>
+              <h3 class="text-lg sm:text-xl font-black text-gray-950 font-heading group-hover:text-amber-700 transition">Couple Crunch Deal</h3>
+              <p class="text-gray-600 text-xs mt-2 leading-relaxed">2 Zinger Burgers, 2 Pcs Crunchy Fried Chicken, 1 Large Fries, and 2 Soft Drink cans (250ml).</p>
             </div>
-            <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between">
+            <div class="pt-4 mt-4 border-t border-amber-100 flex items-center justify-between">
               <div>
-                <span class="text-[10px] sm:text-xs text-gray-400 line-through">Rs. 1,850</span>
-                <div class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 font-black text-xl sm:text-2xl font-heading">Rs. 1,450</div>
+                <span class="text-[10px] sm:text-xs text-gray-500 line-through font-bold">Rs. 1,850</span>
+                <div class="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 font-black text-xl sm:text-2xl font-heading">Rs. 1,450</div>
               </div>
-              <button onclick="window.LFC.addToCartById(10)" class="px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-xs uppercase tracking-wider transition shadow-lg shadow-amber-500/25 active:scale-95">Order Deal</button>
+              <button onclick="window.LFC.addToCartById(10)" class="px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-black text-xs uppercase tracking-wider transition shadow-md shadow-amber-400/30 active:scale-95 cursor-pointer">Order Deal</button>
             </div>
           </div>
 
           <!-- Deal 3 -->
-          <div class="p-5 sm:p-6 rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-amber-500/30 hover:border-amber-400/80 flex flex-col justify-between relative overflow-hidden group shadow-2xl hover:shadow-[0_20px_50px_rgba(245,158,11,0.18)] transition-all duration-300">
-            <span class="absolute top-4 right-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 text-black font-black text-[10px] sm:text-xs px-3.5 py-1 rounded-full uppercase tracking-wider shadow-lg shadow-black/60 z-10 border border-amber-300/40">Hot Special</span>
+          <div class="p-5 sm:p-6 rounded-3xl bg-white border-2 border-amber-200/90 hover:border-amber-400 flex flex-col justify-between relative overflow-hidden group shadow-xl hover:shadow-[0_20px_45px_rgba(245,158,11,0.22)] transition-all duration-300">
+            <span class="absolute top-4 right-4 bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 text-slate-950 font-black text-[10px] sm:text-xs px-3.5 py-1 rounded-full uppercase tracking-wider shadow-md z-10 border border-yellow-300">Hot Special</span>
             <div>
-              <div class="relative overflow-hidden rounded-2xl mb-4 border border-white/10 group-hover:border-amber-500/40 transition">
-                <img src="./images/hero-3.jpg" alt="Pizza & Bucket" loading="lazy" decoding="async" class="w-full h-40 sm:h-44 object-cover group-hover:scale-108 transition duration-500" onerror="this.src='./images/hero-3.jpg'"/>
-                <div class="absolute inset-0 bg-gradient-to-t from-[#181c2b] via-transparent to-transparent opacity-80"></div>
+              <div class="relative overflow-hidden rounded-2xl mb-4 border border-amber-100 group-hover:border-amber-300 transition">
+                <img src="./images/hero-3.jpg" alt="Pizza & Bucket" loading="lazy" decoding="async" class="w-full h-40 sm:h-44 object-cover group-hover:scale-108 transition duration-500" onerror="this.onerror=null; this.src='./images/hero-3.jpg'"/>
+                <div class="absolute inset-0 bg-gradient-to-t from-white/60 via-transparent to-transparent opacity-60"></div>
               </div>
-              <h3 class="text-lg sm:text-xl font-black text-white font-heading group-hover:text-amber-300 transition">Pizza & Chicken Platter</h3>
-              <p class="text-gray-300 text-xs mt-2 leading-relaxed">1 Medium Cheesy Loaded Pizza + 5 Pcs Hot Tender Strips + 2 Garlic Dips + 2 Chilled Soft Drinks.</p>
+              <h3 class="text-lg sm:text-xl font-black text-gray-950 font-heading group-hover:text-amber-700 transition">Pizza & Chicken Platter</h3>
+              <p class="text-gray-600 text-xs mt-2 leading-relaxed">1 Medium Cheesy Loaded Pizza + 5 Pcs Hot Tender Strips + 2 Garlic Dips + 2 Chilled Soft Drinks.</p>
             </div>
-            <div class="pt-4 mt-4 border-t border-white/10 flex items-center justify-between">
+            <div class="pt-4 mt-4 border-t border-amber-100 flex items-center justify-between">
               <div>
-                <span class="text-[10px] sm:text-xs text-gray-400 line-through">Rs. 2,100</span>
-                <div class="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-500 font-black text-xl sm:text-2xl font-heading">Rs. 1,690</div>
+                <span class="text-[10px] sm:text-xs text-gray-500 line-through font-bold">Rs. 2,100</span>
+                <div class="text-transparent bg-clip-text bg-gradient-to-r from-amber-600 via-orange-600 to-red-600 font-black text-xl sm:text-2xl font-heading">Rs. 1,690</div>
               </div>
-              <button onclick="window.LFC.addToCartById(3)" class="px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-500 via-yellow-400 to-amber-500 hover:from-amber-400 hover:to-yellow-300 text-black font-black text-xs uppercase tracking-wider transition shadow-lg shadow-amber-500/25 active:scale-95">Order Deal</button>
+              <button onclick="window.LFC.addToCartById(3)" class="px-4 sm:px-5 py-2.5 rounded-xl bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-400 hover:from-amber-300 hover:to-yellow-200 text-slate-950 font-black text-xs uppercase tracking-wider transition shadow-md shadow-amber-400/30 active:scale-95 cursor-pointer">Order Deal</button>
             </div>
           </div>
 
@@ -663,51 +665,51 @@
       </div>
     </section>
 
-    <!-- Why LFC Section (Unified Luxury Dark Gradient) -->
+    <!-- Why LFC Section (White & Sunny Yellow Mineral Elegance) -->
     <section id="why-lfc" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
-        <span class="text-amber-400 text-xs font-black uppercase tracking-widest">The LFC Standard</span>
-        <h2 class="text-2xl sm:text-4xl font-black text-white font-heading mt-1">Why Lahore Chooses LFC</h2>
+        <span class="text-amber-700 text-xs font-black uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300 inline-block shadow-sm">The LFC Standard</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-gray-950 font-heading mt-2">Why Lahore Chooses LFC</h2>
       </div>
 
       <div class="reveal grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-6">
         
-        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-white/10 hover:border-amber-400/50 hover:shadow-xl hover:shadow-amber-500/10 text-center transition group">
-          <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl group-hover:scale-110 transition">🍗</div>
-          <h3 class="font-black text-white text-xs sm:text-base font-heading mb-1 sm:mb-2 group-hover:text-amber-300 transition">Secret 12 Spices</h3>
-          <p class="text-gray-300 text-[10px] sm:text-xs leading-relaxed">Authentic Lahori spices blended for a signature craggy crust and juicy meat inside.</p>
+        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white border-2 border-amber-200/90 hover:border-amber-400 hover:shadow-xl hover:shadow-amber-500/10 text-center transition group shadow-sm">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-2xl bg-gradient-to-tr from-amber-400 to-yellow-300 text-slate-950 text-2xl flex items-center justify-center shadow-md border border-amber-300 group-hover:scale-110 transition">🍗</div>
+          <h3 class="font-black text-gray-950 text-xs sm:text-base font-heading mb-1 sm:mb-2 group-hover:text-amber-700 transition">Secret 12 Spices</h3>
+          <p class="text-gray-600 text-[10px] sm:text-xs leading-relaxed">Authentic Lahori spices blended for a signature craggy crust and juicy meat inside.</p>
         </div>
 
-        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-white/10 hover:border-amber-400/50 hover:shadow-xl hover:shadow-amber-500/10 text-center transition group">
-          <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl group-hover:scale-110 transition">✨</div>
-          <h3 class="font-black text-white text-xs sm:text-base font-heading mb-1 sm:mb-2 group-hover:text-amber-300 transition">100% Fresh Halal</h3>
-          <p class="text-gray-300 text-[10px] sm:text-xs leading-relaxed">Daily-sourced premium poultry, never frozen, prepared in clean kitchens.</p>
+        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white border-2 border-amber-200/90 hover:border-amber-400 hover:shadow-xl hover:shadow-amber-500/10 text-center transition group shadow-sm">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-2xl bg-gradient-to-tr from-amber-400 to-yellow-300 text-slate-950 text-2xl flex items-center justify-center shadow-md border border-amber-300 group-hover:scale-110 transition">✨</div>
+          <h3 class="font-black text-gray-950 text-xs sm:text-base font-heading mb-1 sm:mb-2 group-hover:text-amber-700 transition">100% Fresh Halal</h3>
+          <p class="text-gray-600 text-[10px] sm:text-xs leading-relaxed">Daily-sourced premium poultry, never frozen, prepared in clean kitchens.</p>
         </div>
 
-        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-white/10 hover:border-amber-400/50 hover:shadow-xl hover:shadow-amber-500/10 text-center transition group">
-          <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl group-hover:scale-110 transition">⚡</div>
-          <h3 class="font-black text-white text-xs sm:text-base font-heading mb-1 sm:mb-2 group-hover:text-amber-300 transition">Hot Delivery</h3>
-          <p class="text-gray-300 text-[10px] sm:text-xs leading-relaxed">Dispatched in insulated heat bags across Lahore in under 30 to 45 mins.</p>
+        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white border-2 border-amber-200/90 hover:border-amber-400 hover:shadow-xl hover:shadow-amber-500/10 text-center transition group shadow-sm">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-2xl bg-gradient-to-tr from-amber-400 to-yellow-300 text-slate-950 text-2xl flex items-center justify-center shadow-md border border-amber-300 group-hover:scale-110 transition">⚡</div>
+          <h3 class="font-black text-gray-950 text-xs sm:text-base font-heading mb-1 sm:mb-2 group-hover:text-amber-700 transition">Hot Delivery</h3>
+          <p class="text-gray-600 text-[10px] sm:text-xs leading-relaxed">Dispatched in insulated heat bags across Lahore in under 30 to 45 mins.</p>
         </div>
 
-        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-gradient-to-b from-[#181c2b] via-[#121522] to-[#0a0c14] border border-white/10 hover:border-amber-400/50 hover:shadow-xl hover:shadow-amber-500/10 text-center transition group">
-          <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl group-hover:scale-110 transition">💬</div>
-          <h3 class="font-black text-white text-xs sm:text-base font-heading mb-1 sm:mb-2 group-hover:text-amber-300 transition">WhatsApp Order</h3>
-          <p class="text-gray-300 text-[10px] sm:text-xs leading-relaxed">Instant order bill sent right to our WhatsApp team for quick confirmation.</p>
+        <div class="p-4 sm:p-6 rounded-2xl sm:rounded-3xl bg-white border-2 border-amber-200/90 hover:border-amber-400 hover:shadow-xl hover:shadow-amber-500/10 text-center transition group shadow-sm">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 mx-auto mb-3 sm:mb-4 rounded-2xl bg-gradient-to-tr from-amber-400 to-yellow-300 text-slate-950 text-2xl flex items-center justify-center shadow-md border border-amber-300 group-hover:scale-110 transition">💬</div>
+          <h3 class="font-black text-gray-950 text-xs sm:text-base font-heading mb-1 sm:mb-2 group-hover:text-amber-700 transition">WhatsApp Order</h3>
+          <p class="text-gray-600 text-[10px] sm:text-xs leading-relaxed">Instant order bill sent right to our WhatsApp team for quick confirmation.</p>
         </div>
 
       </div>
     </section>
 
-    <!-- Reviews Section -->
-    <section id="reviews" class="py-12 sm:py-16 bg-gradient-to-b from-[#151424] via-[#101322] to-[#161222] border-y border-amber-500/20">
+    <!-- Reviews Section (Radiant Warm White & Golden Yellow Mineral Ambiance) -->
+    <section id="reviews" class="py-12 sm:py-16 bg-gradient-to-b from-[#FFFDF7] via-[#FFF9E6] to-[#FAF8F5] border-y border-amber-200/90">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4 mb-8 sm:mb-10">
           <div>
-            <span class="text-amber-400 text-xs font-black uppercase tracking-widest">Real Customer Love</span>
-            <h2 class="text-2xl sm:text-4xl font-black text-white font-heading mt-1">What Lahoris Are Saying</h2>
+            <span class="text-amber-700 text-xs font-black uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300 inline-block shadow-sm">Real Customer Love</span>
+            <h2 class="text-2xl sm:text-4xl font-black text-gray-950 font-heading mt-2">What Lahoris Are Saying</h2>
           </div>
-          <button onclick="window.LFC.openReviewModal()" class="px-4 py-2 rounded-xl bg-[#1a1f35] hover:bg-[#232b4a] text-amber-300 border border-amber-500/40 text-xs font-bold transition flex items-center gap-1.5 self-start sm:self-auto shadow-md">
+          <button onclick="window.LFC.openReviewModal()" class="px-4 py-2 rounded-xl bg-white hover:bg-amber-50 text-amber-900 border-2 border-amber-300 text-xs font-black transition flex items-center gap-1.5 self-start sm:self-auto shadow-sm active:scale-95 cursor-pointer">
             <span>✍️ Write a Review</span>
           </button>
         </div>
@@ -719,23 +721,23 @@
     <!-- Branches Section -->
     <section id="branches" class="py-12 sm:py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
-        <span class="text-amber-400 text-xs font-black uppercase tracking-widest">Dine-In • Takeaway • Delivery</span>
-        <h2 class="text-2xl sm:text-4xl font-black text-white font-heading mt-1">Our Lahore Branches</h2>
-        <p class="text-gray-300 text-xs sm:text-sm mt-2">Managed in real-time by the LFC Operations Team.</p>
+        <span class="text-amber-700 text-xs font-black uppercase tracking-widest bg-amber-100 px-3 py-1 rounded-full border border-amber-300 inline-block shadow-sm">Dine-In • Takeaway • Delivery</span>
+        <h2 class="text-2xl sm:text-4xl font-black text-gray-950 font-heading mt-2">Our Lahore Branches</h2>
+        <p class="text-gray-600 text-xs sm:text-sm mt-2 font-medium">Managed in real-time by the LFC Operations Team.</p>
       </div>
 
       <div id="branches-grid" class="reveal grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 sm:gap-6"></div>
     </section>
 
-    <!-- Footer with LFC Branding & Trivox Solutions Credits -->
-    <footer class="bg-gradient-to-b from-[#121422] to-[#080910] border-t border-amber-500/30 py-10 sm:py-12 text-xs text-gray-300">
+    <!-- Footer with LFC Branding & Trivox Solutions Credits (Admin buttons completely removed) -->
+    <footer class="bg-gradient-to-b from-[#181D2D] to-[#0A0D16] border-t-2 border-amber-400/80 py-10 sm:py-12 text-xs text-gray-300">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <div class="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b border-gray-800/80">
           <div class="flex items-center gap-3">
             <div class="relative flex-shrink-0">
-              <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-500 to-red-600 opacity-70 blur-sm"></div>
-              <img src="./src/assets/images/regenerated_image_1792104663328.png" alt="LFC Logo" class="brand-logo-img relative h-12 w-12 rounded-full object-cover ring-2 ring-amber-400/80 shadow-md shadow-amber-500/30" referrerpolicy="no-referrer" onerror="this.src='./images/logo.png'"/>
+              <div class="absolute -inset-1 rounded-full bg-gradient-to-r from-amber-500 to-yellow-400 opacity-70 blur-sm"></div>
+              <img src="./images/logo.png" alt="LFC Logo" class="brand-logo-img relative h-12 w-12 rounded-full object-cover ring-2 ring-amber-400/80 shadow-md shadow-amber-500/30" referrerpolicy="no-referrer" onerror="this.onerror=null; this.src='./images/logo.png'"/>
             </div>
             <div>
               <div class="text-white font-black text-xl sm:text-2xl font-heading tracking-wider flex items-center gap-2">
@@ -748,6 +750,8 @@
           <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-gray-300 font-bold text-xs">
             <a href="#menu" class="hover:text-amber-400 transition">Menu</a>
             <a href="#deals" class="hover:text-amber-400 transition">Deals</a>
+            <a href="#why-lfc" class="hover:text-amber-400 transition">Why LFC</a>
+            <a href="#reviews" class="hover:text-amber-400 transition">Reviews</a>
             <a href="#branches" class="hover:text-amber-400 transition">Branches</a>
             <a href="https://wa.me/923224940181?text=Hi%20LFC!%20I%20would%20like%20to%20place%20an%20order." target="_blank" rel="noopener noreferrer" class="store-wa-link hover:text-emerald-400 transition flex items-center gap-1.5">
               <span>💬 WhatsApp Order</span>
@@ -756,36 +760,37 @@
         </div>
 
         <div class="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 text-gray-400 text-[11px]">
-          <p>© 2026 LFC (Lahore Fried Chicken). All Rights Reserved. <span onclick="window.LFC.openAdminModal()" class="cursor-pointer text-gray-700 hover:text-amber-400 transition ml-2 select-none font-mono" title="Staff Gateway (PIN: 5640)">🔒</span></p>
+          <p>© 2026 LFC (Lahore Fried Chicken). All Rights Reserved.</p>
           
           <!-- Developer Credit -->
-          <div onclick="window.LFC.openAdminModal()" title="Staff Admin (PIN: 5640)" class="cursor-pointer flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#181d30] hover:bg-[#202740] border border-amber-500/20 hover:border-amber-400/40 text-gray-300 transition">
+          <div class="flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-900 border border-amber-500/20 text-gray-300">
             <span class="text-amber-400 font-bold">Developer:</span>
             <span class="font-extrabold text-white tracking-wide">Trivox solutions</span>
           </div>
         </div>
 
+      </div>
     </footer>
 
-    <!-- App-like Mobile Bottom Navigation Bar -->
-    <div class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-[#08090E]/95 backdrop-blur-lg border-t border-gray-800/90 px-3 py-2 flex items-center justify-around shadow-2xl">
-      <a href="#top" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-amber-400 transition">
+    <!-- App-like Mobile Bottom Navigation Bar (No Admin Button - URL Only Access) -->
+    <div class="sm:hidden fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-lg border-t-2 border-amber-200/90 px-2 py-2 flex items-center justify-around shadow-2xl">
+      <a href="#top" class="flex flex-col items-center gap-0.5 text-gray-600 hover:text-amber-600 transition">
         <span class="text-base">🏠</span>
         <span class="text-[10px] font-black uppercase">Home</span>
       </a>
-      <a href="#menu" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-amber-400 transition">
+      <a href="#menu" class="flex flex-col items-center gap-0.5 text-gray-600 hover:text-amber-600 transition">
         <span class="text-base">🍗</span>
         <span class="text-[10px] font-black uppercase">Menu</span>
       </a>
-      <a href="#deals" class="flex flex-col items-center gap-0.5 text-gray-400 hover:text-amber-400 transition">
+      <a href="#deals" class="flex flex-col items-center gap-0.5 text-gray-600 hover:text-amber-600 transition">
         <span class="text-base">🏷️</span>
         <span class="text-[10px] font-black uppercase">Deals</span>
       </a>
-      <a href="https://wa.me/923224940181?text=Hi%20LFC!%20I%20would%20like%20to%20place%20an%20order." target="_blank" rel="noopener noreferrer" class="store-wa-link flex flex-col items-center gap-0.5 text-emerald-400 font-black">
+      <a href="https://wa.me/923224940181?text=Hi%20LFC!%20I%20would%20like%20to%20place%20an%20order." target="_blank" rel="noopener noreferrer" class="store-wa-link flex flex-col items-center gap-0.5 text-emerald-600 font-black">
         <span class="text-base">💬</span>
         <span class="text-[10px] font-black uppercase">WhatsApp</span>
       </a>
-      <button onclick="window.LFC.openCartDrawer()" class="relative flex flex-col items-center gap-0.5 text-amber-400 font-black">
+      <button onclick="window.LFC.openCartDrawer()" class="relative flex flex-col items-center gap-0.5 text-amber-600 font-black cursor-pointer">
         <div class="relative">
           <span class="text-base">🛒</span>
           <span class="cart-count-badge hidden absolute -top-1.5 -right-2 bg-red-600 text-white text-[9px] font-black w-4 h-4 rounded-full flex items-center justify-center">0</span>
@@ -922,17 +927,40 @@
           <button onclick="window.LFC.closeAdminModal()" class="p-2 rounded-xl text-gray-400 hover:text-white hover:bg-gray-800 transition">✕</button>
         </div>
 
-        <!-- PIN Login Section (Locked with secret PIN, never shows PIN to user) -->
-        <div id="admin-pin-section" class="p-8 text-center space-y-4">
-          <div class="w-14 h-14 mx-auto rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center text-amber-400 text-2xl">🔐</div>
-          <h4 class="text-lg font-bold text-white font-heading">Security Protected</h4>
-          <p class="text-gray-400 text-xs">Enter your authorization PIN to access the LFC Control Suite</p>
-          <div class="max-w-xs mx-auto flex gap-2">
-            <input type="password" id="admin-pin-input" placeholder="Enter PIN (5640)" maxlength="10" onkeydown="if(event.key==='Enter') window.LFC.submitAdminPin()" class="flex-1 px-4 py-2.5 rounded-xl bg-[#08090E] border border-gray-800 text-center text-white tracking-widest text-lg focus:outline-none focus:border-amber-500"/>
-            <button onclick="window.LFC.submitAdminPin()" class="px-5 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-black font-black text-xs uppercase transition">Unlock</button>
+        <!-- PIN Login Section (Protected Master Admin Suite) -->
+        <div id="admin-pin-section" class="p-8 sm:p-12 text-center space-y-6 max-w-md mx-auto my-auto">
+          <div class="w-16 h-16 mx-auto rounded-3xl bg-gradient-to-tr from-amber-500/20 to-orange-500/10 border border-amber-500/40 flex items-center justify-center text-amber-400 text-3xl shadow-xl shadow-amber-500/10">🔐</div>
+          <div>
+            <h4 class="text-xl sm:text-2xl font-black text-white font-heading">LFC Master Admin Suite</h4>
+            <p class="text-gray-400 text-xs sm:text-sm mt-1">Authorized restaurant staff control center</p>
           </div>
-          <div class="text-[11px] text-gray-500 mt-2">
-            Default Admin PIN: <span class="text-amber-400 font-mono font-black">5640</span>
+
+          <!-- Quick One-Click Instant Login (5640) -->
+          <div class="p-3.5 rounded-2xl bg-gradient-to-r from-amber-500/15 via-orange-500/10 to-amber-500/15 border border-amber-500/40 flex items-center justify-between shadow-lg">
+            <div class="text-left">
+              <div class="text-[10px] text-gray-400 font-bold uppercase tracking-wider">Authorized Master PIN</div>
+              <div class="text-base font-mono font-black text-amber-300">5640</div>
+            </div>
+            <button onclick="document.getElementById('admin-pin-input').value='5640'; window.LFC.submitAdminPin();" class="px-4 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black font-black text-xs uppercase tracking-wider shadow-md active:scale-95 transition cursor-pointer">
+              ⚡ Instant Unlock (5640)
+            </button>
+          </div>
+
+          <!-- Manual PIN Entry -->
+          <div class="space-y-3">
+            <div class="flex gap-2">
+              <div class="relative flex-1">
+                <input type="password" id="admin-pin-input" placeholder="PIN: 5640" maxlength="10" onkeydown="if(event.key==='Enter') window.LFC.submitAdminPin()" class="w-full px-4 py-3 rounded-xl bg-[#08090E] border border-amber-500/40 text-center text-white tracking-widest text-xl font-mono focus:outline-none focus:border-amber-400 shadow-inner"/>
+                <button type="button" onclick="const p = document.getElementById('admin-pin-input'); p.type = p.type === 'password' ? 'text' : 'password';" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-amber-400 text-sm p-1" title="Show/Hide PIN">👁️</button>
+              </div>
+              <button onclick="window.LFC.submitAdminPin()" class="px-6 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-black font-heading font-black text-xs sm:text-sm uppercase tracking-wider transition cursor-pointer shadow-lg shadow-amber-500/25 active:scale-95">
+                Unlock
+              </button>
+            </div>
+          </div>
+
+          <div class="text-[11px] text-gray-400">
+            Staff access only. PIN is set to <span class="text-amber-400 font-mono font-black">5640</span>.
           </div>
         </div>
 
@@ -1330,15 +1358,14 @@
               <p class="text-gray-400 text-xs">Upload your restaurant logo directly or specify a custom URL.</p>
 
               <div class="flex flex-col sm:flex-row sm:items-center gap-4 p-4 rounded-xl bg-[#08090E] border border-gray-800">
-                <img id="admin-logo-preview" src="./src/assets/images/regenerated_image_1792104663328.png" alt="Current Logo" class="h-16 w-16 rounded-full object-cover ring-2 ring-amber-400/80 shadow-md"/>
+                <img id="admin-logo-preview" src="./images/logo.png" alt="Current Logo" class="h-16 w-16 rounded-full object-cover ring-2 ring-amber-400/80 shadow-md" onerror="this.onerror=null; this.src='./images/logo.png';"/>
                 <div class="space-y-2">
                   <div class="flex flex-wrap gap-2">
                     <label class="px-3 py-2 rounded-xl bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-black font-black text-xs uppercase tracking-wider cursor-pointer inline-flex items-center gap-1.5 transition">
                       <span>📤 Upload New</span>
                       <input type="file" accept="image/*" class="hidden" onchange="window.LFC.uploadCustomLogo(this)"/>
                     </label>
-                    <button onclick="window.LFC.setLogoUrlManually('./src/assets/images/regenerated_image_1792104663328.png')" class="px-2.5 py-1.5 rounded-xl bg-black border border-amber-500/40 text-amber-300 hover:text-white text-[10px] font-bold">✨ Use Enhanced LFC Crest</button>
-                    <button onclick="window.LFC.setLogoUrlManually('./src/assets/images/images/logo.png')" class="px-2.5 py-1.5 rounded-xl bg-black border border-gray-700 text-gray-300 hover:text-white text-[10px] font-bold">✏️ Use Original Sketch</button>
+                    <button onclick="window.LFC.setLogoUrlManually('./images/logo.png')" class="px-2.5 py-1.5 rounded-xl bg-black border border-amber-500/40 text-amber-300 hover:text-white text-[10px] font-bold">✨ Use High-Res LFC Emblem</button>
                   </div>
                   <div class="text-[10px] text-gray-500">Enhanced high-res LFC emblem or original sketch logo</div>
                 </div>
@@ -1657,6 +1684,6 @@
     </div>
 
     <!-- Pure Standard JavaScript Application -->
-    <script src="./app.js"></script>
+    <script type="module" src="./app.js"></script>
   </body>
 </html>
